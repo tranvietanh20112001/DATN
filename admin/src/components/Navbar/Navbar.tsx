@@ -6,7 +6,7 @@ const Navbar = () => {
 
     const navigate = useNavigate();
     return (
-        <Box width={"240px"} height={"100%"} bgcolor={C.Gray} display={"flex"} flexDirection={"column"} gap={"20px"}>
+        <Box width={"320px"} height={"100%"} bgcolor={C.Gray} display={"flex"} flexDirection={"column"} gap={"20px"}>
             <Box width={"100%"} height={"48px"} display={"flex"} alignItems={"center"} gap={"12px"} mt={"24px"}>
                 <I.HomeIcon sx={{marginLeft: "24px"}}/> 
                 <Typography variant="h6" sx={{":hover": {textDecoration:"underline", cursor:"pointer"}}} onClick={() => navigate("/trang-chu")}>Trang chủ</Typography>

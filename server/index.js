@@ -3,8 +3,8 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
-const path = require("path");
-
+const projectRouter = require("./routes/project")
+const campusRouter = require("./routes/campus")
 
 const connectDB = async () => {
   try {
@@ -35,6 +35,9 @@ app.use(function (req, res, next) {
 app.use(cors({ origin: "*" }));
 
 
+app.use("/api/projects", projectRouter);
+app.use("/api/campus",campusRouter);
+app.use("/uploads", express.static("uploads"));
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
