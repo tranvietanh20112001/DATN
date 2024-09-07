@@ -89,7 +89,7 @@ export default function AddNewCampusModal({
     >
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Add new Product
+          Thêm mới cơ sở
         </Typography>
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
           {({ setFieldValue }) => (
