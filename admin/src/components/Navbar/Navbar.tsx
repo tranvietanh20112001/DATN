@@ -101,7 +101,7 @@ const Navbar = () => {
         alignItems={"center"}
         gap={"12px"}
       >
-        <I.GroupsIcon sx={{ marginLeft: "24px" }} />
+        <I.SupervisedUserCircleIcon sx={{ marginLeft: "24px" }} />
         <Typography
           variant="h6"
           sx={{ ":hover": { textDecoration: "underline", cursor: "pointer" } }}

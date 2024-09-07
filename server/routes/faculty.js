@@ -57,5 +57,14 @@ router.delete("/delete-faculty/:id", async (req, res) => {
   }
 });
 
+router.get('/get-faculties-by-campus', async (req, res) => {
+  const campusName = req.query.campus;
+  try {
+    const faculties = await faculty.find({ campus: campusName });
+    res.json(faculties);
+  } catch (error) {
+    res.status(500).send('Error fetching classes');
+  }
+});
 
   module.exports = router;
