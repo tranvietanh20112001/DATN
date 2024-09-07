@@ -5,6 +5,7 @@ import Campus from "../pages/managements/campus/campus";
 import Teacher from "../pages/managements/teacher/teacher";
 import Faculty from "../pages/managements/faculty/faculty";
 import Student from "../pages/managements/student/student";
+import AddNewProject from "../pages/managements/projects/AddNewProjectPage/AddNewProject";
 export const managementRoutes: IRoute[] = [
   {
     path: "/do-an",
@@ -29,5 +30,9 @@ export const managementRoutes: IRoute[] = [
   {
     path: "/sinh-vien",
     component: <Student />,
+  },
+  {
+    path: "/tao-moi-do-an",
+    component: <AddNewProject />,
   },
 ];

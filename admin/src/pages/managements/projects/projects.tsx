@@ -12,7 +12,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Color from "../../../components/Color/Color";
-
+import { useNavigate } from "react-router-dom";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: Color.DarkBlue,
@@ -46,7 +46,7 @@ const ListOfProjects = () => {
   const [projects, setProjects] = useState<IProject[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -84,7 +84,11 @@ const ListOfProjects = () => {
           Quản lý đồ án
         </Typography>
         <TextField variant="outlined" label="Tìm kiếm" size="small"></TextField>
-        <Button variant="contained" size="small">
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => navigate("/tao-moi-do-an")}
+        >
           Thêm mới
         </Button>
       </Box>

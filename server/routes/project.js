@@ -36,4 +36,13 @@ router.post("/create-new-project", async(req,res) =>{
         res.status(500).json({ success: false, message: "Internal server error" });
     }
 })
+
+router.delete('/delete-all-projects', async (req, res) => {
+  try {
+    await Project.deleteMany({});
+    res.status(200).send('All products have been deleted');
+  } catch (error) {
+    res.status(500).send('Error deleting products');
+  }
+});
   module.exports = router;
