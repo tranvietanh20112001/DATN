@@ -7,6 +7,7 @@ export interface IStudent {
     campus: string,
     faculty: string,
     image: string,
+    MSSV: string,
 }
 
 export interface ICreateANewStudent {
@@ -17,5 +18,9 @@ export interface ICreateANewStudent {
     campus: string,
     faculty: string,
     image: string,
+    MSSV: string,
+}
+
+export interface ISearchStudentByMSSV {
     MSSV: string,
 }

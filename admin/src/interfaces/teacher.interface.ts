@@ -16,3 +16,7 @@ export interface ICreateANewTeacher{
     faculty: string,
     image: string,
 }
+
+export interface ISearchTeacherByEmail{
+    email: string,
+}

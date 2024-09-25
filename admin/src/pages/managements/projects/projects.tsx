@@ -1,5 +1,5 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { API_PROJECTS } from "../../../config/app.config";
+import { API_PROJECT } from "../../../config/app.config";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { IProject } from "../../../interfaces/project.interface";
@@ -51,7 +51,7 @@ const ListOfProjects = () => {
     const fetchProjects = async () => {
       try {
         const response = await axios.get<IProject[]>(
-          `${API_PROJECTS}/get-all-projects`
+          `${API_PROJECT}/get-all-projects`
         );
         setProjects(response.data);
         setLoading(false);

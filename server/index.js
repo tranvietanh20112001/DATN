@@ -37,7 +37,7 @@ app.use(function (req, res, next) {
 app.use(cors({ origin: "*" }));
 
 
-app.use("/api/projects", projectRouter);
+app.use("/api/project", projectRouter);
 app.use("/api/campus",campusRouter);
 app.use("/api/faculty", facultyRouter);
 app.use("/api/teacher", teacherRouter);

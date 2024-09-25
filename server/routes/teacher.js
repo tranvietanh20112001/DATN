@@ -54,11 +54,21 @@ router.post("/create-new-teacher",  upload.single("image"), async(req,res) =>{
 router.delete("/delete-teacher/:id", async (req, res) => {
   try {
     const deletedteacher = await teacher.findByIdAndDelete(req.params.id);
-    res.status(200).json({success: true, message: "Deleted successfully"})
+    res.status(200).json({success: true, message: deletedteacher})
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
+router.get('/search', async (req, res) => {
+  const searchQuery = req.query.email; 
+
+  try {
+    const teachers = await teacher.findOne({ email: { $regex: searchQuery, $options: 'i' } }); 
+    res.json(teachers); 
+  } catch (err) {
+    res.status(500).json({ error: 'Error occurred while searching for teachers' });
+  }
+});
 
   module.exports = router;

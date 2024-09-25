@@ -10,6 +10,9 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    link_demo_project:{
+        type: String,
+    },
     year:{
         type: Number,
         required: true,
@@ -24,7 +27,32 @@ const ProjectSchema = new mongoose.Schema({
     image_project_URL:{
             data: Buffer,
             contentType: String
+    },
+    student_id:{
+        type: String,
+        required: true,
+    },
+    student_name:{
+        type: String,
+        required: true,
+    },
+    teacher_id: {
+        type: String,
+        required: true,
+    },
+    teacher_name: {
+        type: String,
+        required: true,
+    },
+    faculty: {
+        type: String,
+        required: true,
+    },
+    campus:{
+        type: String,
+        required: true,
     }
+    
 });
 
 const Project = mongoose.model('projects', ProjectSchema);

@@ -14,13 +14,30 @@ router.get("/get-all-projects", async (req, res) => {
 
 router.post("/create-new-project", async(req,res) =>{
     try{
-        const {title, link_Youtube_URL,year,grade} = req.body;
+        const {title,
+          link_Youtube_URL,
+          link_demo_project,
+          year,
+          grade,
+          faculty,
+          campus,
+          teacher_name,
+          teacher_id,
+          student_name,
+          student_id,} = req.body;
 
         const newProject = new Project({
-            title,
-            link_Youtube_URL,
-            year,
-            grade,
+          title,
+          link_Youtube_URL,
+          link_demo_project,
+          year,
+          grade,
+          faculty,
+          campus,
+          teacher_name,
+          teacher_id,
+          student_name,
+          student_id,
         });
 
         await newProject.save();

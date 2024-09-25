@@ -25,7 +25,7 @@ const Navbar = () => {
         <Typography
           variant="h6"
           sx={{ ":hover": { textDecoration: "underline", cursor: "pointer" } }}
-          onClick={() => navigate("/trang-chu")}
+          onClick={() => navigate("/")}
         >
           Trang chủ
         </Typography>

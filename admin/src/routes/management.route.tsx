@@ -12,7 +12,7 @@ export const managementRoutes: IRoute[] = [
     component: <ListOfProjects />,
   },
   {
-    path: "/trang-chu",
+    path: "/",
     component: <Home />,
   },
   {

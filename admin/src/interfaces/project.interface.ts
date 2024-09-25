@@ -11,3 +11,18 @@ export interface IProject{
     student_name: string,
     student_id: string,
 }
+
+export interface ICreateANewProject{
+    title: string;
+    link_Youtube_URL: string,
+    link_demo_project: string,
+    year: number,
+    grade: number,
+    faculty: string,
+    campus: string,
+    teacher_name: string,
+    teacher_id: string,
+    student_name: string,
+    student_id: string,
+    description: string,
+}

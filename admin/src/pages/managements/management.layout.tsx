@@ -5,7 +5,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { Outlet } from "react-router-dom";
 export default function managementLayout(): JSX.Element {
   return (
-    <Box width={"100%"} height={"100vh"} bgcolor={C.White}>
+    <Box width={"100%"} bgcolor={C.White}>
       <Header />
       <Box display={"flex"} height={"100%"} width={"100%"}>
         <Navbar />

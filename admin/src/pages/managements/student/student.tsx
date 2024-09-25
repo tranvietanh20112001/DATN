@@ -97,7 +97,7 @@ const Student = () => {
           <Table sx={{ minWidth: 750 }} aria-label="simple table" stickyHeader>
             <TableHead>
               <TableRow>
-                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell>MSSV</StyledTableCell>
                 <StyledTableCell>Họ và tên</StyledTableCell>
                 <StyledTableCell>Cơ sở</StyledTableCell>
                 <StyledTableCell>Chuyên ngành</StyledTableCell>
@@ -111,7 +111,7 @@ const Student = () => {
                   key={Student._id}
                 >
                   <StyledTableCell component="th" scope="row">
-                    {Student._id}
+                    {Student.MSSV}
                   </StyledTableCell>
                   <StyledTableCell>{Student.full_name}</StyledTableCell>
                   <StyledTableCell>{Student.campus}</StyledTableCell>

@@ -63,5 +63,15 @@ router.delete("/delete-student/:id", async (req, res) => {
   }
 });
 
+router.get('/search', async (req, res) => {
+  const searchQuery = req.query.MSSV; 
 
-  module.exports = router;
+  try {
+    const students = await student.findOne({ MSSV: { $regex: searchQuery, $options: 'i' } }); 
+    res.json(students); 
+  } catch (err) {
+    res.status(500).json({ error: 'Error occurred while searching for students' });
+  }
+});
+
+module.exports = router;
