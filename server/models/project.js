@@ -51,8 +51,10 @@ const ProjectSchema = new mongoose.Schema({
     campus:{
         type: String,
         required: true,
-    }
-    
+    },
+    file_report_URL:{
+        type: String,
+    },
 });
 
 const Project = mongoose.model('projects', ProjectSchema);
