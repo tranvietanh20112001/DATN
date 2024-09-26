@@ -1,117 +1,93 @@
-import { Box, Typography } from "@mui/material";
-import C from "../Color/Color";
-import I from "../Icon/Icon";
+// components/Navbar.tsx
+import React from "react";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  IconButton,
+} from "@mui/material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useTheme, Theme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-const Navbar = () => {
+
+interface Link {
+  name: string;
+  url: string;
+  icon: React.ReactNode;
+}
+
+interface NavbarProps {
+  open: boolean;
+  handleDrawerClose: () => void;
+  links: Link[];
+}
+
+export const Navbar: React.FC<NavbarProps> = ({
+  open,
+  handleDrawerClose,
+  links,
+}) => {
+  const theme = useTheme();
   const navigate = useNavigate();
+
   return (
-    <Box
-      width={"320px"}
-      height={"100%"}
-      bgcolor={C.Gray}
-      display={"flex"}
-      flexDirection={"column"}
-      gap={"20px"}
+    <Drawer
+      variant="permanent"
+      open={open}
+      sx={{
+        width: open ? 240 : 60,
+        transition: theme.transitions.create("width", {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        "& .MuiDrawer-paper": {
+          width: open ? 240 : 60,
+          transition: theme.transitions.create("width", {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+          }),
+        },
+      }}
     >
-      <Box
-        width={"100%"}
-        height={"48px"}
-        display={"flex"}
-        alignItems={"center"}
-        gap={"12px"}
-        mt={"24px"}
-      >
-        <I.HomeIcon sx={{ marginLeft: "24px" }} />
-        <Typography
-          variant="h6"
-          sx={{ ":hover": { textDecoration: "underline", cursor: "pointer" } }}
-          onClick={() => navigate("/")}
-        >
-          Trang chủ
-        </Typography>
-      </Box>
-      <Box
-        width={"100%"}
-        height={"48px"}
-        display={"flex"}
-        alignItems={"center"}
-        gap={"12px"}
-      >
-        <I.FolderIcon sx={{ marginLeft: "24px" }} />
-        <Typography
-          variant="h6"
-          sx={{ ":hover": { textDecoration: "underline", cursor: "pointer" } }}
-          onClick={() => navigate("/do-an")}
-        >
-          Quản lý đồ án
-        </Typography>
-      </Box>
-      <Box
-        width={"100%"}
-        height={"48px"}
-        display={"flex"}
-        alignItems={"center"}
-        gap={"12px"}
-      >
-        <I.SchoolIcon sx={{ marginLeft: "24px" }} />
-        <Typography
-          variant="h6"
-          sx={{ ":hover": { textDecoration: "underline", cursor: "pointer" } }}
-          onClick={() => navigate("/sinh-vien")}
-        >
-          Quản lý sinh viên
-        </Typography>
-      </Box>
-      <Box
-        width={"100%"}
-        height={"48px"}
-        display={"flex"}
-        alignItems={"center"}
-        gap={"12px"}
-      >
-        <I.LocationCityIcon sx={{ marginLeft: "24px" }} />
-        <Typography
-          variant="h6"
-          sx={{ ":hover": { textDecoration: "underline", cursor: "pointer" } }}
-          onClick={() => navigate("/co-so")}
-        >
-          Quản lý cơ sở
-        </Typography>
-      </Box>
-      <Box
-        width={"100%"}
-        height={"48px"}
-        display={"flex"}
-        alignItems={"center"}
-        gap={"12px"}
-      >
-        <I.GroupsIcon sx={{ marginLeft: "24px" }} />
-        <Typography
-          variant="h6"
-          sx={{ ":hover": { textDecoration: "underline", cursor: "pointer" } }}
-          onClick={() => navigate("/giao-vien")}
-        >
-          Quản lý giáo viên
-        </Typography>
-      </Box>
-      <Box
-        width={"100%"}
-        height={"48px"}
-        display={"flex"}
-        alignItems={"center"}
-        gap={"12px"}
-      >
-        <I.SupervisedUserCircleIcon sx={{ marginLeft: "24px" }} />
-        <Typography
-          variant="h6"
-          sx={{ ":hover": { textDecoration: "underline", cursor: "pointer" } }}
-          onClick={() => navigate("/chuyen-nganh")}
-        >
-          Quản lý chuyên ngành
-        </Typography>
-      </Box>
-    </Box>
+      <div>
+        <IconButton onClick={handleDrawerClose}>
+          {theme.direction === "rtl" ? (
+            <ChevronRightIcon />
+          ) : (
+            <ChevronLeftIcon />
+          )}
+        </IconButton>
+      </div>
+      <Divider />
+      <List>
+        {links.map((link, index) => (
+          <ListItem key={index} disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              sx={{ justifyContent: open ? "initial" : "center" }}
+              onClick={() => navigate(link.url)}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                {link.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={link.name}
+                sx={{ opacity: open ? 1 : 0 }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
   );
 };
-
-export default Navbar;
