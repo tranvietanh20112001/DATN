@@ -69,6 +69,16 @@ router.post("/create-new-project", upload.single('report_pdf'), async(req,res) =
     }
 })
 
+router.delete("/delete-project/:id", async (req, res) => {
+  try {
+    const projectId = req.params.id;
+    await Project.findByIdAndDelete(projectId);
+    res.status(200).json({ message: "Dự án đã được xóa thành công!" });
+  } catch (error) {
+    res.status(500).json({ error: "Lỗi khi xóa dự án" });
+  }
+});
+
 router.delete('/delete-all-projects', async (req, res) => {
   try {
     await Project.deleteMany({});

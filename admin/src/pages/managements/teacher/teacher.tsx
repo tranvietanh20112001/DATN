@@ -26,7 +26,7 @@ const teacher = () => {
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: Color.DarkBlue,
+      backgroundColor: Color.PrimaryBlue,
       color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {

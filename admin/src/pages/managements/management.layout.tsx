@@ -19,7 +19,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Outlet } from "react-router-dom";
 import I from "../../components/Icon/Icon";
 import { useNavigate } from "react-router-dom";
-
+import Color from "../../components/Color/Color";
 interface Link {
   name: string;
   url: string;
@@ -162,7 +162,7 @@ export default function MiniDrawer() {
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
-            color="inherit"
+            color={"inherit"}
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
@@ -176,7 +176,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Mini variant drawer
+            Hệ thống quản lý đồ án
           </Typography>
         </Toolbar>
       </AppBar>

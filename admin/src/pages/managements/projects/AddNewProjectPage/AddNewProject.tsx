@@ -17,7 +17,7 @@ import { API_PROJECT } from "../../../../config/app.config";
 import SearchStudent from "./SearchStudent";
 import SearchTeacher from "./SearchTeacher";
 import Icon from "../../../../components/Icon/Icon";
-
+import { useNavigate } from "react-router-dom";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -33,7 +33,7 @@ const AddNewProject = () => {
   const [student, setStudent] = useState<IStudent | null>(null);
   const [teacher, setTeacher] = useState<ITeacher | null>(null);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
-
+  const navigate = useNavigate();
   const ProjectInitialValues: ICreateANewProject = {
     title: "",
     link_Youtube_URL: "",
@@ -87,6 +87,7 @@ const AddNewProject = () => {
         );
         console.log("Project created successfully", response.data);
         alert("Dự án đã được tạo thành công!");
+        navigate("/do-an");
       } catch (error) {
         console.error("Error creating project", error);
         alert("Lỗi khi tạo dự án.");

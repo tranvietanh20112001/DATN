@@ -10,6 +10,7 @@ import { ICreateANewCampus } from "../../../../interfaces/campus.interface";
 import { useState } from "react";
 import { API_CAMPUS } from "../../../../config/app.config";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const style = {
   position: "absolute" as const,
   top: "50%",
@@ -50,7 +51,7 @@ export default function AddNewCampusModal({
     location: "",
   };
 
-  const [image, setImage] = useState<File | null>(null);
+  const [, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const [message, setMessage] = useState<string>("");

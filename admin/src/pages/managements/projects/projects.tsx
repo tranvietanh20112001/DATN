@@ -13,9 +13,12 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Color from "../../../components/Color/Color";
 import { useNavigate } from "react-router-dom";
+import Icon from "../../../components/Icon/Icon";
+import DeleteProjectModal from "./DeleteProjectModal/DeleteProjectModal";
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: Color.DarkBlue,
+    backgroundColor: Color.PrimaryBlue,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -33,20 +36,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const TextHover = {
-  cursor: "pointer",
-  ":hover": {
-    color: Color.DarkBlue,
-    textDecoration: "true",
-    fontWeight: "Bold",
-  },
-};
-
 const ListOfProjects = () => {
   const [projects, setProjects] = useState<IProject[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedProject, setSelectedProject] = useState<IProject | null>(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -67,6 +64,32 @@ const ListOfProjects = () => {
 
     fetchProjects();
   }, []);
+
+  const handleDeleteProject = async () => {
+    if (selectedProject) {
+      try {
+        await axios.delete(
+          `${API_PROJECT}/delete-project/${selectedProject._id}`
+        );
+        setProjects((prevProjects) =>
+          prevProjects.filter((project) => project._id !== selectedProject._id)
+        );
+        alert("Dự án đã được xóa thành công!");
+      } catch (error) {
+        setError("Lỗi khi xóa dự án.");
+      }
+    }
+  };
+
+  const openModal = (project: IProject) => {
+    setSelectedProject(project);
+    setOpenDeleteModal(true);
+  };
+
+  const closeModal = () => {
+    setOpenDeleteModal(false);
+    setSelectedProject(null);
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -103,6 +126,7 @@ const ListOfProjects = () => {
               <StyledTableCell align="right">Cơ sở</StyledTableCell>
               <StyledTableCell align="right">Chuyên ngành</StyledTableCell>
               <StyledTableCell align="right">Điểm</StyledTableCell>
+              <StyledTableCell align="right">Chức năng</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -111,27 +135,46 @@ const ListOfProjects = () => {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 key={project._id}
               >
-                <StyledTableCell component="th" scope="row" sx={TextHover}>
+                <StyledTableCell component="th" scope="row">
                   {project.title}
                 </StyledTableCell>
-                <StyledTableCell align="right" sx={TextHover}>
+                <StyledTableCell align="right">
                   {project.student_name}
                 </StyledTableCell>
-                <StyledTableCell align="right" sx={TextHover}>
+                <StyledTableCell align="right">
                   {project.teacher_name}
                 </StyledTableCell>
-                <StyledTableCell align="right" sx={TextHover}>
+                <StyledTableCell align="right">
                   {project.campus}
                 </StyledTableCell>
-                <StyledTableCell align="right" sx={TextHover}>
+                <StyledTableCell align="right">
                   {project.faculty}
                 </StyledTableCell>
                 <StyledTableCell align="right">{project.grade}</StyledTableCell>
+                <StyledTableCell align="right">
+                  <Icon.EditIcon sx={{ marginRight: "16px" }} />
+                  <Icon.DeleteIcon
+                    sx={{
+                      cursor: "pointer",
+                      ":hover": { color: Color.Red },
+                    }}
+                    onClick={() => openModal(project)}
+                  />
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      {selectedProject && (
+        <DeleteProjectModal
+          open={openDeleteModal}
+          onClose={closeModal}
+          onDelete={handleDeleteProject}
+          projectTitle={selectedProject.title}
+        />
+      )}
     </Box>
   );
 };
