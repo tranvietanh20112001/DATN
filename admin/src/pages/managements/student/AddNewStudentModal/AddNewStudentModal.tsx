@@ -112,7 +112,6 @@ export default function AddNewStudentModal({
       formData.append("image", values.image);
     }
 
-    console.log(formData.values);
     try {
       const response = await axios.post(
         `${API_STUDENT}/create-new-Student`,

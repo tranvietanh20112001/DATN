@@ -32,6 +32,7 @@ const VisuallyHiddenInput = styled("input")({
 const AddNewProject = () => {
   const [student, setStudent] = useState<IStudent | null>(null);
   const [teacher, setTeacher] = useState<ITeacher | null>(null);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
 
   const ProjectInitialValues: ICreateANewProject = {
     title: "",
@@ -66,10 +67,23 @@ const AddNewProject = () => {
       values.faculty = student.faculty;
       values.campus = student.campus;
 
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(values));
+      if (pdfFile) {
+        formData.append("report_pdf", pdfFile);
+      }
+
+      console.log(formData.values);
+
       try {
         const response = await axios.post(
           `${API_PROJECT}/create-new-project`,
-          values
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
         console.log("Project created successfully", response.data);
         alert("Dự án đã được tạo thành công!");
@@ -121,17 +135,20 @@ const AddNewProject = () => {
               />
               <Button
                 variant="outlined"
-                sx={{ width: "200px" }}
+                fullWidth
                 component="label"
                 role={undefined}
                 tabIndex={-1}
                 startIcon={<Icon.CloudUploadIcon />}
               >
-                Tải file báo cáo
+                {pdfFile ? pdfFile.name : "Tải file báo cáo"}
                 <VisuallyHiddenInput
                   type="file"
-                  onChange={(event) => console.log(event.target.files)}
-                  multiple
+                  onChange={(event) =>
+                    setPdfFile(
+                      event.target.files ? event.target.files[0] : null
+                    )
+                  }
                   accept="application/pdf"
                 />
               </Button>
@@ -152,6 +169,7 @@ const AddNewProject = () => {
               <Field
                 as={TextField}
                 name="completion_date"
+                id="completion_date"
                 size={"small"}
                 type="date"
               />

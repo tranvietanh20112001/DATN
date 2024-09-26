@@ -1,7 +1,19 @@
 const express = require("express");
 const router = express.Router();
-
+const multer = require('multer');
 const Project = require("../models/project")
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router.get("/get-all-projects", async (req, res) => {
     try {
@@ -12,7 +24,7 @@ router.get("/get-all-projects", async (req, res) => {
     }
   });
 
-router.post("/create-new-project", async(req,res) =>{
+router.post("/create-new-project", upload.single('report_pdf'), async(req,res) =>{
     try{
         const {title,
           link_Youtube_URL,
@@ -24,7 +36,9 @@ router.post("/create-new-project", async(req,res) =>{
           teacher_name,
           teacher_id,
           student_name,
-          student_id,} = req.body;
+          student_id,} = JSON.parse(req.body.data);
+
+          const fileReportUrl = req.file ? req.file.path : '';
 
         const newProject = new Project({
           title,
@@ -38,6 +52,7 @@ router.post("/create-new-project", async(req,res) =>{
           teacher_id,
           student_name,
           student_id,
+          file_report_URL: fileReportUrl
         });
 
         await newProject.save();

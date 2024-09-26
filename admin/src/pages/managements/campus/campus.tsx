@@ -1,9 +1,44 @@
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Paper,
+  styled,
+  Table,
+  TableBody,
+  TableCell,
+  tableCellClasses,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
 import { ICampus } from "../../../interfaces/campus.interface";
 import { useEffect, useState } from "react";
-import { API_CAMPUS, API_UPLOAD } from "../../../config/app.config";
+import { API_CAMPUS } from "../../../config/app.config";
 import AddNewCampusModal from "./AddNewCampusModal/AddNewCampusModal";
+import Color from "../../../components/Color/Color";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: Color.DarkBlue,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
 const Campus = () => {
   const [campuses, setCampus] = useState<ICampus[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -57,30 +92,32 @@ const Campus = () => {
         >
           Thêm mới cơ sở
         </Button>
-        <Box width={"100%"} display={"flex"} flexWrap={"wrap"} gap={"40px"}>
-          {campuses.map((campus) => (
-            <Box
-              width={"30%"}
-              height={"360px"}
-              borderRadius={"8px"}
-              boxShadow={4}
-              flexDirection={"column"}
-              sx={{ cursor: "pointer" }}
-              gap={"24px"}
-              key={campus._id}
-            >
-              <img
-                src={`${API_UPLOAD}/${campus.image}`}
-                width={"100%"}
-                height={"240px"}
-                style={{ borderRadius: " 8px 8px 0 0" }}
-              ></img>
-              <Typography variant="h5" fontWeight={"bold"} marginLeft={"12px"}>
-                {campus.name}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
+
+        <TableContainer component={Paper} sx={{ maxHeight: 750 }}>
+          <Table sx={{ minWidth: 750 }} aria-label="simple table" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>ID</StyledTableCell>
+                <StyledTableCell>Tên cơ sở</StyledTableCell>
+                <StyledTableCell>Địa chỉ</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {campuses.map((campus) => (
+                <StyledTableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  key={campus._id}
+                >
+                  <StyledTableCell component="th" scope="row">
+                    {campus._id}
+                  </StyledTableCell>
+                  <StyledTableCell>{campus.name}</StyledTableCell>
+                  <StyledTableCell>{campus.location}</StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
 
       <AddNewCampusModal
