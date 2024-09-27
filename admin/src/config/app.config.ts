@@ -1,8 +1,9 @@
 export const APP_TITLE = "Hệ thống lưu trữ đồ án tốt nghiệp";
 const API = "http://localhost:8000/api"
 export const API_PROJECT = `${API}/project`
-export const API_CAMPUS = "http://localhost:8000/api/campus"
-export const API_UPLOAD = "http://localhost:8000/uploads/"
-export const API_FACULTY= "http://localhost:8000/api/faculty"
-export const API_TEACHER= "http://localhost:8000/api/teacher"
-export const API_STUDENT= "http://localhost:8000/api/student"
+export const API_CAMPUS = `${API}/campus`
+export const API_UPLOAD = `${API}/uploads`
+export const API_FACULTY= `${API}/faculty`
+export const API_TEACHER= `${API}/teacher`
+export const API_STUDENT= `${API}/student`
+export const API_USER = `${API}/user`

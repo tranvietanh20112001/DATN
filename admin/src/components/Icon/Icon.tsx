@@ -7,6 +7,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import LogoutIcon from "@mui/icons-material/Logout";
 export default {
   HomeIcon,
   FolderIcon,
@@ -17,4 +18,5 @@ export default {
   SupervisedUserCircleIcon,
   EditIcon,
   DeleteIcon,
+  LogoutIcon,
 };

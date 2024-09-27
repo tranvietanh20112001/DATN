@@ -19,7 +19,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Outlet } from "react-router-dom";
 import I from "../../components/Icon/Icon";
 import { useNavigate } from "react-router-dom";
-import Color from "../../components/Color/Color";
+import LogoutModal from "../../pages/auth/logoutModal/logoutModal";
 interface Link {
   name: string;
   url: string;
@@ -86,7 +86,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   alignItems: "center",
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -145,6 +144,20 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [openLogoutModal, setOpenLogoutModal] = React.useState<boolean>(false);
+
+  const closeModal = () => {
+    setOpenLogoutModal(false);
+  };
+
+  const openModal = () => {
+    setOpenLogoutModal(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -242,11 +255,67 @@ export default function MiniDrawer() {
               </ListItemButton>
             </ListItem>
           ))}
+
+          <Divider />
+          <ListItem disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              sx={[
+                {
+                  minHeight: 48,
+                  px: 2.5,
+                },
+                open
+                  ? {
+                      justifyContent: "initial",
+                    }
+                  : {
+                      justifyContent: "center",
+                    },
+              ]}
+            >
+              <ListItemIcon
+                sx={[
+                  {
+                    minWidth: 0,
+                    justifyContent: "center",
+                  },
+                  open
+                    ? {
+                        mr: 3,
+                      }
+                    : {
+                        mr: "auto",
+                      },
+                ]}
+              >
+                <I.LogoutIcon />
+              </ListItemIcon>
+              <ListItemText
+                sx={[
+                  open
+                    ? {
+                        opacity: 1,
+                      }
+                    : {
+                        opacity: 0,
+                      },
+                ]}
+                onClick={() => openModal()}
+              >
+                Đăng xuất
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <Outlet />
+        <LogoutModal
+          open={openLogoutModal}
+          onClose={closeModal}
+          onLogout={handleLogout}
+        />
       </Box>
     </Box>
   );

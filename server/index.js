@@ -3,11 +3,14 @@ const app = express();
 const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
+const bodyParser = require('body-parser');
+
 const projectRouter = require("./routes/project")
 const campusRouter = require("./routes/campus")
 const facultyRouter = require("./routes/faculty")
 const teacherRouter = require("./routes/teacher")
 const studentRouter = require("./routes/student")
+const userRouter = require('./routes/user');
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.DB_URL);
@@ -23,7 +26,7 @@ connectDB();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-
+app.use(bodyParser.json());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin");
   res.header(
@@ -42,6 +45,7 @@ app.use("/api/campus",campusRouter);
 app.use("/api/faculty", facultyRouter);
 app.use("/api/teacher", teacherRouter);
 app.use("/api/student", studentRouter)
+app.use('/api/user', userRouter);
 app.use("/uploads", express.static("uploads"));
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

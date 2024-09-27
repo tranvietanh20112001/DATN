@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router";
 import { authRoutes } from "./auth.route";
 import AuthLayout from "../pages/auth/auth.layout";
-import { managementRoutes} from "./management.route";
+import { managementRoutes } from "./management.route";
 import ManagementLayout from "../pages/managements/management.layout";
+import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 export default function AppRoutes(): JSX.Element {
   return (
     <Routes>
@@ -12,10 +13,12 @@ export default function AppRoutes(): JSX.Element {
         ))}
       </Route>
 
-      <Route element={<ManagementLayout />}>
-        {managementRoutes.map(({ path, component }) => (
-          <Route key={path} path={path} element={component} />
-        ))}
+      <Route element={<PrivateRoute />}>
+        <Route element={<ManagementLayout />}>
+          {managementRoutes.map(({ path, component }) => (
+            <Route key={path} path={path} element={component} />
+          ))}
+        </Route>
       </Route>
     </Routes>
   );

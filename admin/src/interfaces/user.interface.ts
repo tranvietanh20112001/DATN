@@ -3,3 +3,8 @@ export enum ERole {
     Teacher = "teacher",
     Admin = "admin",
   }
+
+ export interface IUserLogin {
+    email: string;
+    password: string;
+  }
