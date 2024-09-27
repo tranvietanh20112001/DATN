@@ -123,6 +123,7 @@ export default function AddNewStudentModal({
         }
       );
       setMessage(response.data.message);
+      handleClose();
     } catch (error) {
       setMessage("error");
     }

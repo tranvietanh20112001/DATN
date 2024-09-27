@@ -87,4 +87,26 @@ router.delete('/delete-all-projects', async (req, res) => {
     res.status(500).send('Error deleting products');
   }
 });
+
+router.put('/update-project/:id', async (req, res)  => {
+  try {
+    const projectId = req.params.id;
+    const updatedData = req.body;
+
+    if (updatedData.grade < 40 || updatedData.grade > 100) {
+      return res.status(400).json({ message: 'Grade must be between 40 and 100' });
+    }
+    const project = await Project.findByIdAndUpdate(projectId, updatedData, {
+      new: true,
+    });
+
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    res.status(200).json({ message: 'Project updated successfully', project });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating project', error });
+  }
+});
   module.exports = router;

@@ -15,6 +15,7 @@ import Color from "../../../components/Color/Color";
 import { useNavigate } from "react-router-dom";
 import Icon from "../../../components/Icon/Icon";
 import DeleteProjectModal from "./DeleteProjectModal/DeleteProjectModal";
+import UpdateProjectModal from "./UpdateProjectModal/UpdateProjectModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,6 +43,7 @@ const ListOfProjects = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedProject, setSelectedProject] = useState<IProject | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -81,6 +83,23 @@ const ListOfProjects = () => {
     }
   };
 
+  const handleEditProject = async (updatedProject: IProject) => {
+    try {
+      await axios.put(
+        `${API_PROJECT}/update-project/${updatedProject._id}`,
+        updatedProject
+      );
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project._id === updatedProject._id ? updatedProject : project
+        )
+      );
+      alert("Dự án đã được cập nhật thành công!");
+    } catch (error) {
+      setError("Lỗi khi cập nhật dự án.");
+    }
+  };
+
   const openModal = (project: IProject) => {
     setSelectedProject(project);
     setOpenDeleteModal(true);
@@ -88,6 +107,17 @@ const ListOfProjects = () => {
 
   const closeModal = () => {
     setOpenDeleteModal(false);
+    setSelectedProject(null);
+  };
+
+  const openEditProjectModal = (project: IProject) => {
+    setSelectedProject(project);
+    setOpenEditModal(true);
+  };
+
+  const closeModals = () => {
+    setOpenDeleteModal(false);
+    setOpenEditModal(false);
     setSelectedProject(null);
   };
 
@@ -152,7 +182,14 @@ const ListOfProjects = () => {
                 </StyledTableCell>
                 <StyledTableCell align="right">{project.grade}</StyledTableCell>
                 <StyledTableCell align="right">
-                  <Icon.EditIcon sx={{ marginRight: "16px" }} />
+                  <Icon.EditIcon
+                    sx={{
+                      marginRight: "16px",
+                      cursor: "pointer",
+                      ":hover": { color: Color.Yellow },
+                    }}
+                    onClick={() => openEditProjectModal(project)}
+                  />
                   <Icon.DeleteIcon
                     sx={{
                       cursor: "pointer",
@@ -173,6 +210,15 @@ const ListOfProjects = () => {
           onClose={closeModal}
           onDelete={handleDeleteProject}
           projectTitle={selectedProject.title}
+        />
+      )}
+
+      {selectedProject && (
+        <UpdateProjectModal
+          open={openEditModal}
+          onClose={closeModals}
+          onSubmit={handleEditProject}
+          project={selectedProject}
         />
       )}
     </Box>

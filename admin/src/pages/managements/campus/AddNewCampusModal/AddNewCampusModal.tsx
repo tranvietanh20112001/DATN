@@ -10,7 +10,6 @@ import { ICreateANewCampus } from "../../../../interfaces/campus.interface";
 import { useState } from "react";
 import { API_CAMPUS } from "../../../../config/app.config";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 const style = {
   position: "absolute" as const,
   top: "50%",

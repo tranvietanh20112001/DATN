@@ -19,53 +19,53 @@ import { IStudent } from "../../../interfaces/student.interface";
 import axios from "axios";
 import { API_STUDENT } from "../../../config/app.config";
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: Color.PrimaryBlue,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
 const Student = () => {
   const [openAddNewStudentModal, setOpenAddNewStudentModal] = useState(false);
   const handleOpenAddNewStudentModal = () => setOpenAddNewStudentModal(true);
   const handleCloseAddNewStudentModal = () => setOpenAddNewStudentModal(false);
 
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: Color.PrimaryBlue,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
-
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
-
   const [Students, setStudents] = useState<IStudent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await axios.get<IStudent[]>(
-          `${API_STUDENT}/get-all-Students`
-        );
-        setStudents(response.data);
-        setLoading(false);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          setError(error.message);
-        } else {
-          setError("An unexpected error occurred");
-        }
-        setLoading(false);
+  const fetchStudents = async () => {
+    try {
+      const response = await axios.get<IStudent[]>(
+        `${API_STUDENT}/get-all-Students`
+      );
+      setStudents(response.data);
+      setLoading(false);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
       }
-    };
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchStudents();
   }, []);
 

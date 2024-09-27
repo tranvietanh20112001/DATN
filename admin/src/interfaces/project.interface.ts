@@ -10,6 +10,8 @@ export interface IProject{
     teacher_id: string,
     student_name: string,
     student_id: string,
+    link_demo_project: string,
+    description: string,
 }
 
 export interface ICreateANewProject{
