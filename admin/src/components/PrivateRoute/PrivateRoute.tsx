@@ -1,30 +1,45 @@
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { API_USER } from "../../config/app.config";
-const PrivateRoute = () => {
+import { useUser } from "../../providers/user.provider";
+
+const PrivateRoute: React.FC = () => {
   const token = localStorage.getItem("token");
+  const { user, setUser } = useUser();
+  const [loading, setLoading] = useState<boolean>(true);
 
-  if (token) {
-    const fetchUserData = async (token: string) => {
-      try {
-        const response = await axios.get(`${API_USER}/get-user`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  useEffect(() => {
+    if (token) {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`${API_USER}/get-user-profile`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-        const user = response.data;
+          const userData = response.data;
+          setUser(userData);
+          localStorage.setItem("user", JSON.stringify(userData));
+          setLoading(false);
+        } catch (error) {
+          console.error("Failed to fetch user data:", error);
+          setLoading(false);
+        }
+      };
 
-        localStorage.setItem("user", JSON.stringify(user));
-      } catch (error) {
-        console.error("Failed to fetch user data:", error);
-      }
-    };
+      fetchUserData();
+    } else {
+      setLoading(false);
+    }
+  }, [token, setUser]);
 
-    fetchUserData;
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  return token ? <Outlet /> : <Navigate to="/login" />;
+  return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

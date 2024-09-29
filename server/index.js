@@ -37,7 +37,12 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(cors({ origin: "*" }));
+app.use(cors({
+  origin: '*',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
+}));
 
 
 app.use("/api/project", projectRouter);

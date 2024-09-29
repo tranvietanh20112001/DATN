@@ -1,15 +1,17 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
+// Middleware để xác thực token
 const authenticateToken = (req, res, next) => {
-  const token = req.header("Authorization");
-  if (!token) return res.status(401).send("Access Denied");
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) return res.status(401).json({ message: 'Access Denied' });
 
   try {
-    const verified = jwt.verify(token, "secret_key");
-    req.user = verified;
+    const decoded = jwt.verify(token, 'your_jwt_secret'); 
+    req.user = decoded; 
     next();
-  } catch (err) {
-    res.status(400).send("Invalid Token");
+  } catch (error) {
+    return res.status(403).json({ message: 'Invalid Token' });
   }
 };
 

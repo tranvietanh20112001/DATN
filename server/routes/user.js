@@ -43,29 +43,17 @@ router.post('/login', async (req, res) => {
   }
 });
 
-router.get('/get-user', (req, res) => {
-  const token = req.headers.authorization?.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ message: 'Access denied' });
-  }
-
+router.get('/get-user-profile', authenticateToken, async (req, res) => {
   try {
-    const decoded = jwt.verify(token, SECRET_KEY);
-    User.findById(decoded.id).then(user => {
-      if (user) {
-        res.json({
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-        });
-      } else {
-        res.status(404).json({ message: 'User not found' });
-      }
-    });
+    // Giải mã JWT và lấy userId từ token
+    const userId = req.user.userId;
+    const user = await User.findById(userId).select('-password'); 
+
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json(user); 
   } catch (error) {
-    res.status(400).json({ message: 'Invalid token' });
+    res.status(500).json({ message: 'Error fetching user profile' });
   }
 });
 

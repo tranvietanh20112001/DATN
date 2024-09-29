@@ -1,9 +1,8 @@
-import { Box } from "@mui/material"
-
+import { Box } from "@mui/material";
+import { useUser } from "../../../providers/user.provider";
 const home = () => {
-    return (
-        <Box>Updating</Box>
-    )
-}
+  const { user } = useUser();
+  return <Box>{user?.email}</Box>;
+};
 
 export default home;

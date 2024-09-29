@@ -272,6 +272,7 @@ export default function MiniDrawer() {
                       justifyContent: "center",
                     },
               ]}
+              onClick={() => openModal()}
             >
               <ListItemIcon
                 sx={[
@@ -300,7 +301,6 @@ export default function MiniDrawer() {
                         opacity: 0,
                       },
                 ]}
-                onClick={() => openModal()}
               >
                 Đăng xuất
               </ListItemText>
