@@ -6,6 +6,8 @@ import Teacher from "../pages/managements/teacher/teacher";
 import Faculty from "../pages/managements/faculty/faculty";
 import Student from "../pages/managements/student/student";
 import AddNewProject from "../pages/managements/projects/AddNewProjectPage/AddNewProject";
+import YourAccount from "../pages/managements/yourAccount/yourAccount";
+import Account from "../pages/managements/account/account";
 export const managementRoutes: IRoute[] = [
   {
     path: "/do-an",
@@ -34,5 +36,13 @@ export const managementRoutes: IRoute[] = [
   {
     path: "/tao-moi-do-an",
     component: <AddNewProject />,
+  },
+  {
+    path: "/tai-khoan",
+    component: <Account />,
+  },
+  {
+    path: "/tai-khoan-cua-ban",
+    component: <YourAccount />,
   },
 ];

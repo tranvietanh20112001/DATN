@@ -39,7 +39,11 @@ const PrivateRoute: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  if (user && (user.role === "Admin" || user.role === "editor")) {
+    return <Outlet />;
+  }
+
+  return <Navigate to="/no-access" />;
 };
 
 export default PrivateRoute;

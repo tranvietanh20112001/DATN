@@ -8,6 +8,8 @@ import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 export default {
   HomeIcon,
   FolderIcon,
@@ -19,4 +21,6 @@ export default {
   EditIcon,
   DeleteIcon,
   LogoutIcon,
+  ManageAccountsIcon,
+  AccountCircleIcon,
 };

@@ -4,6 +4,7 @@ import AuthLayout from "../pages/auth/auth.layout";
 import { managementRoutes } from "./management.route";
 import ManagementLayout from "../pages/managements/management.layout";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
+import NoAccess from "../pages/no-access/NoAccess";
 export default function AppRoutes(): JSX.Element {
   return (
     <Routes>
@@ -20,6 +21,7 @@ export default function AppRoutes(): JSX.Element {
           ))}
         </Route>
       </Route>
+      <Route path="/no-access" element={<NoAccess />}></Route>
     </Routes>
   );
 }

@@ -58,6 +58,19 @@ const links: Link[] = [
     icon: <I.SupervisedUserCircleIcon />,
   },
 ];
+
+const AccountLink: Link[] = [
+  {
+    name: "Quản lý danh sách tài khoản",
+    url: "/tai-khoan",
+    icon: <I.ManageAccountsIcon />,
+  },
+  {
+    name: "Quản lý tài khoản của bạn",
+    url: "/tai-khoan-cua-ban",
+    icon: <I.AccountCircleIcon />,
+  },
+];
 const drawerWidth = 320;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -255,7 +268,57 @@ export default function MiniDrawer() {
               </ListItemButton>
             </ListItem>
           ))}
-
+          <Divider />
+          {AccountLink.map((link, index) => (
+            <ListItem key={index} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
+                sx={[
+                  {
+                    minHeight: 48,
+                    px: 2.5,
+                  },
+                  open
+                    ? {
+                        justifyContent: "initial",
+                      }
+                    : {
+                        justifyContent: "center",
+                      },
+                ]}
+                onClick={() => navigate(`${link.url}`)}
+              >
+                <ListItemIcon
+                  sx={[
+                    {
+                      minWidth: 0,
+                      justifyContent: "center",
+                    },
+                    open
+                      ? {
+                          mr: 3,
+                        }
+                      : {
+                          mr: "auto",
+                        },
+                  ]}
+                >
+                  {link.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={link.name}
+                  sx={[
+                    open
+                      ? {
+                          opacity: 1,
+                        }
+                      : {
+                          opacity: 0,
+                        },
+                  ]}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
           <Divider />
           <ListItem disablePadding sx={{ display: "block" }}>
             <ListItemButton
