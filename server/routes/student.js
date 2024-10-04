@@ -24,6 +24,26 @@ router.get("/get-all-students", async (req, res) => {
     }
   });
 
+  router.get("/get-student-by-id", async (req, res) => {
+    try {
+      const { _id } = req.query;
+      
+      if (!_id) {
+        return res.status(400).json({ message: 'Student ID is required' });
+      }
+  
+      const result = await student.findOne({ _id }); 
+      
+      if (!result) {
+        return res.status(404).json({ message: 'Student not found' });
+      }
+  
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error', error });
+    }
+  });
+
 router.post("/create-new-student",  upload.single("image"), async(req,res) =>{
     try{
         const {full_name, description, email, campus, faculty, personal_email, MSSV} = req.body;
@@ -57,6 +77,7 @@ router.post("/create-new-student",  upload.single("image"), async(req,res) =>{
 router.delete("/delete-student/:id", async (req, res) => {
   try {
     const deletedstudent = await student.findByIdAndDelete(req.params.id);
+    console.log(deletedstudent)
     res.status(200).json({success: true, message: "Deleted successfully"})
   } catch (error) {
     res.status(400).json({ message: error.message });

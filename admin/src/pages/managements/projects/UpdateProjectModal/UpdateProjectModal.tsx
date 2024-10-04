@@ -25,7 +25,6 @@ interface EditModalProps {
 const validationSchema = Yup.object({
   title: Yup.string().required("Tiêu đề là bắt buộc"),
   link_Youtube_URL: Yup.string().url("Link Youtube không hợp lệ"),
-  link_demo_project: Yup.string().url("Link demo không hợp lệ"),
   description: Yup.string(),
   grade: Yup.number()
     .min(40, "Số điểm tối thiểu là 40")

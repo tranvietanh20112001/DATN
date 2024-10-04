@@ -33,6 +33,7 @@ const AddNewProject = () => {
   const [student, setStudent] = useState<IStudent | null>(null);
   const [teacher, setTeacher] = useState<ITeacher | null>(null);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [imgeBanner, setImageBanner] = useState<File | null>(null);
   const navigate = useNavigate();
   const ProjectInitialValues: ICreateANewProject = {
     title: "",
@@ -71,6 +72,9 @@ const AddNewProject = () => {
       formData.append("data", JSON.stringify(values));
       if (pdfFile) {
         formData.append("report_pdf", pdfFile);
+      }
+      if (imgeBanner) {
+        formData.append("img_banner", imgeBanner);
       }
 
       console.log(formData.values);
@@ -151,6 +155,24 @@ const AddNewProject = () => {
                     )
                   }
                   accept="application/pdf"
+                />
+              </Button>
+              <Button
+                variant="outlined"
+                fullWidth
+                component="label"
+                role={undefined}
+                tabIndex={-1}
+                startIcon={<Icon.CloudUploadIcon />}
+              >
+                {imgeBanner ? imgeBanner.name : "Tải ảnh banner"}
+                <VisuallyHiddenInput
+                  type="file"
+                  onChange={(event) =>
+                    setImageBanner(
+                      event.target.files ? event.target.files[0] : null
+                    )
+                  }
                 />
               </Button>
               <Field

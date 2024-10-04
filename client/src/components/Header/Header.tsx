@@ -47,14 +47,8 @@ const Header = () => {
             Về chúng tôi
           </Typography>
         </Box>
-        <Box
-          width={"35%"}
-          height={50}
-          display={"flex"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-        >
-          <TextField
+
+        {/* <TextField
             label={"Tìm kiếm"}
             size="small"
             sx={{ width: "50%" }}
@@ -67,16 +61,15 @@ const Header = () => {
                 ),
               },
             }}
-          />
+          /> */}
 
-          <Button
-            variant="contained"
-            sx={{ height: 40, width: "120px" }}
-            onClick={() => navigate("/dang-nhap")}
-          >
-            Đăng nhập
-          </Button>
-        </Box>
+        <Button
+          variant="outlined"
+          sx={{ height: 40, width: "120px" }}
+          onClick={() => navigate("/dang-nhap")}
+        >
+          Đăng nhập
+        </Button>
       </Box>
     </>
   );

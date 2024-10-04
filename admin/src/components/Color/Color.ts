@@ -7,4 +7,6 @@ const DarkBlue = "#3A1078";
 const Red = "#f44336";
 const PrimaryBlue = "#2196f3";
 const Yellow ="#ffeb3b";
+
 export default { Black,White, Gray, NavyBlue, HeavyBlue, DarkBlue, PrimaryBlue, Red, Yellow}
+

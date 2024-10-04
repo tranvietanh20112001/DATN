@@ -10,6 +10,9 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    link_img_banner:{
+        type:String,
+    },
     link_demo_project:{
         type: String,
     },
@@ -55,6 +58,9 @@ const ProjectSchema = new mongoose.Schema({
     file_report_URL:{
         type: String,
     },
+    description:{
+        type: String,
+    }
 });
 
 const Project = mongoose.model('projects', ProjectSchema);
