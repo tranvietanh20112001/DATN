@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
   image:{
     type: String,
 }, 
+campus:{type: String},
+faculty:{type: String}
 });
 
 userSchema.pre('save', async function(next) {

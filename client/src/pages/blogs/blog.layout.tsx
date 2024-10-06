@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Box, Divider } from "@mui/material";
 import Header from "@components/Header/Header";
+import Footer from "@components/Footer/Footer";
 export default function BlogLayout(): JSX.Element {
   return (
     <>
@@ -14,6 +15,8 @@ export default function BlogLayout(): JSX.Element {
         <Header />
         <Divider />
         <Outlet />
+        <Divider />
+        <Footer />
       </Box>
     </>
   );
