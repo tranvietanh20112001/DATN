@@ -22,3 +22,7 @@ export const getColorsForDepartment = (department: string) => {
 
   return { textColor, backgroundColor };
 };
+
+const lightGray = "#F6F6F7";
+
+export default { lightGray };

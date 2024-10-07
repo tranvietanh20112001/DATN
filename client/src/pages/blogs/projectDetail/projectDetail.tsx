@@ -1,9 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { API_IMAGE, API_PROJECT } from "@config/app.config";
 import { getColorsForDepartment } from "@components/Color/Color";
+import Color from "@components/Color/Color";
+import GetStudentProfile from "./getStudentProfile.tsx/getStudentProfile";
 const ProjectDetail = () => {
   const { id } = useParams();
   const [project, setProject] = useState<any | null>(null);
@@ -51,18 +53,48 @@ const ProjectDetail = () => {
 
   return (
     <Box display={"flex"} flexDirection={"column"} gap={"24px"}>
-      <Box width={"185px"}>
-        <Typography
-          bgcolor={backgroundColor}
-          padding={"12px"}
-          borderRadius="6px"
-          color={textColor}
-          fontWeight={"bold"}
-          sx={{ display: "block" }}
-        >
-          {project.faculty}
-        </Typography>
+      <Box display={"flex"} gap={"12px"}>
+        <Box width={"185px"}>
+          <Typography
+            bgcolor={backgroundColor}
+            padding={"12px"}
+            borderRadius="6px"
+            color={textColor}
+            fontWeight={"bold"}
+            sx={{ display: "block" }}
+            textAlign={"center"}
+          >
+            {project.faculty}
+          </Typography>
+        </Box>
+        <Box width={"120px"}>
+          <Typography
+            bgcolor={Color.lightGray}
+            padding={"12px"}
+            borderRadius="6px"
+            color={"warning"}
+            fontWeight={"bold"}
+            sx={{ display: "block" }}
+            textAlign={"center"}
+          >
+            {project.campus}
+          </Typography>
+        </Box>
+        <Box width={"60px"}>
+          <Typography
+            bgcolor={Color.lightGray}
+            padding={"12px"}
+            borderRadius="6px"
+            color={"red"}
+            fontWeight={"bold"}
+            sx={{ display: "block" }}
+            textAlign={"center"}
+          >
+            {project.grade}
+          </Typography>
+        </Box>
       </Box>
+
       <Typography variant="h4" fontWeight="bold">
         {project.title}
       </Typography>
@@ -91,6 +123,10 @@ const ProjectDetail = () => {
         allowFullScreen
         title="YouTube video"
       ></iframe>
+
+      <Divider />
+
+      <GetStudentProfile _id={project.student_id} />
     </Box>
   );
 };

@@ -24,3 +24,7 @@ export interface ICreateANewStudent {
 export interface ISearchStudentByMSSV {
     MSSV: string,
 }
+
+export interface IGetStudentById {
+    _id: string,
+}

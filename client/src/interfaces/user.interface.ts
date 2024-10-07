@@ -20,6 +20,7 @@ export interface ICreateANewAccount {
   email: string;
   password: string;
   role: string,
+  full_name: string,
 }
 
 export interface IGetUerProfile {

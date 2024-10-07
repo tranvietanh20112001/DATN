@@ -5,21 +5,49 @@ const User = require('../models/user');
 const authenticateToken = require("../middleware/auth");
 const router = express.Router();
 
-// Đăng ký
+// Admin tạo tài khoản mới
 router.post('/create-new-account', async (req, res) => {
-  const { email, password, role } = req.body;
+  const { email, password, role, full_name } = req.body;
 
   try {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: 'User already exists' });
 
-    const newUser = new User({ email, password, role });
+    const newUser = new User({ email, password, role, full_name });
     await newUser.save();
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error registering user' });
     console.log(error)
+  }
+});
+
+// Guest đăng ký tài khoản mới
+router.post('/register-new-account', async (req, res) => {
+  const { email, password, role, full_name } = req.body;
+
+  try {
+    const userExists = await User.findOne({ email });
+    if (userExists) return res.status(400).json({ message: 'User already exists' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      email,
+      password: hashedPassword,  
+      role,
+      full_name
+    });
+
+    await newUser.save();
+
+    const token = jwt.sign({ userId: newUser._id }, 'your_jwt_secret', { expiresIn: '1h' });
+
+    res.status(201).json({ message: 'User registered and logged in successfully', token });
+  } catch (error) {
+    res.status(500).json({ message: 'Error registering user' });
+    console.log(error);
   }
 });
 
