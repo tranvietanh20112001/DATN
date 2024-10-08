@@ -21,6 +21,7 @@ import Color from "../../../components/Color/Color";
 import Icon from "@components/Icon/Icon";
 import DeleteCampusModal from "./DeleteCampusModal/DeleteCampusModal";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
+import UpdateCampusModal from "./UpdateCampusModal/UpdateCampusModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,11 +49,10 @@ const Campus = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedCampus, setSelectedCampus] = useState<ICampus | null>(null);
 
+  // Add New Campus Modal
   const [openAddNewCampusModal, setOpenAddNewCampusModal] = useState(false);
   const handleOpenAddNewCampusModal = () => setOpenAddNewCampusModal(true);
   const handleCloseAddNewCampusModal = () => setOpenAddNewCampusModal(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-
   const fetchCampuses = async () => {
     try {
       const response = await axios.get<ICampus[]>(
@@ -74,6 +74,17 @@ const Campus = () => {
     fetchCampuses();
   }, []);
 
+  //Delete Modal
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const openModal = (Campus: ICampus) => {
+    setSelectedCampus(Campus);
+    setOpenDeleteModal(true);
+  };
+  const closeModal = () => {
+    setOpenDeleteModal(false);
+    setSelectedCampus(null);
+  };
+
   const handleDeleteCampus = async () => {
     if (selectedCampus) {
       try {
@@ -89,13 +100,15 @@ const Campus = () => {
     }
   };
 
-  const openModal = (Campus: ICampus) => {
+  //Update Modal
+  const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
+  const openUpdateCampusModal = (Campus: ICampus) => {
     setSelectedCampus(Campus);
-    setOpenDeleteModal(true);
+    setOpenUpdateModal(true);
   };
 
-  const closeModal = () => {
-    setOpenDeleteModal(false);
+  const closeUpdateCampusModal = () => {
+    setOpenUpdateModal(false);
     setSelectedCampus(null);
   };
 
@@ -151,7 +164,7 @@ const Campus = () => {
                         cursor: "pointer",
                         ":hover": { color: Color.Yellow },
                       }}
-                      // onClick={() => openEditCampusModal(Campus)}
+                      onClick={() => openUpdateCampusModal(campus)}
                     />
                     <Icon.DeleteIcon
                       sx={{
@@ -180,6 +193,15 @@ const Campus = () => {
           onClose={closeModal}
           onDelete={handleDeleteCampus}
           campusTitle={selectedCampus.name}
+        />
+      )}
+
+      {selectedCampus && (
+        <UpdateCampusModal
+          open={openUpdateModal}
+          onClose={closeUpdateCampusModal}
+          campus={selectedCampus}
+          fetchCampuses={fetchCampuses}
         />
       )}
     </>

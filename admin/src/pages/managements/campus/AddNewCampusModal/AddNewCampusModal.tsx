@@ -128,6 +128,7 @@ export default function AddNewCampusModal({
                   name="description"
                   id="description"
                   multiline
+                  maxRows={4}
                 />
 
                 <Button

@@ -12,3 +12,11 @@ export interface ICreateANewCampus {
     location: string,
     image: File | null,
 } 
+
+export interface IUpdateCampus {
+    _id: string,
+    name: string,
+    description: string,
+    location: string,
+    image: File | null,
+} 
