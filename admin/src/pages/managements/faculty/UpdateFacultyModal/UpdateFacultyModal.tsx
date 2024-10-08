@@ -4,13 +4,14 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Field, Form, Formik } from "formik";
-import { ICreateANewFaculty } from "../../../../interfaces/faculty.interface";
+import { IFaculty } from "../../../../interfaces/faculty.interface";
 import { ICampus } from "../../../../interfaces/campus.interface";
 import { useEffect, useState } from "react";
 import { API_FACULTY, API_CAMPUS } from "../../../../config/app.config";
 import axios from "axios";
 import { MenuItem, Select } from "@mui/material";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
+
 const style = {
   position: "absolute" as const,
   top: "50%",
@@ -25,12 +26,16 @@ const style = {
   },
 };
 
-export default function AddNewFacultyModal({
+export default function UpdateFacultyModal({
   open,
   handleClose,
+  faculty,
+  fetchFaculties,
 }: {
   open: boolean;
   handleClose: () => void;
+  faculty: IFaculty;
+  fetchFaculties: () => void;
 }) {
   const [campuses, setCampuses] = useState<ICampus[]>([]);
 
@@ -40,30 +45,31 @@ export default function AddNewFacultyModal({
         const response = await axios.get(`${API_CAMPUS}/get-all-campuses`);
         setCampuses(response.data);
       } catch (error) {
-        console.error("Error fetching brands", error);
+        console.error("Error fetching campuses", error);
       }
     };
 
     fetchCampuses();
   }, []);
 
-  const initialValues: ICreateANewFaculty = {
-    name: "",
-    description: "",
-    campus: "",
+  const initialValues: IFaculty = {
+    _id: faculty._id,
+    name: faculty.name,
+    description: faculty.description,
+    campus: faculty.campus,
   };
 
   const [message, setMessage] = useState<string>("");
 
-  const onSubmit = async (values: ICreateANewFaculty) => {
+  const onSubmit = async (values: IFaculty) => {
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("campus", values.campus);
     formData.append("description", values.description);
-    console.log(formData.values);
+
     try {
-      const response = await axios.post(
-        `${API_FACULTY}/create-new-faculty`,
+      const response = await axios.put(
+        `${API_FACULTY}/update-faculty/${faculty._id}`,
         formData,
         {
           headers: {
@@ -71,11 +77,12 @@ export default function AddNewFacultyModal({
           },
         }
       );
-      notifySuccess("Tạo mới chuyên ngành thành công");
+      notifySuccess("Cập nhật chuyên ngành thành công");
       console.log(response);
       handleClose();
+      fetchFaculties();
     } catch (error) {
-      notifyError("Tạo mới chuyên ngành thất bại");
+      notifyError("Cập nhật chuyên ngành thất bại");
       setMessage("error");
     }
   };
@@ -94,7 +101,7 @@ export default function AddNewFacultyModal({
           component="h2"
           fontWeight={"bold"}
         >
-          Thêm mới chuyên ngành
+          Cập nhật chuyên ngành
         </Typography>
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
           <Form>
@@ -126,7 +133,7 @@ export default function AddNewFacultyModal({
               />
 
               <Button variant="contained" color="primary" type="submit">
-                Tạo mới
+                Cập nhật
               </Button>
             </Box>
           </Form>
