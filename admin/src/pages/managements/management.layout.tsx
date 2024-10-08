@@ -29,7 +29,7 @@ interface Link {
 const links: Link[] = [
   {
     name: "Trang chủ",
-    url: "/",
+    url: "/trang-chu",
     icon: <I.HomeIcon />,
   },
   {

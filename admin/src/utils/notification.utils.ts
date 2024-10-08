@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-
+import 'react-toastify/dist/ReactToastify.css';
 export const notifyError = (message: string | string[]) => {
   if (Array.isArray(message)) {
     toast.error(message.join(", "));

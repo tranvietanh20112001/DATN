@@ -10,6 +10,7 @@ import { ICreateANewCampus } from "../../../../interfaces/campus.interface";
 import { useState } from "react";
 import { API_CAMPUS } from "../../../../config/app.config";
 import axios from "axios";
+import { notifyError, notifySuccess } from "@utils/notification.utils";
 const style = {
   position: "absolute" as const,
   top: "50%",
@@ -39,9 +40,11 @@ const VisuallyHiddenInput = styled("input")({
 export default function AddNewCampusModal({
   open,
   handleClose,
+  fetchCampuses,
 }: {
   open: boolean;
   handleClose: () => void;
+  fetchCampuses: () => void;
 }) {
   const initialValues: ICreateANewCampus = {
     name: "",
@@ -49,7 +52,6 @@ export default function AddNewCampusModal({
     image: null,
     location: "",
   };
-
   const [, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -74,8 +76,12 @@ export default function AddNewCampusModal({
           },
         }
       );
-      setMessage(response.data.message);
+      notifySuccess("Tạo cơ sở mới thành công");
+      console.log(response);
+      handleClose();
+      fetchCampuses();
     } catch (error) {
+      notifyError("Tạo cơ sở mới thất bại");
       setMessage("error");
     }
   };
