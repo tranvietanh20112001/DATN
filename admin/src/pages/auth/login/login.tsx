@@ -22,7 +22,7 @@ export default function Login() {
 
       const { token } = response.data;
       localStorage.setItem("token", token);
-      navigate("/");
+      navigate("/trang-chu");
     } catch (error) {
       console.error("Login failed:", error);
       setApiError("Login failed. Please check your email and password.");
