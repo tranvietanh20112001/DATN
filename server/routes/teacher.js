@@ -51,6 +51,40 @@ router.post("/create-new-teacher",  upload.single("image"), async(req,res) =>{
     }
 })
 
+router.put("/update-teacher/:id", upload.single("image"), async (req, res) => {
+  try {
+    const { full_name, description, email, campus, faculty } = req.body;
+    const image = req.file ? req.file.filename : null;
+
+    const updateFields = {
+      full_name,
+      description,
+      email,
+      campus,
+      faculty,
+    };
+
+    if (image) {
+      updateFields.image = image;
+    }
+
+    const updatedTeacher = await teacher.findByIdAndUpdate(req.params.id, updateFields, { new: true });
+
+    if (!updatedTeacher) {
+      return res.status(404).json({ success: false, message: "Teacher not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Teacher updated successfully",
+      teacher: updatedTeacher,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 router.delete("/delete-teacher/:id", async (req, res) => {
   try {
     const deletedteacher = await teacher.findByIdAndDelete(req.params.id);

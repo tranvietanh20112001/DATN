@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Field, Form, Formik } from "formik";
-import { ICreateANewTeacher, ITeacher } from "@interfaces/teacher.interface";
+import { ITeacher } from "@interfaces/teacher.interface";
 import { ICampus } from "@interfaces/campus.interface";
 import { IFaculty } from "@interfaces/faculty.interface";
 import { useEffect, useState } from "react";
@@ -24,7 +24,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 540,
+  width: 600,
   bgcolor: "background.paper",
   borderRadius: 4,
   p: 4,
@@ -45,21 +45,25 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function AddNewTeacherModal({
+export default function UpdateTeacherModal({
   open,
   handleClose,
   fetchTeachers,
-  Teacher,
+  teacherData,
 }: {
   open: boolean;
   handleClose: () => void;
   fetchTeachers: () => void;
-  Teacher: ITeacher;
+  teacherData: ITeacher;
 }) {
   const [campuses, setCampuses] = useState<ICampus[]>([]);
   const [faculties, setFaculties] = useState<IFaculty[]>([]);
-  const [selectedCampus, setSelectedCampus] = useState<string | null>(null);
-  const [selectedFaculty, setSelectedFaculty] = useState<string | null>(null);
+  const [selectedCampus, setSelectedCampus] = useState<string | null>(
+    teacherData?.campus || null
+  );
+  const [selectedFaculty, setSelectedFaculty] = useState<string | null>(
+    teacherData?.faculty || null
+  );
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -84,7 +88,7 @@ export default function AddNewTeacherModal({
             `${API_FACULTY}/get-faculties-by-campus?campus=${selectedCampus}`
           );
           setFaculties(response.data);
-          setSelectedFaculty(null); // Reset faculty when campus changes
+          setSelectedFaculty(teacherData.faculty || null); // Reset faculty when campus changes
         } catch (error) {
           console.error("Error fetching faculties:", error);
         }
@@ -92,21 +96,21 @@ export default function AddNewTeacherModal({
 
       fetchFaculties();
     }
-  }, [selectedCampus]);
+  }, [selectedCampus, teacherData.faculty]);
 
   const initialValues: ITeacher = {
-    _id: Teacher._id,
-    full_name: Teacher.full_name,
-    description: Teacher.description,
-    campus: Teacher.campus,
-    faculty: Teacher.faculty,
-    image: Teacher.image,
-    email: Teacher.email,
+    _id: teacherData._id,
+    full_name: teacherData.full_name,
+    description: teacherData.description,
+    campus: teacherData.campus || "",
+    faculty: teacherData.faculty || "",
+    image: teacherData.image,
+    email: teacherData.email,
   };
 
   const [message, setMessage] = useState<string>("");
 
-  const onSubmit = async (values: ICreateANewTeacher) => {
+  const onSubmit = async (values: ITeacher) => {
     const formData = new FormData();
     formData.append("full_name", values.full_name);
     formData.append("campus", values.campus);
@@ -118,8 +122,8 @@ export default function AddNewTeacherModal({
     }
 
     try {
-      const response = await axios.post(
-        `${API_TEACHER}/create-new-teacher`,
+      const response = await axios.put(
+        `${API_TEACHER}/update-teacher/${teacherData._id}`,
         formData,
         {
           headers: {
@@ -127,7 +131,7 @@ export default function AddNewTeacherModal({
           },
         }
       );
-      notifySuccess("Tạo mới giáo viên thành công");
+      notifySuccess("Cập nhật giáo viên thành công");
       handleClose();
       fetchTeachers();
       console.log(response);
@@ -139,7 +143,10 @@ export default function AddNewTeacherModal({
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={() => {
+        handleClose();
+        setPreviewUrl(null);
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -150,7 +157,7 @@ export default function AddNewTeacherModal({
           component="h2"
           fontWeight={"bold"}
         >
-          Thêm mới giáo viên
+          Cập nhật giáo viên
         </Typography>
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
           {({ setFieldValue }) => (
@@ -182,6 +189,7 @@ export default function AddNewTeacherModal({
                   variant="outlined"
                   name="campus"
                   id="campus"
+                  value={selectedCampus || ""} // Ensure default value is empty string if null
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                     const campus = e.target.value;
                     setFieldValue("campus", campus);
@@ -200,7 +208,7 @@ export default function AddNewTeacherModal({
                   variant="outlined"
                   name="faculty"
                   id="faculty"
-                  value={selectedFaculty || ""}
+                  value={selectedFaculty || ""} // Ensure default value is empty string if null
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                     const faculty = e.target.value;
                     setFieldValue("faculty", faculty);
@@ -221,6 +229,20 @@ export default function AddNewTeacherModal({
                   id="description"
                   multiline
                 />
+
+                {teacherData.image && !image && (
+                  <img
+                    src={`${API_IMAGE}/${teacherData.image}`}
+                    alt="Teacher's Image"
+                    width="50%"
+                    height={"50%"}
+                    style={{
+                      borderRadius: "50%",
+                      aspectRatio: "2 / 2",
+                      margin: "0 auto",
+                    }}
+                  />
+                )}
 
                 <Button
                   component="label"
@@ -248,17 +270,8 @@ export default function AddNewTeacherModal({
                   <img src={previewUrl} alt="Image Preview" width="100%" />
                 )}
 
-                {image && (
-                  <img
-                    src={`${API_IMAGE}/${image}`}
-                    alt="Image Preview"
-                    width="100%"
-                    height={"40px"}
-                  />
-                )}
-
                 <Button variant="contained" color="primary" type="submit">
-                  Tạo mới
+                  Cập nhật giáo viên
                 </Button>
               </Box>
             </Form>
