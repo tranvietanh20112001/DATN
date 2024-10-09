@@ -56,7 +56,7 @@ export default function AddNewTeacherModal({
   const [campuses, setCampuses] = useState<ICampus[]>([]);
   const [faculties, setFaculties] = useState<IFaculty[]>([]);
   const [selectedCampus, setSelectedCampus] = useState<string | null>(null);
-  const [image, setImage] = useState<File | null>(null);
+  const [, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {

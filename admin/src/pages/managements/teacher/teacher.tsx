@@ -13,24 +13,48 @@ import {
   Typography,
   MenuItem,
   Select,
-  InputLabel,
   FormControl,
+  TextField, // Import TextField for the search input
 } from "@mui/material";
 import AddNewTeacherModal from "./AddNewTeacherModal/AddNewTeacherModal";
 import { useEffect, useState } from "react";
 import Color from "../../../components/Color/Color";
 import { ITeacher } from "../../../interfaces/teacher.interface";
 import axios from "axios";
-import { API_TEACHER } from "../../../config/app.config";
+import { API_IMAGE, API_TEACHER } from "../../../config/app.config";
 import DeleteTeacherModal from "./DeleteTeacherModal/DeleteTeacherModal";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import Icon from "@components/Icon/Icon";
 import UpdateTeacherModal from "./UpdateTeacherModal/UpdateTeacherModal";
 
-const teacher = () => {
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: Color.PrimaryBlue,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
+const Teacher = () => {
   const [teachers, setTeachers] = useState<ITeacher[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Search and Filter States
+  const [searchQuery, setSearchQuery] = useState<string>(""); // State for the search query
+  const [selectedCampus, setSelectedCampus] = useState<string | null>(null);
+  const [selectedFaculty, setSelectedFaculty] = useState<string | null>(null);
 
   // Add and Update Modals
   const [openAddNewTeacherModal, setOpenAddNewTeacherModal] = useState(false);
@@ -58,29 +82,6 @@ const teacher = () => {
     setOpenDeleteModal(false);
     setSelectedTeacher(null);
   };
-
-  // Filters
-  const [selectedCampus, setSelectedCampus] = useState<string | null>(null);
-  const [selectedFaculty, setSelectedFaculty] = useState<string | null>(null);
-
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: Color.PrimaryBlue,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
-
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
 
   const fetchTeachers = async () => {
     try {
@@ -120,14 +121,22 @@ const teacher = () => {
     }
   };
 
-  // Dropdown for Campus and Faculty
+  // Search filter logic
+  const filteredTeachers = teachers.filter(
+    (teacher) =>
+      (teacher.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        teacher._id.toLowerCase().includes(searchQuery.toLowerCase())) &&
+      (!selectedCampus || teacher.campus === selectedCampus) &&
+      (!selectedFaculty || teacher.faculty === selectedFaculty)
+  );
+
   const campuses = Array.from(
     new Set(teachers.map((teacher) => teacher.campus))
-  ); // Unique campuses
+  );
   const uniqueFaculties = teachers
     .filter((teacher) => !selectedCampus || teacher.campus === selectedCampus)
     .map((teacher) => teacher.faculty)
-    .filter((faculty, index, self) => self.indexOf(faculty) === index); // Unique faculties
+    .filter((faculty, index, self) => self.indexOf(faculty) === index);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -145,10 +154,16 @@ const teacher = () => {
           Quản lý giáo viên
         </Typography>
 
-        {/* Dropdown filters */}
         <Box display="flex" gap="20px">
-          {/* Dropdown for Campus */}
-          <FormControl>
+          <Button
+            variant="contained"
+            sx={{ width: "240px" }}
+            onClick={handleOpenAddNewTeacherModal}
+          >
+            Thêm mới giáo viên
+          </Button>
+
+          <FormControl size="small">
             <Select
               value={selectedCampus || ""}
               onChange={(e) => setSelectedCampus(e.target.value)}
@@ -163,8 +178,7 @@ const teacher = () => {
             </Select>
           </FormControl>
 
-          {/* Dropdown for Faculty */}
-          <FormControl>
+          <FormControl size="small">
             <Select
               value={selectedFaculty || ""}
               onChange={(e) => setSelectedFaculty(e.target.value)}
@@ -179,13 +193,14 @@ const teacher = () => {
             </Select>
           </FormControl>
 
-          <Button
-            variant="contained"
+          <TextField
+            size="small"
+            variant="outlined"
+            placeholder="Tìm kiếm theo tên hoặc ID"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             sx={{ width: "240px" }}
-            onClick={handleOpenAddNewTeacherModal}
-          >
-            Thêm mới giáo viên
-          </Button>
+          />
         </Box>
 
         <TableContainer component={Paper} sx={{ maxHeight: 750 }}>
@@ -196,48 +211,48 @@ const teacher = () => {
                 <StyledTableCell>Họ và tên</StyledTableCell>
                 <StyledTableCell>Cơ sở</StyledTableCell>
                 <StyledTableCell>Chuyên ngành</StyledTableCell>
-                <StyledTableCell>Mô tả</StyledTableCell>
+                <StyledTableCell>Hình ảnh</StyledTableCell>
                 <StyledTableCell align="right">Chức năng</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {teachers
-                .filter(
-                  (teacher) =>
-                    (!selectedCampus || teacher.campus === selectedCampus) &&
-                    (!selectedFaculty || teacher.faculty === selectedFaculty)
-                )
-                .map((teacher) => (
-                  <StyledTableRow
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    key={teacher._id}
-                  >
-                    <StyledTableCell component="th" scope="row">
-                      {teacher._id}
-                    </StyledTableCell>
-                    <StyledTableCell>{teacher.full_name}</StyledTableCell>
-                    <StyledTableCell>{teacher.campus}</StyledTableCell>
-                    <StyledTableCell>{teacher.faculty}</StyledTableCell>
-                    <StyledTableCell>{teacher.description}</StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Icon.EditIcon
-                        sx={{
-                          marginRight: "16px",
-                          cursor: "pointer",
-                          ":hover": { color: Color.Yellow },
-                        }}
-                        onClick={() => openUpdateTeacherModal(teacher)}
-                      />
-                      <Icon.DeleteIcon
-                        sx={{
-                          cursor: "pointer",
-                          ":hover": { color: Color.Red },
-                        }}
-                        onClick={() => openModal(teacher)}
-                      />
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+              {filteredTeachers.map((teacher) => (
+                <StyledTableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  key={teacher._id}
+                >
+                  <StyledTableCell component="th" scope="row">
+                    {teacher._id}
+                  </StyledTableCell>
+                  <StyledTableCell>{teacher.full_name}</StyledTableCell>
+                  <StyledTableCell>{teacher.campus}</StyledTableCell>
+                  <StyledTableCell>{teacher.faculty}</StyledTableCell>
+                  <StyledTableCell>
+                    <img
+                      src={`${API_IMAGE}/${teacher.image}`}
+                      width={"80px"}
+                      style={{ borderRadius: "50%", aspectRatio: "2/2" }}
+                    ></img>
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    <Icon.EditIcon
+                      sx={{
+                        marginRight: "16px",
+                        cursor: "pointer",
+                        ":hover": { color: Color.Yellow },
+                      }}
+                      onClick={() => openUpdateTeacherModal(teacher)}
+                    />
+                    <Icon.DeleteIcon
+                      sx={{
+                        cursor: "pointer",
+                        ":hover": { color: Color.Red },
+                      }}
+                      onClick={() => openModal(teacher)}
+                    />
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -273,4 +288,4 @@ const teacher = () => {
   );
 };
 
-export default teacher;
+export default Teacher;

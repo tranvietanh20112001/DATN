@@ -166,7 +166,7 @@ const FacultyTable = () => {
           <Button
             variant="contained"
             sx={{ width: "240px" }}
-            onClick={() => handleOpenAddNewFacultyModal}
+            onClick={handleOpenAddNewFacultyModal}
           >
             Thêm mới chuyên ngành
           </Button>
