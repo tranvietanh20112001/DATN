@@ -18,12 +18,20 @@ import Color from "../../../components/Color/Color";
 import { ITeacher } from "../../../interfaces/teacher.interface";
 import axios from "axios";
 import { API_TEACHER } from "../../../config/app.config";
+import DeleteTeacherModal from "./DeleteTeacherModal/DeleteTeacherModal";
+import { notifyError, notifySuccess } from "@utils/notification.utils";
+import Icon from "@components/Icon/Icon";
+import UpdateTeacherModal from "./UpdateTeacherModal/UpdateTeacherModal";
 
 const teacher = () => {
+  const [teachers, setTeachers] = useState<ITeacher[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [openAddNewteacherModal, setOpenAddNewteacherModal] = useState(false);
   const handleOpenAddNewteacherModal = () => setOpenAddNewteacherModal(true);
   const handleCloseAddNewteacherModal = () => setOpenAddNewteacherModal(false);
-
+  const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null);
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: Color.PrimaryBlue,
@@ -44,30 +52,65 @@ const teacher = () => {
     },
   }));
 
-  const [teachers, setTeachers] = useState<ITeacher[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchTeachers = async () => {
-      try {
-        const response = await axios.get<ITeacher[]>(
-          `${API_TEACHER}/get-all-teachers`
-        );
-        setTeachers(response.data);
-        setLoading(false);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          setError(error.message);
-        } else {
-          setError("An unexpected error occurred");
-        }
-        setLoading(false);
+  const fetchTeachers = async () => {
+    try {
+      const response = await axios.get<ITeacher[]>(
+        `${API_TEACHER}/get-all-teachers`
+      );
+      setTeachers(response.data);
+      setLoading(false);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
       }
-    };
-
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchTeachers();
   }, []);
+
+  //Delete Modal
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const openModal = (Teacher: ITeacher) => {
+    setSelectedTeacher(Teacher);
+    setOpenDeleteModal(true);
+  };
+  const closeModal = () => {
+    setOpenDeleteModal(false);
+    setSelectedTeacher(null);
+  };
+
+  const handleDeleteTeacher = async () => {
+    if (selectedTeacher) {
+      try {
+        await axios.delete(
+          `${API_TEACHER}/delete-Teacher/${selectedTeacher._id}`
+        );
+        setTeachers((prevTeacher) =>
+          prevTeacher.filter((Teacher) => Teacher._id !== selectedTeacher._id)
+        );
+        notifySuccess("Giáo viên đã được xóa thành công!");
+      } catch (error) {
+        notifyError("Xóa Giáo viên thất bại");
+        setError("Lỗi khi xóa Giáo viên.");
+      }
+    }
+  };
+
+  //Update Modal
+  const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
+  const openUpdateTeacherModal = (teacher: ITeacher) => {
+    setSelectedTeacher(teacher);
+    setOpenUpdateModal(true);
+  };
+
+  const closeUpdateTeacherModal = () => {
+    setOpenUpdateModal(false);
+    setSelectedTeacher(null);
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -102,6 +145,7 @@ const teacher = () => {
                 <StyledTableCell>Cơ sở</StyledTableCell>
                 <StyledTableCell>Chuyên ngành</StyledTableCell>
                 <StyledTableCell>Mô tả</StyledTableCell>
+                <StyledTableCell align="right">Chức năng</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -117,6 +161,23 @@ const teacher = () => {
                   <StyledTableCell>{teacher.campus}</StyledTableCell>
                   <StyledTableCell>{teacher.faculty}</StyledTableCell>
                   <StyledTableCell>{teacher.description}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    <Icon.EditIcon
+                      sx={{
+                        marginRight: "16px",
+                        cursor: "pointer",
+                        ":hover": { color: Color.Yellow },
+                      }}
+                      onClick={() => openUpdateTeacherModal(teacher)}
+                    />
+                    <Icon.DeleteIcon
+                      sx={{
+                        cursor: "pointer",
+                        ":hover": { color: Color.Red },
+                      }}
+                      onClick={() => openModal(teacher)}
+                    />
+                  </StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
@@ -126,7 +187,26 @@ const teacher = () => {
       <AddNewTeacherModal
         open={openAddNewteacherModal}
         handleClose={handleCloseAddNewteacherModal}
+        fetchTeachers={fetchTeachers}
       />
+
+      {selectedTeacher && (
+        <DeleteTeacherModal
+          open={openDeleteModal}
+          onClose={closeModal}
+          onDelete={handleDeleteTeacher}
+          teacherName={selectedTeacher.full_name}
+        />
+      )}
+
+      {selectedTeacher && (
+        <UpdateTeacherModal
+          open={openUpdateModal}
+          handleClose={closeUpdateTeacherModal}
+          Teacher={selectedTeacher}
+          fetchTeachers={fetchTeachers}
+        />
+      )}
     </>
   );
 };

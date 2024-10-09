@@ -4,18 +4,19 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Field, Form, Formik } from "formik";
-import { ICreateANewTeacher } from "../../../../interfaces/teacher.interface";
-import { ICampus } from "../../../../interfaces/campus.interface";
-import { IFaculty } from "../../../../interfaces/faculty.interface";
+import { ICreateANewTeacher, ITeacher } from "@interfaces/teacher.interface";
+import { ICampus } from "@interfaces/campus.interface";
+import { IFaculty } from "@interfaces/faculty.interface";
 import { useEffect, useState } from "react";
 import {
   API_TEACHER,
   API_CAMPUS,
   API_FACULTY,
-} from "../../../../config/app.config";
+  API_IMAGE,
+} from "@config/app.config";
 import axios from "axios";
 import { MenuItem, Select, styled } from "@mui/material";
-import Icon from "../../../../components/Icon/Icon";
+import Icon from "@components/Icon/Icon";
 import { notifySuccess } from "@utils/notification.utils";
 
 const style = {
@@ -48,14 +49,17 @@ export default function AddNewTeacherModal({
   open,
   handleClose,
   fetchTeachers,
+  Teacher,
 }: {
   open: boolean;
   handleClose: () => void;
   fetchTeachers: () => void;
+  Teacher: ITeacher;
 }) {
   const [campuses, setCampuses] = useState<ICampus[]>([]);
   const [faculties, setFaculties] = useState<IFaculty[]>([]);
   const [selectedCampus, setSelectedCampus] = useState<string | null>(null);
+  const [selectedFaculty, setSelectedFaculty] = useState<string | null>(null);
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -65,7 +69,7 @@ export default function AddNewTeacherModal({
         const response = await axios.get(`${API_CAMPUS}/get-all-campuses`);
         setCampuses(response.data);
       } catch (error) {
-        console.error("Error fetching brands", error);
+        console.error("Error fetching campuses", error);
       }
     };
 
@@ -74,28 +78,30 @@ export default function AddNewTeacherModal({
 
   useEffect(() => {
     if (selectedCampus) {
-      const fetchClasses = async () => {
+      const fetchFaculties = async () => {
         try {
           const response = await axios.get(
             `${API_FACULTY}/get-faculties-by-campus?campus=${selectedCampus}`
           );
           setFaculties(response.data);
+          setSelectedFaculty(null); // Reset faculty when campus changes
         } catch (error) {
-          console.error("Error fetching classes:", error);
+          console.error("Error fetching faculties:", error);
         }
       };
 
-      fetchClasses();
+      fetchFaculties();
     }
   }, [selectedCampus]);
 
-  const initialValues: ICreateANewTeacher = {
-    full_name: "",
-    description: "",
-    campus: "",
-    faculty: "",
-    image: "",
-    email: "",
+  const initialValues: ITeacher = {
+    _id: Teacher._id,
+    full_name: Teacher.full_name,
+    description: Teacher.description,
+    campus: Teacher.campus,
+    faculty: Teacher.faculty,
+    image: Teacher.image,
+    email: Teacher.email,
   };
 
   const [message, setMessage] = useState<string>("");
@@ -111,7 +117,6 @@ export default function AddNewTeacherModal({
       formData.append("image", values.image);
     }
 
-    console.log(formData.values);
     try {
       const response = await axios.post(
         `${API_TEACHER}/create-new-teacher`,
@@ -195,7 +200,12 @@ export default function AddNewTeacherModal({
                   variant="outlined"
                   name="faculty"
                   id="faculty"
-                  disabled={!selectedCampus}
+                  value={selectedFaculty || ""}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                    const faculty = e.target.value;
+                    setFieldValue("faculty", faculty);
+                    setSelectedFaculty(faculty);
+                  }}
                 >
                   {faculties.map((faculty) => (
                     <MenuItem key={faculty._id} value={faculty.name}>
@@ -236,6 +246,15 @@ export default function AddNewTeacherModal({
                 </Button>
                 {previewUrl && (
                   <img src={previewUrl} alt="Image Preview" width="100%" />
+                )}
+
+                {image && (
+                  <img
+                    src={`${API_IMAGE}/${image}`}
+                    alt="Image Preview"
+                    width="100%"
+                    height={"40px"}
+                  />
                 )}
 
                 <Button variant="contained" color="primary" type="submit">
