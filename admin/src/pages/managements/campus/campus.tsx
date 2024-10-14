@@ -2,11 +2,8 @@ import {
   Box,
   Button,
   Paper,
-  styled,
   Table,
   TableBody,
-  TableCell,
-  tableCellClasses,
   TableContainer,
   TableHead,
   TableRow,
@@ -23,25 +20,10 @@ import DeleteCampusModal from "./DeleteCampusModal/DeleteCampusModal";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import UpdateCampusModal from "./UpdateCampusModal/UpdateCampusModal";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: Color.PrimaryBlue,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+import {
+  StyledTableCell,
+  StyledTableRow,
+} from "@components/TableStyle/Table.styled";
 
 const Campus = () => {
   const [campuses, setCampus] = useState<ICampus[]>([]);
