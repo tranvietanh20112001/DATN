@@ -15,35 +15,13 @@ import {
   API_IMAGE,
 } from "@config/app.config";
 import axios from "axios";
-import { MenuItem, Select, styled } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import Icon from "@components/Icon/Icon";
 import { notifySuccess } from "@utils/notification.utils";
-
-const style = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 600,
-  bgcolor: "background.paper",
-  borderRadius: 4,
-  p: 4,
-  "@media only screen and (max-width: 600px)": {
-    width: "90%",
-  },
-};
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import {
+  style,
+  VisuallyHiddenInput,
+} from "@components/ModalStyle/modal.styled";
 
 export default function UpdateTeacherModal({
   open,

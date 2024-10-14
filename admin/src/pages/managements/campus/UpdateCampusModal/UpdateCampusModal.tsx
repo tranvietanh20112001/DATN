@@ -5,40 +5,15 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Field, Form, Formik } from "formik";
 import Icon from "@components/Icon/Icon";
-import { styled } from "@mui/material";
 import { ICampus } from "@interfaces/campus.interface";
 import { useState } from "react";
 import { API_CAMPUS, API_IMAGE } from "@config/app.config";
 import axios from "axios";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
-
-const style = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 540,
-  maxHeight: "90vh", // Add maxHeight to handle overflow
-  bgcolor: "background.paper",
-  borderRadius: 4,
-  p: 4,
-  overflowY: "auto", // Enable scrolling
-  "@media only screen and (max-width: 600px)": {
-    width: "90%",
-  },
-};
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import {
+  style,
+  VisuallyHiddenInput,
+} from "@components/ModalStyle/modal.styled";
 
 export default function UpdateCampusModal({
   open,

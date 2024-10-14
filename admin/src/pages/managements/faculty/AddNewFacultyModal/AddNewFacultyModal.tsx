@@ -11,20 +11,7 @@ import { API_FACULTY, API_CAMPUS } from "../../../../config/app.config";
 import axios from "axios";
 import { MenuItem, Select } from "@mui/material";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
-const style = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 540,
-  bgcolor: "background.paper",
-  borderRadius: 4,
-  p: 4,
-  "@media only screen and (max-width: 600px)": {
-    width: "90%",
-  },
-};
-
+import { style } from "@components/ModalStyle/modal.styled";
 export default function AddNewFacultyModal({
   open,
   handleClose,

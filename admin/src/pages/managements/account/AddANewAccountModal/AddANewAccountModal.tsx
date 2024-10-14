@@ -10,19 +10,7 @@ import { API_USER } from "../../../../config/app.config";
 import axios from "axios";
 import { MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 
-const style = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "800px",
-  bgcolor: "background.paper",
-  borderRadius: 4,
-  p: 4,
-  "@media only screen and (max-width: 600px)": {
-    width: "90%",
-  },
-};
+import { style } from "@components/ModalStyle/modal.styled";
 
 export default function AddANewAccountModal({
   open,
