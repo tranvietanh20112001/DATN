@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { API_USER } from "@config/app.config";
+import { API_ACCOUNT } from "@config/app.config";
 import { useUser } from "@providers/user.provider";
 
 const PrivateRoute: React.FC = () => {
@@ -13,7 +13,7 @@ const PrivateRoute: React.FC = () => {
     if (token) {
       const fetchUserData = async () => {
         try {
-          const response = await axios.get(`${API_USER}/get-user-profile`, {
+          const response = await axios.get(`${API_ACCOUNT}/get-user-profile`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

@@ -4,9 +4,9 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Field, Form, Formik } from "formik";
-import { ICreateANewAccount } from "../../../../interfaces/user.interface";
+import { ICreateANewAccount } from "../../../../interfaces/account.interface";
 import { useState } from "react";
-import { API_USER } from "../../../../config/app.config";
+import { API_ACCOUNT } from "../../../../config/app.config";
 import axios from "axios";
 import { MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 
@@ -35,7 +35,7 @@ export default function AddANewAccountModal({
   ) => {
     try {
       const response = await axios.post(
-        `${API_USER}/create-new-account`,
+        `${API_ACCOUNT}/create-new-account`,
         values
       );
       setMessage(response.data.message);

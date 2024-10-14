@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
-import { useUser } from "../../../providers/user.provider";
+import { useAccount } from "@providers/account.provider";
 const home = () => {
-  const { user } = useUser();
-  return <Box>{user?.email}</Box>;
+  const { Account } = useAccount();
+  return <Box>{Account?.email}</Box>;
 };
 
 export default home;

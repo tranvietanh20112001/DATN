@@ -1,6 +1,6 @@
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { API_USER } from "@config/app.config";
+import { API_ACCOUNT } from "@config/app.config";
 import { ICreateANewAccount } from "@interfaces/user.interface";
 import { useState } from "react";
 import axios from "axios";
@@ -28,7 +28,7 @@ const SignUp = () => {
 
     try {
       const response = await axios.post(
-        `${API_USER}/register-new-account`,
+        `${API_ACCOUNT}/register-new-account`,
         registerData
       );
       console.log("Register successful:", registerData);

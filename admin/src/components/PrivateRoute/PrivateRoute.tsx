@@ -1,45 +1,48 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { API_USER } from "../../config/app.config";
-import { useUser } from "../../providers/user.provider";
+import { API_ACCOUNT } from "../../config/app.config";
+import { useAccount } from "@providers/account.provider";
 
 const PrivateRoute: React.FC = () => {
   const token = localStorage.getItem("token");
-  const { user, setUser } = useUser();
+  const { Account, setAccount } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (token) {
-      const fetchUserData = async () => {
+      const fetchAccountData = async () => {
         try {
-          const response = await axios.get(`${API_USER}/get-user-profile`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await axios.get(
+            `${API_ACCOUNT}/get-account-profile`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
-          const userData = response.data;
-          setUser(userData);
-          localStorage.setItem("user", JSON.stringify(userData));
+          const AccountData = response.data;
+          setAccount(AccountData);
+          localStorage.setItem("account", JSON.stringify(AccountData));
           setLoading(false);
         } catch (error) {
-          console.error("Failed to fetch user data:", error);
+          console.error("Failed to fetch Account data:", error);
           setLoading(false);
         }
       };
 
-      fetchUserData();
+      fetchAccountData();
     } else {
       setLoading(false);
     }
-  }, [token, setUser]);
+  }, [token, setAccount]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (user && (user.role === "Admin" || user.role === "editor")) {
+  if (Account && (Account.role === "Admin" || Account.role === "editor")) {
     return <Outlet />;
   }
 

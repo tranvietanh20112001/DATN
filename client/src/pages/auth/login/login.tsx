@@ -1,4 +1,4 @@
-import { API_USER } from "@config/app.config";
+import { API_ACCOUNT } from "@config/app.config";
 import { IUserLogin } from "@interfaces/user.interface";
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import axios from "axios";
@@ -26,7 +26,7 @@ const Login = () => {
     setLoading(true); // Set loading to true
 
     try {
-      const response = await axios.post(`${API_USER}/login`, loginData);
+      const response = await axios.post(`${API_ACCOUNT}/login`, loginData);
       console.log("Login successful:", response.data);
 
       const { token } = response.data;

@@ -1,3 +1,4 @@
+import { SmallModal } from "@components/ModalStyle/modal.styled";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import React from "react";
 
@@ -16,18 +17,7 @@ const DeleteStudentModal: React.FC<DeleteModalProps> = ({
 }) => {
   return (
     <Modal open={open} onClose={onClose}>
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 400,
-          bgcolor: "background.paper",
-          boxShadow: 24,
-          p: 4,
-        }}
-      >
+      <Box sx={SmallModal}>
         <Typography variant="h6" mb={2}>
           Xác nhận xóa Sinh viên
         </Typography>

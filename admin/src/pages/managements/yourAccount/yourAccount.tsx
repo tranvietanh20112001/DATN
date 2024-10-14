@@ -1,8 +1,8 @@
 import { Box, TextField, Typography } from "@mui/material";
-import { useUser } from "../../../providers/user.provider";
+import { useAccount } from "../../../providers/account.provider";
 
 const YourAccount = () => {
-  const { user } = useUser();
+  const { Account } = useAccount();
 
   return (
     <>
@@ -20,7 +20,7 @@ const YourAccount = () => {
               variant="outlined"
               disabled
               fullWidth
-              value={user?.email}
+              value={Account?.email}
               size="small"
             />
             <Typography>Họ và tên</Typography>
@@ -28,7 +28,7 @@ const YourAccount = () => {
               variant="outlined"
               disabled
               fullWidth
-              value={user?.role}
+              value={Account?.role}
               size="small"
             />
           </Box>

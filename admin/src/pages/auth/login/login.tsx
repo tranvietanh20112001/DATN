@@ -1,23 +1,23 @@
 import { Button, TextField, Typography } from "@mui/material";
-import logo from "../../../assets/Official_logo_of_Greenwich_Vietnam.png";
+import logo from "@assets/Official_logo_of_Greenwich_Vietnam.png";
 import { Formik, Field, Form } from "formik";
 import axios from "axios";
-import { IUserLogin } from "../../../interfaces/user.interface";
+import { IAccountLogin } from "@interfaces/account.interface";
 import { useState } from "react";
-import { API_USER } from "../../../config/app.config";
+import { API_ACCOUNT } from "@config/app.config";
 import { useNavigate } from "react-router-dom";
 export default function Login() {
   const [apiError, setApiError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const initialValues: IUserLogin = {
+  const initialValues: IAccountLogin = {
     email: "",
     password: "",
   };
 
-  const handleSubmit = async (values: IUserLogin) => {
-    setApiError(null); // Clear any previous errors
+  const handleSubmit = async (values: IAccountLogin) => {
+    setApiError(null);
     try {
-      const response = await axios.post(`${API_USER}/login`, values);
+      const response = await axios.post(`${API_ACCOUNT}/login`, values);
       console.log("Login successful:", response.data);
 
       const { token } = response.data;

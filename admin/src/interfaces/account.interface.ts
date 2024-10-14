@@ -4,7 +4,7 @@ export enum ERole {
     Admin = "admin",
   }
 
- export interface IUserLogin {
+ export interface IAccountLogin {
     email: string;
     password: string;
   }
@@ -20,4 +20,16 @@ export interface ICreateANewAccount {
   email: string;
   password: string;
   role: string,
+}
+
+export interface IAccount {
+  _id: string,
+  email: string,
+  full_name: string,
+  role: string,
+  image: string,
+  description: string,
+  phone_number: string,
+  campus: string,
+  faculty: string,
 }
