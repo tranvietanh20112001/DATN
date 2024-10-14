@@ -217,6 +217,7 @@ export default function UpdateStudentModal({
                     width="50%"
                     height={"50%"}
                     style={{
+                      objectFit: "cover",
                       borderRadius: "50%",
                       aspectRatio: "2 / 2",
                       margin: "0 auto",

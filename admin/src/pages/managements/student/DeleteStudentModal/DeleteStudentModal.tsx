@@ -29,10 +29,10 @@ const DeleteStudentModal: React.FC<DeleteModalProps> = ({
         }}
       >
         <Typography variant="h6" mb={2}>
-          Xác nhận xóa Giáo viên
+          Xác nhận xóa Sinh viên
         </Typography>
         <Typography mb={2}>
-          Bạn có chắc chắn muốn xóa giáo viên <strong>{StudentName}</strong>{" "}
+          Bạn có chắc chắn muốn xóa Sinh viên <strong>{StudentName}</strong>{" "}
           không?
         </Typography>
         <Box display="flex" justifyContent="flex-end" gap={2}>

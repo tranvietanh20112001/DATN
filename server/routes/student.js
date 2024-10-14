@@ -84,6 +84,41 @@ router.delete("/delete-student/:id", async (req, res) => {
   }
 });
 
+router.put("/update-student/:id", upload.single("image"), async (req, res) => {
+  try {
+    const { full_name, description, email, campus, faculty, MSSV, personal_email } = req.body;
+    const image = req.file ? req.file.filename : null;
+
+    const updateFields = {
+      full_name,
+      description,
+      email,
+      campus,
+      faculty,
+      MSSV, personal_email
+    };
+
+    if (image) {
+      updateFields.image = image;
+    }
+
+    const updatedStudent = await student.findByIdAndUpdate(req.params.id, updateFields, { new: true });
+
+    if (!updatedStudent) {
+      return res.status(404).json({ success: false, message: "Student not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Student updated successfully",
+      student: updatedStudent,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 router.get('/search', async (req, res) => {
   const searchQuery = req.query.MSSV; 
 

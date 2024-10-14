@@ -2,11 +2,8 @@ import {
   Box,
   Button,
   Paper,
-  styled,
   Table,
   TableBody,
-  TableCell,
-  tableCellClasses,
   TableContainer,
   TableHead,
   TableRow,
@@ -14,45 +11,30 @@ import {
   MenuItem,
   Select,
   FormControl,
-  TextField, // Import TextField for the search input
+  TextField,
 } from "@mui/material";
 import AddNewTeacherModal from "./AddNewTeacherModal/AddNewTeacherModal";
 import { useEffect, useState } from "react";
-import Color from "../../../components/Color/Color";
-import { ITeacher } from "../../../interfaces/teacher.interface";
+import Color from "@components/Color/Color";
+import { ITeacher } from "@interfaces/teacher.interface";
 import axios from "axios";
-import { API_IMAGE, API_TEACHER } from "../../../config/app.config";
+import { API_IMAGE, API_TEACHER } from "@config/app.config";
 import DeleteTeacherModal from "./DeleteTeacherModal/DeleteTeacherModal";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import Icon from "@components/Icon/Icon";
 import UpdateTeacherModal from "./UpdateTeacherModal/UpdateTeacherModal";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: Color.PrimaryBlue,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+import {
+  StyledTableCell,
+  StyledTableRow,
+} from "@components/TableStyle/Table.styled";
 
 const Teacher = () => {
   const [teachers, setTeachers] = useState<ITeacher[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null);
   // Search and Filter States
-  const [searchQuery, setSearchQuery] = useState<string>(""); // State for the search query
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCampus, setSelectedCampus] = useState<string | null>(null);
   const [selectedFaculty, setSelectedFaculty] = useState<string | null>(null);
 
@@ -60,8 +42,8 @@ const Teacher = () => {
   const [openAddNewTeacherModal, setOpenAddNewTeacherModal] = useState(false);
   const handleOpenAddNewTeacherModal = () => setOpenAddNewTeacherModal(true);
   const handleCloseAddNewTeacherModal = () => setOpenAddNewTeacherModal(false);
-  const [selectedTeacher, setSelectedTeacher] = useState<ITeacher | null>(null);
 
+  // Update Modal
   const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
   const openUpdateTeacherModal = (teacher: ITeacher) => {
     setSelectedTeacher(teacher);
