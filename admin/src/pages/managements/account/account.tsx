@@ -128,7 +128,7 @@ const Account = () => {
                 <StyledTableCell>Tên tài khoản</StyledTableCell>
                 <StyledTableCell align="center">Họ và tên</StyledTableCell>
                 <StyledTableCell align="center">Chức nghiệp</StyledTableCell>
-                <StyledTableCell>Hình ảnh</StyledTableCell>
+                <StyledTableCell align="center">Hình ảnh</StyledTableCell>
                 <StyledTableCell align="right">Chức năng</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -144,9 +144,7 @@ const Account = () => {
                   <StyledTableCell align="center">
                     {Account.full_name}
                   </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {Account.role}
-                  </StyledTableCell>
+                  <StyledTableCell>{Account.role}</StyledTableCell>
                   <StyledTableCell align="center">
                     <img
                       src={`${API_IMAGE}/${Account.image}`}
@@ -159,23 +157,21 @@ const Account = () => {
                     ></img>
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    <StyledTableCell align="right">
-                      <Icon.EditIcon
-                        sx={{
-                          marginRight: "16px",
-                          cursor: "pointer",
-                          ":hover": { color: Color.Yellow },
-                        }}
-                        onClick={() => openUpdateAccountModal(Account)}
-                      />
-                      <Icon.DeleteIcon
-                        sx={{
-                          cursor: "pointer",
-                          ":hover": { color: Color.Red },
-                        }}
-                        onClick={() => openModal(Account)}
-                      />
-                    </StyledTableCell>
+                    <Icon.EditIcon
+                      sx={{
+                        marginRight: "16px",
+                        cursor: "pointer",
+                        ":hover": { color: Color.Yellow },
+                      }}
+                      onClick={() => openUpdateAccountModal(Account)}
+                    />
+                    <Icon.DeleteIcon
+                      sx={{
+                        cursor: "pointer",
+                        ":hover": { color: Color.Red },
+                      }}
+                      onClick={() => openModal(Account)}
+                    />
                   </StyledTableCell>
                 </StyledTableRow>
               ))}
