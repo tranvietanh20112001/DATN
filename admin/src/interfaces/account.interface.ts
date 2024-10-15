@@ -27,9 +27,16 @@ export interface IAccount {
   email: string,
   full_name: string,
   role: string,
-  image: string,
+  image: File | string | null;
   description: string,
   phone_number: string,
   campus: string,
   faculty: string,
+}
+
+export interface IUpdateAccountProfile {
+  full_name: string,
+  image: File | string | null;
+  description: string,
+  phone_number: string,
 }

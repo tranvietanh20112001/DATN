@@ -1,12 +1,16 @@
 import {
   Box,
   Button,
+  FormControl,
+  MenuItem,
   Paper,
+  Select,
   Table,
   TableBody,
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import AddANewAccountModal from "../account/AddANewAccountModal/AddANewAccountModal";
@@ -30,9 +34,12 @@ const Account = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
-  // const [searchQuery, setSearchQuery] = useState<string>("");
-  // Add new Account
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [openAddANewAccountModal, setOpenAddANewAccountModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
+
   const handleOpenAddANewAccountModal = () => setOpenAddANewAccountModal(true);
   const handleCloseAddANewAccountModal = () =>
     setOpenAddANewAccountModal(false);
@@ -54,8 +61,6 @@ const Account = () => {
     }
   };
 
-  // Delete Modal
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const openModal = (Account: IAccount) => {
     setSelectedAccount(Account);
     setOpenDeleteModal(true);
@@ -65,8 +70,6 @@ const Account = () => {
     setSelectedAccount(null);
   };
 
-  // Update Modal
-  const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
   const openUpdateAccountModal = (Account: IAccount) => {
     setSelectedAccount(Account);
     setOpenUpdateModal(true);
@@ -93,6 +96,17 @@ const Account = () => {
     }
   };
 
+  const filteredAccounts = Accounts.filter(
+    (account) =>
+      ((account.full_name?.toLowerCase() || "").includes(
+        searchQuery.toLowerCase()
+      ) ||
+        (account.email?.toLowerCase() || "").includes(
+          searchQuery.toLowerCase()
+        )) &&
+      (!selectedRole || account.role === selectedRole)
+  );
+
   useEffect(() => {
     fetchAccounts();
   }, []);
@@ -113,13 +127,36 @@ const Account = () => {
           Quản lý tài khoản
         </Typography>
 
-        <Button
-          variant="contained"
-          sx={{ width: "240px" }}
-          onClick={handleOpenAddANewAccountModal}
-        >
-          Thêm mới tài khoản
-        </Button>
+        <Box display={"flex"} gap={"24px"}>
+          <Button
+            variant="contained"
+            sx={{ width: "240px" }}
+            onClick={handleOpenAddANewAccountModal}
+          >
+            Thêm mới tài khoản
+          </Button>
+          <FormControl size="small">
+            <Select
+              value={selectedRole || ""}
+              onChange={(e) => setSelectedRole(e.target.value)}
+              displayEmpty
+            >
+              <MenuItem value="">Tất cả chức nghiệp</MenuItem>
+              <MenuItem value={"Admin"}>Admin</MenuItem>
+              <MenuItem value={"editor"}>Editor</MenuItem>
+              <MenuItem value={"guest"}>Khách hàng</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
+            size="small"
+            variant="outlined"
+            placeholder="Tìm kiếm theo tên tài khoản hay tên đầy đủ của tài khoản"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            sx={{ width: "240px" }}
+          />
+        </Box>
 
         <TableContainer component={Paper} sx={{ maxHeight: 750 }}>
           <Table sx={{ minWidth: 750 }} aria-label="simple table" stickyHeader>
@@ -133,7 +170,7 @@ const Account = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Accounts.map((Account) => (
+              {filteredAccounts.map((Account) => (
                 <StyledTableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   key={Account._id}
@@ -144,7 +181,9 @@ const Account = () => {
                   <StyledTableCell align="center">
                     {Account.full_name}
                   </StyledTableCell>
-                  <StyledTableCell>{Account.role}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    {Account.role}
+                  </StyledTableCell>
                   <StyledTableCell align="center">
                     <img
                       src={`${API_IMAGE}/${Account.image}`}
@@ -154,7 +193,7 @@ const Account = () => {
                         aspectRatio: "2/2",
                         objectFit: "cover",
                       }}
-                    ></img>
+                    />
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     <Icon.EditIcon
@@ -185,7 +224,6 @@ const Account = () => {
         fetchAccounts={fetchAccounts}
       />
 
-      {/* Delete Account Modal */}
       {selectedAccount && (
         <DeleteAccountModal
           open={openDeleteModal}
@@ -195,7 +233,6 @@ const Account = () => {
         />
       )}
 
-      {/* Update Account Modal */}
       {selectedAccount && (
         <UpdateAccountModal
           open={openUpdateModal}
