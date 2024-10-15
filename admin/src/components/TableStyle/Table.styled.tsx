@@ -17,5 +17,6 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
+    width: "200px",
   },
 }));

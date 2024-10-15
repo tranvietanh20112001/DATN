@@ -8,7 +8,8 @@ import { VisuallyHiddenInput } from "@components/ModalStyle/modal.styled";
 import { Formik, Form, Field } from "formik";
 import { IUpdateAccountProfile } from "@interfaces/account.interface";
 import axios from "axios";
-import { notifySuccess, notifyError } from "@utils/notification.utils"; // Import thông báo lỗi
+import { notifySuccess, notifyError } from "@utils/notification.utils";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const YourAccount = () => {
   const { Account } = useAccount();
@@ -16,6 +17,7 @@ const YourAccount = () => {
   const [, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const token = localStorage.getItem("token");
+  const matches = useMediaQuery("(max-width:600px)");
   useEffect(() => {
     if (!Account) {
       navigate("/no-access");
@@ -61,12 +63,19 @@ const YourAccount = () => {
 
   return (
     <Box width={"100%"} display={"flex"} flexDirection={"column"} gap="24px">
+      <Typography variant="h4" fontWeight={700}>
+        Quản lý tài khoản của bạn
+      </Typography>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ setFieldValue, handleSubmit }) => (
           <Form onSubmit={handleSubmit}>
-            <Box display={"flex"} gap="24px">
+            <Box
+              display={"flex"}
+              gap="24px"
+              flexDirection={matches ? "column" : "row"}
+            >
               <Box
-                width={"45%"}
+                width={matches ? "100%" : "45%"}
                 display={"flex"}
                 flexDirection={"column"}
                 alignItems={"center"}
@@ -79,8 +88,7 @@ const YourAccount = () => {
                     "/default-avatar.png"
                   }
                   alt="Account Avatar"
-                  width={"400px"}
-                  height={"400px"}
+                  width={"50%"}
                   style={{
                     borderRadius: "50%",
                     aspectRatio: "1/1",
@@ -92,7 +100,7 @@ const YourAccount = () => {
                   component="label"
                   variant="outlined"
                   startIcon={<Icon.CloudUploadIcon />}
-                  sx={{ width: "400px" }}
+                  sx={{ width: "80%" }}
                 >
                   Upload files
                   <VisuallyHiddenInput
@@ -111,7 +119,7 @@ const YourAccount = () => {
               </Box>
 
               <Box
-                width={"30%"}
+                width={matches ? "100%" : "45%"}
                 display={"flex"}
                 gap="12px"
                 flexDirection={"column"}

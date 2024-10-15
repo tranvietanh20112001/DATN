@@ -17,9 +17,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Outlet } from "react-router-dom";
-import I from "../../components/Icon/Icon";
+import I from "@components/Icon/Icon";
 import { useNavigate } from "react-router-dom";
-import LogoutModal from "../../pages/auth/logoutModal/logoutModal";
+import LogoutModal from "@pages/auth/logoutModal/logoutModal";
 interface Link {
   name: string;
   url: string;
