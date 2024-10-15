@@ -1,5 +1,5 @@
 import { API_ACCOUNT } from "@config/app.config";
-import { IUserLogin } from "@interfaces/user.interface";
+import { IAccountLogin } from "@interfaces/account.interface";
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
@@ -10,7 +10,7 @@ const Login = () => {
   const [apiError, setApiError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const [loginData, setLoginData] = useState<IUserLogin>({
+  const [loginData, setLoginData] = useState<IAccountLogin>({
     email: "",
     password: "",
   });

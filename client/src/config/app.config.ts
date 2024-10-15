@@ -6,5 +6,5 @@ export const API_UPLOAD = `${API}/uploads`
 export const API_FACULTY= `${API}/faculty`
 export const API_TEACHER= `${API}/teacher`
 export const API_STUDENT= `${API}/student`
-export const API_ACCOUNT = `${API}/user`
+export const API_ACCOUNT = `${API}/account`
 export const API_IMAGE = "http://localhost:8000/uploads"

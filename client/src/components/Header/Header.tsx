@@ -9,7 +9,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@providers/user.provider";
+import { useAccount } from "@providers/account.provider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import logo from "@assets/logo.jpg";
@@ -24,7 +24,7 @@ const TypoStyled = {
 
 const Header = () => {
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { account } = useAccount();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -82,11 +82,11 @@ const Header = () => {
           </Typography>
         </Box>
 
-        {user ? (
+        {account ? (
           <Box display="flex" alignItems="center">
             <IconButton onClick={handleMenuClick}>
-              {user.avatar ? (
-                <Avatar alt={user.email} src={user.avatar} />
+              {account.avatar ? (
+                <Avatar alt={account.email} src={account.avatar} />
               ) : (
                 <Avatar>
                   <AccountCircleIcon />

@@ -2,25 +2,28 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { API_ACCOUNT } from "@config/app.config";
-import { useUser } from "@providers/user.provider";
+import { useAccount } from "@providers/account.provider";
 
 const PrivateRoute: React.FC = () => {
   const token = localStorage.getItem("token");
-  const { user, setUser } = useUser();
+  const { account, setAccount } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (token) {
       const fetchUserData = async () => {
         try {
-          const response = await axios.get(`${API_ACCOUNT}/get-user-profile`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await axios.get(
+            `${API_ACCOUNT}/get-account-profile`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
           const userData = response.data;
-          setUser(userData);
+          setAccount(userData);
           localStorage.setItem("user", JSON.stringify(userData));
           setLoading(false);
         } catch (error) {
@@ -33,7 +36,7 @@ const PrivateRoute: React.FC = () => {
     } else {
       setLoading(false);
     }
-  }, [token, setUser]);
+  }, [token, setAccount]);
 
   if (loading) {
     return <div>Loading...</div>;

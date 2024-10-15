@@ -1,7 +1,7 @@
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { API_ACCOUNT } from "@config/app.config";
-import { ICreateANewAccount } from "@interfaces/user.interface";
+import { ICreateANewAccount } from "@interfaces/account.interface";
 import { useState } from "react";
 import axios from "axios";
 const SignUp = () => {

@@ -1,3 +1,4 @@
+import { SmallModal } from "@components/ModalStyle/modal.styled";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import React from "react";
 
