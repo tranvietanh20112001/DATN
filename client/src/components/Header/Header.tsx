@@ -7,10 +7,12 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  useMediaQuery,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "@providers/account.provider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import MenuIcon from "@mui/icons-material/Menu"; // Import Menu icon
 
 import logo from "@assets/logo.jpg";
 import LogoutModal from "@components/LogoutModal/LogoutModal";
@@ -25,11 +27,12 @@ const TypoStyled = {
 const Header = () => {
   const navigate = useNavigate();
   const { account } = useAccount();
+  const isMobile = useMediaQuery("(max-width:700px)");
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const [openLogoutModal, setOpenLogoutModal] = React.useState<boolean>(false);
+  const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
   const closeModal = () => {
     setOpenLogoutModal(false);
   };
@@ -42,6 +45,7 @@ const Header = () => {
   const openModal = () => {
     setOpenLogoutModal(true);
   };
+
   const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -59,12 +63,12 @@ const Header = () => {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <img src={logo} width={"15%"} alt="Logo" />
+        <img src={logo} width={isMobile ? "40%" : "15%"} alt="Logo" />
 
         <Box
-          width={"40%"}
+          width={"50%"}
           height={50}
-          display={"flex"}
+          display={isMobile ? "none" : "flex"}
           justifyContent={"space-between"}
           alignItems={"center"}
         >
@@ -93,10 +97,10 @@ const Header = () => {
                 </Avatar>
               )}
             </IconButton>
-            {/* Dropdown Menu */}
+
             <Menu
               anchorEl={anchorEl}
-              open={open}
+              open={Boolean(anchorEl)}
               onClose={handleMenuClose}
               anchorOrigin={{
                 vertical: "bottom",
@@ -114,6 +118,38 @@ const Header = () => {
               <MenuItem onClick={openModal}>Đăng xuất</MenuItem>
             </Menu>
           </Box>
+        ) : isMobile ? (
+          <>
+            <IconButton onClick={handleMenuClick}>
+              <MenuIcon />
+            </IconButton>
+            {/* Mobile Menu */}
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <MenuItem onClick={() => navigate("/")}>Trang chủ</MenuItem>
+              <MenuItem onClick={() => navigate("/co-so")}>Cơ sở</MenuItem>
+              <MenuItem onClick={() => navigate("/chuyen-nganh")}>
+                Chuyên ngành
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/ve-chung-toi")}>
+                Về chúng tôi
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/dang-nhap")}>
+                Đăng nhập
+              </MenuItem>
+            </Menu>
+          </>
         ) : (
           <Button
             variant="outlined"

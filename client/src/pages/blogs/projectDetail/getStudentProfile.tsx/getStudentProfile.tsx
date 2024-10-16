@@ -77,7 +77,18 @@ const GetStudentProfile = ({ _id }: IGetStudentById) => {
           </Box>
         </Box>
 
-        <Typography variant="body2" width={"50%"} textAlign={"center"}>
+        <Typography
+          variant="body2"
+          width={"70%"}
+          textAlign={"center"}
+          sx={{
+            overflow: "hidden",
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 5,
+            textOverflow: "ellipsis",
+          }}
+        >
           {student.description}
         </Typography>
       </Box>

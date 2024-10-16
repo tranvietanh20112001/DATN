@@ -1,4 +1,12 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { API_PROJECT } from "../../../config/app.config";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -28,6 +36,10 @@ const ListOfProjects = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedCampus, setSelectedCampus] = useState<string | null>(null);
+  const [selectedFaculty, setSelectedFaculty] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -104,6 +116,25 @@ const ListOfProjects = () => {
     setSelectedProject(null);
   };
 
+  // Search filter logic
+  const filteredProjects = projects.filter(
+    (project) =>
+      (project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.student_name
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase())) &&
+      (!selectedCampus || project.campus === selectedCampus) &&
+      (!selectedFaculty || project.faculty === selectedFaculty)
+  );
+
+  const campuses = Array.from(
+    new Set(projects.map((project) => project.campus))
+  );
+  const uniqueFaculties = projects
+    .filter((project) => !selectedCampus || project.campus === selectedCampus)
+    .map((project) => project.faculty)
+    .filter((faculty, index, self) => self.indexOf(faculty) === index);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -115,18 +146,54 @@ const ListOfProjects = () => {
       flexDirection={"column"}
       gap={"40px"}
     >
-      <Box width={"100%"} display={"flex"} justifyContent={"space-between"}>
-        <Typography variant="h4" fontWeight={700}>
-          Quản lý đồ án
-        </Typography>
-        <TextField variant="outlined" label="Tìm kiếm" size="small"></TextField>
+      <Typography variant="h4" fontWeight={700}>
+        Quản lý đồ án
+      </Typography>
+      <Box width={"100%"} display={"flex"} gap={"24px"}>
         <Button
           variant="contained"
           size="small"
           onClick={() => navigate("/tao-moi-do-an")}
         >
-          Thêm mới
+          Thêm mới dự án
         </Button>
+        <FormControl size="small">
+          <Select
+            value={selectedCampus || ""}
+            onChange={(e) => setSelectedCampus(e.target.value)}
+            displayEmpty
+          >
+            <MenuItem value="">Tất cả cơ sở</MenuItem>
+            {campuses.map((campus) => (
+              <MenuItem key={campus} value={campus}>
+                {campus}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl size="small">
+          <Select
+            value={selectedFaculty || ""}
+            onChange={(e) => setSelectedFaculty(e.target.value)}
+            displayEmpty
+          >
+            <MenuItem value="">Tất cả chuyên ngành</MenuItem>
+            {uniqueFaculties.map((faculty) => (
+              <MenuItem key={faculty} value={faculty}>
+                {faculty}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <TextField
+          size="small"
+          variant="outlined"
+          placeholder="Tìm kiếm theo tên hoặc MSSV"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{ width: "240px" }}
+        />
       </Box>
 
       <TableContainer component={Paper} sx={{ maxHeight: 750 }}>
@@ -143,7 +210,7 @@ const ListOfProjects = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {projects.map((project) => (
+            {filteredProjects.map((project) => (
               <StyledTableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 key={project._id}

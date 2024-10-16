@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { IProject } from "@interfaces/project.interface";
 import { API_IMAGE, API_STUDENT } from "@config/app.config";
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { IStudent } from "@interfaces/student.interface";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getColorsForDepartment } from "../Color/Color";
+
 interface CardProps {
   project: IProject;
 }
@@ -15,6 +16,7 @@ const Card: React.FC<CardProps> = ({ project }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width:700px)");
   useEffect(() => {
     const fetchStudent = async () => {
       const _id = project.student_id;
@@ -45,8 +47,8 @@ const Card: React.FC<CardProps> = ({ project }) => {
 
   return (
     <Box
-      width={"30%"}
-      height={"480px"}
+      width={"25%"}
+      height={isMobile ? "240px" : "480px"}
       borderRadius={"12px"}
       border={"1px solid lightGray"}
       marginBottom={"12px"}
@@ -66,51 +68,66 @@ const Card: React.FC<CardProps> = ({ project }) => {
       <img
         src={`${API_IMAGE}/${project.link_img_banner}`}
         width="100%"
-        height={"240px"}
+        height={isMobile ? "120px" : "240px"}
         style={{ borderRadius: "6px" }}
         alt="Project Banner"
       />
-      <Box width={"50%"}>
-        <Typography
-          bgcolor={backgroundColor}
-          padding={"12px"}
-          borderRadius="6px"
-          color={textColor}
-          fontWeight={"bold"}
-          sx={{ display: "block" }}
-        >
-          {project.faculty}
-        </Typography>
-      </Box>
-      <Typography variant="h4" fontWeight="bold">
+
+      <Typography
+        bgcolor={backgroundColor}
+        padding={"12px"}
+        borderRadius="6px"
+        color={textColor}
+        fontWeight={"bold"}
+        sx={{ display: "block" }}
+        fontSize={isMobile ? "8px" : "normal"}
+      >
+        {project.faculty}
+      </Typography>
+
+      <Typography
+        variant={isMobile ? "h6" : "h4"}
+        fontWeight="bold"
+        sx={{
+          overflow: "hidden",
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: 2,
+          textOverflow: "ellipsis",
+        }}
+      >
         {project.title}
       </Typography>
 
       {loading && <Typography>Loading student data...</Typography>}
       {error && <Typography color="error">{error}</Typography>}
       {student && (
-        <>
-          <Box
-            width={"100%"}
-            display={"flex"}
-            gap={"24px"}
+        <Box
+          width={"100%"}
+          display={"flex"}
+          gap={"24px"}
+          height={36}
+          alignItems={"center"}
+        >
+          <img
+            src={`${API_IMAGE}/${student.image}`}
             height={36}
-            alignItems={"center"}
+            width={36}
+            style={{ borderRadius: "50%" }}
+            alt="Student"
+          />
+          <Typography variant="body2" color="gray" fontSize={"16px"}>
+            {student.full_name}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="gray"
+            fontSize={"16px"}
+            display={isMobile ? "none" : "block"}
           >
-            <img
-              src={`${API_IMAGE}/${student.image}`}
-              height={36}
-              width={36}
-              style={{ borderRadius: "50%" }}
-            ></img>
-            <Typography variant="body2" color="gray" fontSize={"16px"}>
-              {student.full_name}
-            </Typography>
-            <Typography variant="body2" color="gray" fontSize={"16px"}>
-              {project.year}
-            </Typography>
-          </Box>
-        </>
+            {project.year}
+          </Typography>
+        </Box>
       )}
     </Box>
   );

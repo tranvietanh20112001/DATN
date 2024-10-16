@@ -55,7 +55,7 @@ const Homepage = () => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Typography variant="h4" fontWeight={"bold"}>
+          <Typography variant="h4" fontWeight={"bold"} textAlign={"center"}>
             Đồ án tốt nghiệp xuất sắc Greenwich Việt Nam
           </Typography>
         </Box>

@@ -1,8 +1,10 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import logo from "@assets/logo.jpg";
+
 const Footer = () => {
   const navigate = useNavigate();
+  const isMobile = useMediaQuery("(max-width:700px)");
   const QuickLinks = [
     {
       title: "Trang chủ",
@@ -27,8 +29,10 @@ const Footer = () => {
         width={"100%"}
         height={200}
         padding={"25px 0"}
-        display={"flex"}
-        justifyContent={"space-between"}
+        display={isMobile ? "block" : "flex"}
+        justifyContent={isMobile ? "center" : "space-between"}
+        alignItems={isMobile ? "center" : "normal"}
+        gap={isMobile ? "24px" : 0}
       >
         <Box display={"flex"} flexDirection={"column"} gap={"12px"}>
           <Typography variant="h5" fontWeight={"bold"}>
