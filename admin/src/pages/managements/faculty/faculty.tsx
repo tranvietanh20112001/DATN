@@ -162,7 +162,7 @@ const FacultyTable = () => {
           Quản lý chuyên ngành
         </Typography>
 
-        <Box width={"100%"} display={"flex"} justifyContent={"space-between"}>
+        <Box width={"100%"} display={"flex"} gap={"24px"}>
           <Button
             variant="contained"
             sx={{ width: "240px" }}
@@ -175,7 +175,6 @@ const FacultyTable = () => {
             value={selectedCampus}
             onChange={handleCampusChange}
             displayEmpty
-            sx={{ width: "240px" }}
             size="small"
           >
             <MenuItem value="">
@@ -237,6 +236,7 @@ const FacultyTable = () => {
       <AddNewFacultyModal
         open={openAddNewFacultyModal}
         handleClose={handleCloseAddNewFacultyModal}
+        fetchFaculties={fetchFaculties}
       />
 
       {selectedFaculty && (

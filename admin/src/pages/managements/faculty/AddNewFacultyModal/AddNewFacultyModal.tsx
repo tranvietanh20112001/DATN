@@ -15,9 +15,11 @@ import { style } from "@components/ModalStyle/modal.styled";
 export default function AddNewFacultyModal({
   open,
   handleClose,
+  fetchFaculties,
 }: {
   open: boolean;
   handleClose: () => void;
+  fetchFaculties: () => void;
 }) {
   const [campuses, setCampuses] = useState<ICampus[]>([]);
 
@@ -60,6 +62,7 @@ export default function AddNewFacultyModal({
       );
       notifySuccess("Tạo mới chuyên ngành thành công");
       console.log(response);
+      fetchFaculties();
       handleClose();
     } catch (error) {
       notifyError("Tạo mới chuyên ngành thất bại");

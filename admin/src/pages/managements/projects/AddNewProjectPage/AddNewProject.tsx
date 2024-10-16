@@ -1,34 +1,19 @@
 // AddNewProject.tsx
-import {
-  Box,
-  Button,
-  Divider,
-  styled,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 import { Formik, Field } from "formik";
 import { useState } from "react";
-import { IStudent } from "../../../../interfaces/student.interface";
-import { ITeacher } from "../../../../interfaces/teacher.interface";
-import { ICreateANewProject } from "../../../../interfaces/project.interface";
+import { IStudent } from "@interfaces/student.interface";
+import { ITeacher } from "@interfaces/teacher.interface";
+import { ICreateANewProject } from "@interfaces/project.interface";
 import axios from "axios";
-import { API_PROJECT } from "../../../../config/app.config";
+import { API_PROJECT } from "@config/app.config";
 import SearchStudent from "./SearchStudent";
 import SearchTeacher from "./SearchTeacher";
-import Icon from "../../../../components/Icon/Icon";
+import Icon from "@components/Icon/Icon";
 import { useNavigate } from "react-router-dom";
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import { VisuallyHiddenInput } from "@components/ModalStyle/modal.styled";
+import { notifyError, notifySuccess } from "@utils/notification.utils";
+
 const AddNewProject = () => {
   const [student, setStudent] = useState<IStudent | null>(null);
   const [teacher, setTeacher] = useState<ITeacher | null>(null);
@@ -90,11 +75,11 @@ const AddNewProject = () => {
           }
         );
         console.log("Project created successfully", response.data);
-        alert("Dự án đã được tạo thành công!");
+        notifySuccess("Tạo đồ án thành công");
         navigate("/do-an");
       } catch (error) {
         console.error("Error creating project", error);
-        alert("Lỗi khi tạo dự án.");
+        notifyError("Tạo đồ án thất bại");
       }
     } else {
       alert("Bạn phải tìm kiếm và chọn sinh viên và giảng viên trước!");

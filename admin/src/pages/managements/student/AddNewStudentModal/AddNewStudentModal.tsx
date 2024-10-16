@@ -20,13 +20,16 @@ import {
   style,
   VisuallyHiddenInput,
 } from "@components/ModalStyle/modal.styled";
+import { notifyError, notifySuccess } from "@utils/notification.utils";
 
 export default function AddNewStudentModal({
   open,
   handleClose,
+  fetchStudents,
 }: {
   open: boolean;
   handleClose: () => void;
+  fetchStudents: () => void;
 }) {
   const [campuses, setCampuses] = useState<ICampus[]>([]);
   const [faculties, setFaculties] = useState<IFaculty[]>([]);
@@ -102,8 +105,11 @@ export default function AddNewStudentModal({
       );
       setMessage(response.data.message);
       handleClose();
+      fetchStudents();
+      notifySuccess("Tạo mới sinh viên thành công");
     } catch (error) {
-      setMessage("error");
+      notifyError("Tạo mới sinh viên thất bại");
+      setMessage("error.message");
     }
   };
 

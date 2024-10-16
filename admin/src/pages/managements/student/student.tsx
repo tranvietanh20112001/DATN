@@ -249,6 +249,7 @@ const Student = () => {
       <AddNewStudentModal
         open={openAddNewStudentModal}
         handleClose={handleCloseAddNewStudentModal}
+        fetchStudents={fetchStudents}
       />
 
       {/* Delete Student Modal */}
