@@ -10,12 +10,12 @@ import { ICampus } from "@interfaces/campus.interface";
 import { API_CAMPUS, API_IMAGE } from "@config/app.config";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const Campus = () => {
   const [campuses, setCampuses] = useState<ICampus[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -96,6 +96,7 @@ const Campus = () => {
                   cursor: "pointer",
                 },
               }}
+              onClick={() => navigate(`/co-so/${campus._id}`)}
             >
               <img
                 src={`${API_IMAGE}/${campus.image}`}
@@ -112,7 +113,7 @@ const Campus = () => {
                   transform: "translate(-50%, -50%)",
                   textAlign: "center",
                   color: "white",
-                  background: "rgba(0, 0, 0, 0.8)", // Nền tối cho chữ dễ đọc
+                  background: "rgba(0, 0, 0, 0.8)",
                   padding: "8px",
                   borderRadius: "4px",
                 }}

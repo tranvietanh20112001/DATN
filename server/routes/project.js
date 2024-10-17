@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require('multer');
 const Project = require("../models/project")
-
+const campus = require("../models/campus");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -126,6 +126,31 @@ router.put('/update-project/:id', async (req, res)  => {
     res.status(200).json({ message: 'Project updated successfully', project });
   } catch (error) {
     res.status(500).json({ message: 'Error updating project', error });
+  }
+});
+
+
+// Route to get students by campusID
+router.get('/get-projects-by-campus/:campusId', async (req, res) => {
+  try {
+      const { campusId } = req.params;
+      
+      const campusSelected = await campus.findById(campusId);
+
+      if (!campusSelected) {
+        return res.status(404).json({ message: 'Campus not found.' });
+    }
+
+      const projects = await Project.find({campus: campusSelected.name});
+      
+      if (projects.length === 0) {
+          return res.status(404).json({ message: 'No projects found for this class.' });
+      }
+      
+      res.json(projects);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
   }
 });
   module.exports = router;

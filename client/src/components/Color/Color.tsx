@@ -7,11 +7,11 @@ export const getColorsForDepartment = (department: string) => {
       textColor = "red";
       backgroundColor = "rgba(255, 0, 0, 0.05)";
       break;
-    case "Business":
+    case "Quản trị kinh doanh":
       textColor = "blue";
       backgroundColor = "rgba(0, 0, 255, 0.05)";
       break;
-    case "Design":
+    case "Thiết kế đồ họa":
       textColor = "gold";
       backgroundColor = "rgba(255, 215, 0, 0.05)";
       break;

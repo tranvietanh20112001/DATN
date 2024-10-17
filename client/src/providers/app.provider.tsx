@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AccountProvider } from "./account.provider";
 import Favicon from "react-favicon";
 import logo from "@assets/logo.png";
+
 interface IAppProviderProps {
   children: ReactNode;
 }

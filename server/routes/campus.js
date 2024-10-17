@@ -19,12 +19,27 @@ const upload = multer({ storage });
 // Get all campus
 router.get("/get-all-campuses", async (req, res) => {
     try {
-      const campuss= await campus.find().sort({ createdAt: -1 });
-      res.json(campuss);
+      const campuses= await campus.find().sort({ createdAt: -1 });
+      res.json(campuses);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   });
+
+// Get campus detail
+router.get("/get-campus-detail/:id", async (req, res) => {
+  try {
+    const campusDetail = await campus.findById(req.params.id); 
+
+    if (!campusDetail) {
+      return res.status(404).json({ message: "Campus not found" });
+    }
+
+    res.json(campusDetail);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 
 // Add new Campus

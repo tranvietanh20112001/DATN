@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 
 const student = require("../models/student")
-
+const campus = require("../models/campus");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -127,6 +127,30 @@ router.get('/search', async (req, res) => {
     res.json(students); 
   } catch (err) {
     res.status(500).json({ error: 'Error occurred while searching for students' });
+  }
+});
+
+// Route to get students by campusID
+router.get('/get-students-by-campus/:campusId', async (req, res) => {
+  try {
+      const { campusId } = req.params;
+      
+      const campusSelected = await campus.findById(campusId);
+
+      if (!campusSelected) {
+        return res.status(404).json({ message: 'Campus not found.' });
+    }
+
+      const students = await student.find({campus: campusSelected.name});
+      
+      if (students.length === 0) {
+          return res.status(404).json({ message: 'No students found for this class.' });
+      }
+      
+      res.json(students);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
   }
 });
 
