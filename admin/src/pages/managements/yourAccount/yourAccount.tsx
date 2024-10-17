@@ -10,6 +10,7 @@ import { IUpdateAccountProfile } from "@interfaces/account.interface";
 import axios from "axios";
 import { notifySuccess, notifyError } from "@utils/notification.utils";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import ChangePasswordModal from "./ChangePasswordModal/ChangePasswordModal";
 
 const YourAccount = () => {
   const { Account } = useAccount();
@@ -17,7 +18,10 @@ const YourAccount = () => {
   const [, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const token = localStorage.getItem("token");
+  if (!token) return null;
   const matches = useMediaQuery("(max-width:600px)");
+  const [openChangePasswordModal, setOpenChangePasswordModal] =
+    useState<boolean>(false);
   useEffect(() => {
     if (!Account) {
       navigate("/no-access");
@@ -61,131 +65,155 @@ const YourAccount = () => {
     }
   };
 
+  const openChangePasswordAccountModal = () => {
+    setOpenChangePasswordModal(true);
+  };
+  const closeChangePasswordAccountModal = () => {
+    setOpenChangePasswordModal(false);
+  };
   return (
-    <Box width={"100%"} display={"flex"} flexDirection={"column"} gap="24px">
-      <Typography variant="h4" fontWeight={700}>
-        Quản lý tài khoản của bạn
-      </Typography>
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
-        {({ setFieldValue, handleSubmit }) => (
-          <Form onSubmit={handleSubmit}>
-            <Box
-              display={"flex"}
-              gap="24px"
-              flexDirection={matches ? "column" : "row"}
-            >
+    <>
+      <Box width={"100%"} display={"flex"} flexDirection={"column"} gap="24px">
+        <Box display={"flex"} justifyContent={"space-between"}>
+          <Typography variant="h4" fontWeight={700}>
+            Quản lý tài khoản của bạn
+          </Typography>
+          <Button
+            variant="outlined"
+            onClick={() => openChangePasswordAccountModal()}
+          >
+            Đổi mật khẩu
+          </Button>
+        </Box>
+
+        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+          {({ setFieldValue, handleSubmit }) => (
+            <Form onSubmit={handleSubmit}>
               <Box
-                width={matches ? "100%" : "45%"}
                 display={"flex"}
-                flexDirection={"column"}
-                alignItems={"center"}
-                gap={"24px"}
+                justifyContent={"space-between"}
+                flexDirection={matches ? "column" : "row"}
               >
-                <img
-                  src={
-                    previewUrl ||
-                    `${API_IMAGE}/${Account.image}` ||
-                    "/default-avatar.png"
-                  }
-                  alt="Account Avatar"
-                  width={"50%"}
-                  style={{
-                    borderRadius: "50%",
-                    aspectRatio: "1/1",
-                    objectFit: "cover",
-                    border: "0.25px solid black",
-                  }}
-                />
-                <Button
-                  component="label"
-                  variant="outlined"
-                  startIcon={<Icon.CloudUploadIcon />}
-                  sx={{ width: "80%" }}
+                <Box
+                  width={matches ? "100%" : "45%"}
+                  display={"flex"}
+                  flexDirection={"column"}
+                  alignItems={"center"}
+                  gap={"24px"}
                 >
-                  Upload files
-                  <VisuallyHiddenInput
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        setImage(file);
-                        setPreviewUrl(URL.createObjectURL(file));
-                      }
-                      setFieldValue("image", file);
+                  <img
+                    src={
+                      previewUrl ||
+                      `${API_IMAGE}/${Account.image}` ||
+                      "/default-avatar.png"
+                    }
+                    alt="Account Avatar"
+                    width={"50%"}
+                    style={{
+                      borderRadius: "50%",
+                      aspectRatio: "1/1",
+                      objectFit: "cover",
+                      border: "0.25px solid black",
                     }}
                   />
-                </Button>
+                  <Button
+                    component="label"
+                    variant="outlined"
+                    startIcon={<Icon.CloudUploadIcon />}
+                    sx={{ width: "80%" }}
+                  >
+                    Upload files
+                    <VisuallyHiddenInput
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setImage(file);
+                          setPreviewUrl(URL.createObjectURL(file));
+                        }
+                        setFieldValue("image", file);
+                      }}
+                    />
+                  </Button>
+                </Box>
+
+                <Box
+                  width={matches ? "100%" : "45%"}
+                  display={"flex"}
+                  gap="12px"
+                  flexDirection={"column"}
+                >
+                  <Typography>ID</Typography>
+                  <TextField
+                    variant="outlined"
+                    disabled
+                    fullWidth
+                    value={Account?._id}
+                    size="small"
+                  />
+                  <Typography>Tên đăng nhập</Typography>
+                  <TextField
+                    variant="outlined"
+                    disabled
+                    fullWidth
+                    value={Account?.email}
+                    size="small"
+                  />
+                  <Typography>Chức nghiệp</Typography>
+                  <TextField
+                    variant="outlined"
+                    disabled
+                    fullWidth
+                    value={Account?.role}
+                    size="small"
+                  />
+                  <Divider style={{ margin: "24px 0" }} />
+
+                  <Typography>Tên đầy đủ</Typography>
+                  <Field
+                    name="full_name"
+                    as={TextField}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                  />
+
+                  <Typography>Mô tả</Typography>
+                  <Field
+                    name="description"
+                    as={TextField}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                  />
+
+                  <Typography>Số điện thoại</Typography>
+                  <Field
+                    name="phone_number"
+                    as={TextField}
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                  />
+
+                  <Button variant="contained" color="primary" type="submit">
+                    Cập nhật tài khoản
+                  </Button>
+                </Box>
               </Box>
+            </Form>
+          )}
+        </Formik>
+      </Box>
 
-              <Box
-                width={matches ? "100%" : "45%"}
-                display={"flex"}
-                gap="12px"
-                flexDirection={"column"}
-              >
-                <Typography>ID</Typography>
-                <TextField
-                  variant="outlined"
-                  disabled
-                  fullWidth
-                  value={Account?._id}
-                  size="small"
-                />
-                <Typography>Tên đăng nhập</Typography>
-                <TextField
-                  variant="outlined"
-                  disabled
-                  fullWidth
-                  value={Account?.email}
-                  size="small"
-                />
-                <Typography>Chức nghiệp</Typography>
-                <TextField
-                  variant="outlined"
-                  disabled
-                  fullWidth
-                  value={Account?.role}
-                  size="small"
-                />
-                <Divider style={{ margin: "24px 0" }} />
-
-                <Typography>Tên đầy đủ</Typography>
-                <Field
-                  name="full_name"
-                  as={TextField}
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                />
-
-                <Typography>Mô tả</Typography>
-                <Field
-                  name="description"
-                  as={TextField}
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                />
-
-                <Typography>Số điện thoại</Typography>
-                <Field
-                  name="phone_number"
-                  as={TextField}
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                />
-
-                <Button variant="contained" color="primary" type="submit">
-                  Cập nhật tài khoản
-                </Button>
-              </Box>
-            </Box>
-          </Form>
-        )}
-      </Formik>
-    </Box>
+      <ChangePasswordModal
+        open={openChangePasswordModal}
+        onClose={closeChangePasswordAccountModal}
+        Account={Account}
+        token={token}
+      />
+    </>
   );
 };
 
