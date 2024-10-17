@@ -10,6 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 export default {
   HomeIcon,
   FolderIcon,
@@ -23,4 +24,5 @@ export default {
   LogoutIcon,
   ManageAccountsIcon,
   AccountCircleIcon,
+  VpnKeyIcon,
 };

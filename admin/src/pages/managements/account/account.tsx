@@ -28,6 +28,7 @@ import { notifyError, notifySuccess } from "@utils/notification.utils";
 import Color from "@components/Color/Color";
 import DeleteAccountModal from "./DeleteAccountModal/DeleteAccountModal";
 import UpdateAccountModal from "./UpdateAccountModal/UpdateAccountModal";
+import ChangePasswordModal from "./ChangePasswordModal/ChangePasswordModal";
 
 const Account = () => {
   const [Accounts, setAccounts] = useState<IAccount[]>([]);
@@ -39,6 +40,8 @@ const Account = () => {
   const [openAddANewAccountModal, setOpenAddANewAccountModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
+  const [openChangePasswordModal, setOpenChangePasswordModal] =
+    useState<boolean>(false);
 
   const handleOpenAddANewAccountModal = () => setOpenAddANewAccountModal(true);
   const handleCloseAddANewAccountModal = () =>
@@ -67,6 +70,15 @@ const Account = () => {
   };
   const closeModal = () => {
     setOpenDeleteModal(false);
+    setSelectedAccount(null);
+  };
+
+  const openChangePasswordAccountModal = (Account: IAccount) => {
+    setSelectedAccount(Account);
+    setOpenChangePasswordModal(true);
+  };
+  const closeChangePasswordAccountModal = () => {
+    setOpenChangePasswordModal(false);
     setSelectedAccount(null);
   };
 
@@ -196,6 +208,14 @@ const Account = () => {
                     />
                   </StyledTableCell>
                   <StyledTableCell align="right">
+                    <Icon.VpnKeyIcon
+                      sx={{
+                        marginRight: "16px",
+                        cursor: "pointer",
+                        ":hover": { color: Color.DarkBlue },
+                      }}
+                      onClick={() => openChangePasswordAccountModal(Account)}
+                    />
                     <Icon.EditIcon
                       sx={{
                         marginRight: "16px",
@@ -204,6 +224,7 @@ const Account = () => {
                       }}
                       onClick={() => openUpdateAccountModal(Account)}
                     />
+
                     <Icon.DeleteIcon
                       sx={{
                         cursor: "pointer",
@@ -230,6 +251,14 @@ const Account = () => {
           onClose={closeModal}
           onDelete={handleDeleteAccount}
           AccountName={selectedAccount.email}
+        />
+      )}
+
+      {selectedAccount && (
+        <ChangePasswordModal
+          open={openChangePasswordModal}
+          onClose={closeChangePasswordAccountModal}
+          Account={selectedAccount}
         />
       )}
 

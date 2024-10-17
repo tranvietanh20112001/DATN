@@ -181,5 +181,52 @@ router.put('/update-profile/:accountId', authenticateToken, upload.single('image
   }
 });
 
+// User changes their own password
+router.put('/change-password', authenticateToken, async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const accountId = req.account.accountId; // Get accountId from token
+
+  try {
+    const account = await Account.findById(accountId);
+    if (!account) return res.status(404).json({ message: 'Account not found' });
+
+    const isMatch = await bcrypt.compare(oldPassword, account.password);
+    if (!isMatch) return res.status(400).json({ message: 'Old password is incorrect' });
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    account.password = hashedPassword;
+    await account.save();
+
+    res.status(200).json({ message: 'Password changed successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error changing password' });
+    console.error(error);
+  }
+});
+
+// Admin changes another user's password
+router.put('/admin-change-password/:id', async (req, res) => {
+  const { newPassword } = req.body;
+  const accountId = req.params.id;
+  
+  if (!newPassword) {
+    return res.status(400).json({ message: 'New password is required' });
+  }
+
+  try {
+    const account = await Account.findById(accountId);
+    if (!account) return res.status(404).json({ message: 'Account not found' });
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    account.password = hashedPassword;
+    await account.save();
+
+    res.status(200).json({ message: 'Password changed successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error changing password' });
+  }
+});
+
 
 module.exports = router;
