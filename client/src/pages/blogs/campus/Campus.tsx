@@ -10,6 +10,7 @@ import { ICampus } from "@interfaces/campus.interface";
 import { API_CAMPUS, API_IMAGE } from "@config/app.config";
 import { useEffect, useState } from "react";
 import axios from "axios";
+
 const Campus = () => {
   const [campuses, setCampuses] = useState<ICampus[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -35,6 +36,7 @@ const Campus = () => {
 
     fetchProjects();
   }, []);
+
   return (
     <>
       <Banner />
@@ -68,21 +70,25 @@ const Campus = () => {
           </Box>
         )}
 
-        {campuses.map((campus) => (
-          <Box
-            width={"100%"}
-            height={"280px"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            border={".25px lightGray solid"}
-            borderRadius={"12px"}
-          >
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          flexWrap={"wrap"}
+          width={"100%"}
+        >
+          {campuses.map((campus) => (
             <Box
-              width={"90%"}
-              height={"90%"}
+              key={campus._id}
+              width={"45%"}
+              height={"400px"}
               display={"flex"}
-              gap={"32px"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              border={".25px lightGray solid"}
+              borderRadius={"12px"}
+              position="relative"
+              boxShadow={3}
+              mb={2}
               sx={{
                 transition: "transform 0.2s",
                 "&:hover": {
@@ -93,19 +99,30 @@ const Campus = () => {
             >
               <img
                 src={`${API_IMAGE}/${campus.image}`}
-                width={"40%"}
+                width={"100%"}
                 height={"100%"}
-                style={{ borderRadius: "12px" }}
-              ></img>
-
-              <Box>
-                <Typography>{campus.name}</Typography>
-                <Typography>{campus.location}</Typography>
-                <Typography>{campus.description}</Typography>
+                style={{ borderRadius: "12px", objectFit: "cover" }}
+                alt={campus.name}
+              />
+              <Box
+                position="absolute"
+                top="50%"
+                left="50%"
+                sx={{
+                  transform: "translate(-50%, -50%)",
+                  textAlign: "center",
+                  color: "white",
+                  background: "rgba(0, 0, 0, 0.8)", // Nền tối cho chữ dễ đọc
+                  padding: "8px",
+                  borderRadius: "4px",
+                }}
+              >
+                <Typography variant="h6">{campus.name}</Typography>
+                <Typography variant="body2">{campus.location}</Typography>
               </Box>
             </Box>
-          </Box>
-        ))}
+          ))}
+        </Box>
       </Box>
     </>
   );

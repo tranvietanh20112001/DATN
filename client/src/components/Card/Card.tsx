@@ -54,6 +54,7 @@ const Card: React.FC<CardProps> = ({ project }) => {
       marginBottom={"12px"}
       padding="16px"
       display={"flex"}
+      boxShadow={3}
       gap={"24px"}
       flexDirection={"column"}
       sx={{
