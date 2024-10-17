@@ -1946,6 +1946,13 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
+react-favicon@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/react-favicon/-/react-favicon-2.0.7.tgz#168a4ae58cd9eb73e2cdeb294abb21dd62d0845d"
+  integrity sha512-Vqjk8VHnOu7vl7JnP13nPJ05DyFGObF655xFkbTUIbF4vqLx1Slbc56Hrbzg1leROAKHzElm3u4KUzaXO46A6A==
+  dependencies:
+    prop-types "^15.8.1"
+
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"

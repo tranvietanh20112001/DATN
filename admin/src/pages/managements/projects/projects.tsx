@@ -119,12 +119,11 @@ const ListOfProjects = () => {
   // Search filter logic
   const filteredProjects = projects.filter(
     (project) =>
-      (project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.student_name
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase())) &&
-      (!selectedCampus || project.campus === selectedCampus) &&
-      (!selectedFaculty || project.faculty === selectedFaculty)
+      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.student_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (project.teacher_name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        (!selectedCampus || project.campus === selectedCampus) &&
+        (!selectedFaculty || project.faculty === selectedFaculty))
   );
 
   const campuses = Array.from(
@@ -189,10 +188,10 @@ const ListOfProjects = () => {
         <TextField
           size="small"
           variant="outlined"
-          placeholder="Tìm kiếm theo tên hoặc MSSV"
+          placeholder="Tìm kiếm đồ án"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{ width: "240px" }}
+          sx={{ width: "200px" }}
         />
       </Box>
 

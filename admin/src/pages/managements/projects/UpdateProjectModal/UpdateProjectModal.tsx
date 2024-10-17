@@ -79,6 +79,15 @@ const UpdateProjectModal: React.FC<EditModalProps> = ({
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
+          maxHeight: "90vh",
+          overflowY: "auto",
+          borderRadius: 4,
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+          "@media only screen and (max-width: 600px)": {
+            width: "90%",
+          },
         }}
       >
         <Typography variant="h6" mb={2}>
