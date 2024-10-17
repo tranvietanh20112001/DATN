@@ -36,34 +36,29 @@ const ProjectsInCampus: React.FC = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  return (
-    <div style={{ padding: "20px" }}>
-      {projects.length === 0 ? (
-        <Typography variant="h6" align="center">
-          Không tìm thấy dự án
-        </Typography>
-      ) : (
-        <Box
-          width={"100%"}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <Box
-            display="flex"
-            width="100%"
-            flexWrap={"wrap"}
-            justifyContent={"space-between"}
-            mb={2}
-          >
-            {projects.map((project) => (
-              <Card project={project} />
-            ))}
-          </Box>
-        </Box>
-      )}
-    </div>
+  return projects.length === 0 ? (
+    <Typography variant="h6" align="center">
+      Không tìm thấy dự án
+    </Typography>
+  ) : (
+    <Box
+      width={"100%"}
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
+      <Box
+        display="flex"
+        width="100%"
+        flexWrap={"wrap"}
+        justifyContent={"space-between"}
+        mb={2}
+      >
+        {projects.map((project) => (
+          <Card project={project} />
+        ))}
+      </Box>
+    </Box>
   );
 };
-
 export default ProjectsInCampus;

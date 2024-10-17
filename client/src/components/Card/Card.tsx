@@ -47,7 +47,7 @@ const Card: React.FC<CardProps> = ({ project }) => {
 
   return (
     <Box
-      width={"25%"}
+      width={"30%"}
       height={isMobile ? "240px" : "480px"}
       borderRadius={"12px"}
       border={"1px solid lightGray"}
