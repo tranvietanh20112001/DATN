@@ -1,8 +1,8 @@
-import Color, { getColorsForDepartment } from "@components/Color/Color";
+import { getColorsForDepartment } from "@components/Color/Color";
 import { API_IMAGE } from "@config/app.config";
 import { IStudent } from "@interfaces/student.interface";
 import { Box, Typography } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 interface StudentCardProps {
   student: IStudent;
 }
@@ -10,6 +10,8 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
   const { textColor, backgroundColor } = getColorsForDepartment(
     student.faculty
   );
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -28,6 +30,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
             cursor: "pointer",
           },
         }}
+        onClick={() => navigate(`/sinh-vien/${student._id}`)}
       >
         <img
           src={`${API_IMAGE}/${student.image}`}

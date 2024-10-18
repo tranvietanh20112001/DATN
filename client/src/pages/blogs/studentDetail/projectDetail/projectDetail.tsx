@@ -1,18 +1,30 @@
 import { Box, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import { API_IMAGE, API_PROJECT } from "@config/app.config";
 import { getColorsForDepartment } from "@components/Color/Color";
 import Color from "@components/Color/Color";
-import GetStudentProfile from "./getStudentProfile.tsx/getStudentProfile";
-const ProjectDetail = () => {
-  const { id } = useParams();
-  const [project, setProject] = useState<any | null>(null);
+
+interface Project {
+  faculty: string;
+  campus: string;
+  grade: string;
+  title: string;
+  description: string;
+  link_img_banner: string;
+  link_Youtube_URL: string;
+}
+
+interface ProjectDetailProps {
+  studentId: string;
+}
+
+const ProjectDetail: React.FC<ProjectDetailProps> = ({ studentId }) => {
+  const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const getYoutubeEmbedUrl = (url: string) => {
+  const getYoutubeEmbedUrl = (url: string): string | null => {
     const videoIdMatch = url.match(
       /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
@@ -21,15 +33,18 @@ const ProjectDetail = () => {
       : null;
   };
 
-  if (!id) return <Typography>No project found.</Typography>;
+  useEffect(() => {
+    if (studentId) {
+      fetchProjectDetail();
+    }
+  }, [studentId]);
 
   const fetchProjectDetail = async () => {
     try {
       const response = await axios.get(
-        `${API_PROJECT}/get-project-by-id/${id}`
+        `${API_PROJECT}/get-project-by-studentId/${studentId}`
       );
       setProject(response.data);
-      console.log(response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setError(error.message);
@@ -40,10 +55,6 @@ const ProjectDetail = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchProjectDetail();
-  }, [id]);
 
   if (loading) return <Typography>Loading project details...</Typography>;
   if (error) return <Typography color="error">{error}</Typography>;
@@ -107,7 +118,7 @@ const ProjectDetail = () => {
         style={{ width: "100%", borderRadius: "6px" }}
       />
 
-      <Typography variant="h3"> Giới thiệu về dự án</Typography>
+      <Typography variant="h3">Giới thiệu về dự án</Typography>
       <Typography
         variant="body1"
         component="div"
@@ -127,8 +138,6 @@ const ProjectDetail = () => {
       ></iframe>
 
       <Divider />
-
-      <GetStudentProfile _id={project.student_id} />
     </Box>
   );
 };

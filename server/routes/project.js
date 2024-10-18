@@ -24,10 +24,10 @@ router.get("/get-all-projects", async (req, res) => {
     }
   });
 
-  router.get("/get-project-by-id", async (req, res) => {
-    const id = req.params;
+  router.get("/get-project-by-id/:id", async (req, res) => {
+    const id = req.params.id;
     try{  
-      const response = await Project.findOne(id);
+      const response = await Project.findById(id);
       res.json(response);  
     }catch(error){
       console.log(error);
@@ -142,6 +142,30 @@ router.get('/get-projects-by-campus/:campusId', async (req, res) => {
     }
 
       const projects = await Project.find({campus: campusSelected.name});
+      
+      if (projects.length === 0) {
+          return res.status(404).json({ message: 'No projects found for this class.' });
+      }
+      
+      res.json(projects);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
+// Route to get students by campusID
+router.get('/get-project-by-studentId/:studentId', async (req, res) => {
+  try {
+      const { studentId } = req.params;
+      
+
+      if (!studentId) {
+        return res.status(404).json({ message: 'Student not found.' });
+    }
+
+      const projects = await Project.find({student_id: studentId});
       
       if (projects.length === 0) {
           return res.status(404).json({ message: 'No projects found for this class.' });

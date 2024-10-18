@@ -55,7 +55,7 @@ const ProjectsInCampus: React.FC = () => {
         mb={2}
       >
         {projects.map((project) => (
-          <Card project={project} />
+          <Card project={project} key={project._id} />
         ))}
       </Box>
     </Box>
