@@ -5,6 +5,7 @@ import Campus from "@pages/blogs/campus/Campus";
 import CampusDetail from "@pages/blogs/campusDetail/campusDetail";
 import StudentDetail from "@pages/blogs/studentDetail/studentDetail";
 import AccountProfile from "@pages/blogs/accountProfile/accountProfile";
+import AboutUs from "@pages/blogs/AboutUs/AboutUs";
 export const blogRouter: IRoute[] = [
   {
     path: "/",
@@ -29,5 +30,9 @@ export const blogRouter: IRoute[] = [
   {
     path: "/ho-so-cua-ban",
     component: <AccountProfile />,
+  },
+  {
+    path: "/ve-chung-toi",
+    component: <AboutUs />,
   },
 ];
