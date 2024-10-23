@@ -1,5 +1,5 @@
 import { SmallModal } from "@components/ModalStyle/modal.styled";
-import { IAccount } from "@interfaces/account.interface";
+import { IGetAccountProfile } from "@interfaces/account.interface";
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
 import React from "react";
 import { useFormik } from "formik";
@@ -11,7 +11,7 @@ import { API_ACCOUNT } from "@config/app.config";
 interface ChangePasswordModalProps {
   open: boolean;
   onClose: () => void;
-  Account: IAccount;
+  Account: IGetAccountProfile;
   token: string;
 }
 

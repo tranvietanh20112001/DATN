@@ -16,6 +16,7 @@ import MenuIcon from "@mui/icons-material/Menu"; // Import Menu icon
 
 import logo from "@assets/logo.jpg";
 import LogoutModal from "@components/LogoutModal/LogoutModal";
+import { API_IMAGE } from "@config/app.config";
 
 const TypoStyled = {
   cursor: "pointer",
@@ -89,8 +90,11 @@ const Header = () => {
         {account ? (
           <Box display="flex" alignItems="center">
             <IconButton onClick={handleMenuClick}>
-              {account.avatar ? (
-                <Avatar alt={account.email} src={account.avatar} />
+              {account.image ? (
+                <Avatar
+                  alt={account.email}
+                  src={`${API_IMAGE}/${account.image}`}
+                />
               ) : (
                 <Avatar>
                   <AccountCircleIcon />
@@ -111,7 +115,7 @@ const Header = () => {
                 horizontal: "center",
               }}
             >
-              <MenuItem onClick={() => navigate("/profile")}>
+              <MenuItem onClick={() => navigate("/ho-so-cua-ban")}>
                 Hồ sơ của bạn
               </MenuItem>
               <MenuItem onClick={() => navigate("/settings")}>Cài đặt</MenuItem>

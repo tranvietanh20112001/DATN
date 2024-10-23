@@ -26,5 +26,16 @@ export interface ICreateANewAccount {
 export interface IGetAccountProfile {
   email: string;
   role: string;
-  avatar: string;
+  image: string;
+  _id:string;
+  full_name: string,
+  description: string,
+  phone_number: string,
+}
+
+export interface IUpdateAccountProfile{
+  full_name: string;
+  description: string;
+  phone_number: string;
+  image: File | string | null;
 }
