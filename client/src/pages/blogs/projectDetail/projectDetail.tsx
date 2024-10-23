@@ -6,12 +6,13 @@ import { API_IMAGE, API_PROJECT } from "@config/app.config";
 import { getColorsForDepartment } from "@components/Color/Color";
 import Color from "@components/Color/Color";
 import GetStudentProfile from "./getStudentProfile.tsx/getStudentProfile";
+import Icon from "@components/Icons/Icon";
 const ProjectDetail = () => {
   const { id } = useParams();
   const [project, setProject] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [views, setViews] = useState(Number);
   const getYoutubeEmbedUrl = (url: string) => {
     const videoIdMatch = url.match(
       /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
@@ -43,6 +44,19 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     fetchProjectDetail();
+  }, [id]);
+
+  useEffect(() => {
+    const updateViews = async () => {
+      try {
+        const response = await axios.post(`${API_PROJECT}/${id}/view`);
+        setViews(response.data.views);
+      } catch (error) {
+        console.error("Error updating views:", error);
+      }
+    };
+
+    updateViews();
   }, [id]);
 
   if (loading) return <Typography>Loading project details...</Typography>;
@@ -93,6 +107,38 @@ const ProjectDetail = () => {
             textAlign={"center"}
           >
             {project.grade}
+          </Typography>
+        </Box>
+
+        <Box>
+          <Typography
+            bgcolor={Color.lightGray}
+            padding={"12px"}
+            borderRadius="6px"
+            color={"black"}
+            textAlign={"center"}
+            display={"flex"}
+            alignItems={"center"}
+            gap={"12px"}
+          >
+            <Icon.FavoriteBorderIcon />
+            {project.number_of_likes}
+          </Typography>
+        </Box>
+
+        <Box>
+          <Typography
+            bgcolor={Color.lightGray}
+            padding={"12px"}
+            borderRadius="6px"
+            color={"black"}
+            textAlign={"center"}
+            display={"flex"}
+            alignItems={"center"}
+            gap={"12px"}
+          >
+            <Icon.VisibilityIcon />
+            {project.number_of_views}
           </Typography>
         </Box>
       </Box>

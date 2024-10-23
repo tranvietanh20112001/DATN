@@ -24,5 +24,7 @@ export const getColorsForDepartment = (department: string) => {
 };
 
 const lightGray = "#F6F6F7";
+const blue = "#2C4E80";
+const red = "#FC4100";
 
-export default { lightGray };
+export default { lightGray, blue, red };

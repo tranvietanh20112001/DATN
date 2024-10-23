@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { IStudent } from "@interfaces/student.interface";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getColorsForDepartment } from "../Color/Color";
+import Color, { getColorsForDepartment } from "../Color/Color";
+import Icon from "@components/Icons/Icon";
 
 interface CardProps {
   project: IProject;
@@ -48,7 +49,7 @@ const Card: React.FC<CardProps> = ({ project }) => {
   return (
     <Box
       width={"30%"}
-      height={isMobile ? "240px" : "480px"}
+      height={isMobile ? "240px" : "560px"}
       borderRadius={"12px"}
       border={"1px solid lightGray"}
       marginBottom={"12px"}
@@ -130,6 +131,33 @@ const Card: React.FC<CardProps> = ({ project }) => {
           </Typography>
         </Box>
       )}
+
+      <Box display={"flex"} gap={"12px"}>
+        <Box
+          width={"50px"}
+          display={"flex"}
+          border={"0.25px solid red"}
+          borderRadius={"8px"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          padding={"5px 10px"}
+          color={Color.red}
+        >
+          <Icon.FavoriteBorderIcon color="error" /> {project.number_of_likes}
+        </Box>
+        <Box
+          width={"50px"}
+          display={"flex"}
+          border={"0.25px solid blue"}
+          borderRadius={"8px"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          padding={"5px 10px"}
+          color={Color.blue}
+        >
+          <Icon.VisibilityIcon /> {project.number_of_views}
+        </Box>
+      </Box>
     </Box>
   );
 };

@@ -60,9 +60,16 @@ const ProjectSchema = new mongoose.Schema({
     },
     description:{
         type: String,
-    }
+    },
+    number_of_likes:{
+        type: Number,
+        default: 0,
+    },
+    number_of_views: { type: Number, default: 0 },
 });
 
 const Project = mongoose.model('projects', ProjectSchema);
+
+  
 
 module.exports = Project;

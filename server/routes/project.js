@@ -15,6 +15,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+
+// Get All Projects
 router.get("/get-all-projects", async (req, res) => {
     try {
       const projects= await Project.find().sort({ createdAt: -1 });
@@ -24,6 +26,21 @@ router.get("/get-all-projects", async (req, res) => {
     }
   });
 
+
+  // Update number of views
+  router.post('/:id/view', async (req, res) => {
+    try {
+      const project = await Project.findById(req.params.id);
+      project.number_of_views += 1;
+      await project.save();
+      res.status(200).json({ project: project.views });
+    } catch (error) {
+      res.status(500).json({ message: 'Error updating views' });
+    }
+  });
+
+
+  // Get Project By ID
   router.get("/get-project-by-id/:id", async (req, res) => {
     const id = req.params.id;
     try{  
@@ -34,6 +51,8 @@ router.get("/get-all-projects", async (req, res) => {
     }
   });
 
+
+  // Create new projects
   router.post("/create-new-project", upload.fields([
     { name: 'report_pdf', maxCount: 1 },
     { name: 'img_banner', maxCount: 1 }
