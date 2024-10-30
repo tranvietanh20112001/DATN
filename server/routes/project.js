@@ -1,13 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const multer = require('multer');
 const Project = require("../models/project");
 const campus = require("../models/campus");
+import { initializeApp } from "firebase/app";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { app } from "../config/firebase.config";
-
-const storage = getStorage(app);
-const upload = multer({ storage: multer.memoryStorage() });
+import multer from "multer";
+import config from "../config/firebase.config"
 
 const giveCurrentDateTime = () => {
   const today = new Date();
@@ -17,24 +15,34 @@ const giveCurrentDateTime = () => {
   return dateTime;
 };
 
+initializeApp(config.firebaseConfig);
+const storage = getStorage();
+const upload = multer({ storage: multer.memoryStorage() });
+
 router.post("/test-upload", upload.single("filename"), async (req, res) => {
-  try {
-      const dateTime = giveCurrentDateTime();
-      const storageRef = ref(storage, `files/${req.file.originalname + " " + dateTime}`);
-      const metadata = { contentType: req.file.mimetype };
-      const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      console.log('File successfully uploaded.');
-      return res.send({
-          message: 'file uploaded to firebase storage',
-          name: req.file.originalname,
-          type: req.file.mimetype,
-          downloadURL: downloadURL
-      });
-  } catch (error) {
-      return res.status(400).send(error.message);
-  }
+    try {
+        const dateTime = giveCurrentDateTime();
+
+        const storageRef = ref(storage, `files/${req.file.originalname + "       " + dateTime}`);
+
+        const metadata = {
+            contentType: req.file.mimetype,
+        };
+
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        console.log('File successfully uploaded.');
+        return res.send({
+            message: 'file uploaded to firebase storage',
+            name: req.file.originalname,
+            type: req.file.mimetype,
+            downloadURL: downloadURL
+        })
+    } catch (error) {
+        return res.status(400).send(error.message)
+    }
 });
+
 
 router.get("/get-all-projects", async (req, res) => {
     try {
