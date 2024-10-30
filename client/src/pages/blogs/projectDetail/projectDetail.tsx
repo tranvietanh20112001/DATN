@@ -70,7 +70,7 @@ const ProjectDetail = () => {
   return (
     <Box display={"flex"} flexDirection={"column"} gap={"24px"}>
       <Box display={"flex"} gap={"12px"}>
-        <Box width={"185px"}>
+        <Box>
           <Typography
             bgcolor={backgroundColor}
             padding={"12px"}

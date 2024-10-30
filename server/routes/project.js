@@ -1,34 +1,51 @@
 const express = require("express");
 const router = express.Router();
 const multer = require('multer');
-const Project = require("../models/project")
+const Project = require("../models/project");
 const campus = require("../models/campus");
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { app } from "../config/firebase.config";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
+const storage = getStorage(app);
+const upload = multer({ storage: multer.memoryStorage() });
+
+const giveCurrentDateTime = () => {
+  const today = new Date();
+  const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  const dateTime = date + ' ' + time;
+  return dateTime;
+};
+
+router.post("/test-upload", upload.single("filename"), async (req, res) => {
+  try {
+      const dateTime = giveCurrentDateTime();
+      const storageRef = ref(storage, `files/${req.file.originalname + " " + dateTime}`);
+      const metadata = { contentType: req.file.mimetype };
+      const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      console.log('File successfully uploaded.');
+      return res.send({
+          message: 'file uploaded to firebase storage',
+          name: req.file.originalname,
+          type: req.file.mimetype,
+          downloadURL: downloadURL
+      });
+  } catch (error) {
+      return res.status(400).send(error.message);
+  }
 });
 
-const upload = multer({ storage: storage });
-
-
-// Get All Projects
 router.get("/get-all-projects", async (req, res) => {
     try {
-      const projects= await Project.find().sort({ createdAt: -1 });
+      const projects = await Project.find().sort({ createdAt: -1 });
       res.json(projects);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  });
+});
 
-
-  // Update number of views
-  router.post('/:id/view', async (req, res) => {
+router.post('/:id/view', async (req, res) => {
     try {
       const project = await Project.findById(req.params.id);
       project.number_of_views += 1;
@@ -37,26 +54,22 @@ router.get("/get-all-projects", async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'Error updating views' });
     }
-  });
+});
 
-
-  // Get Project By ID
-  router.get("/get-project-by-id/:id", async (req, res) => {
+router.get("/get-project-by-id/:id", async (req, res) => {
     const id = req.params.id;
-    try{  
+    try {  
       const response = await Project.findById(id);
       res.json(response);  
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-  });
+});
 
-
-  // Create new projects
-  router.post("/create-new-project", upload.fields([
+router.post("/create-new-project", upload.fields([
     { name: 'report_pdf', maxCount: 1 },
     { name: 'img_banner', maxCount: 1 }
-  ]), async (req, res) => {
+]), async (req, res) => {
     try {
       const {
         title,
@@ -105,7 +118,7 @@ router.get("/get-all-projects", async (req, res) => {
       console.log(error);
       res.status(500).json({ success: false, message: "Internal server error" });
     }
-  });
+});
 
 router.delete("/delete-project/:id", async (req, res) => {
   try {
@@ -134,9 +147,7 @@ router.put('/update-project/:id', async (req, res)  => {
     if (updatedData.grade < 40 || updatedData.grade > 100) {
       return res.status(400).json({ message: 'Grade must be between 40 and 100' });
     }
-    const project = await Project.findByIdAndUpdate(projectId, updatedData, {
-      new: true,
-    });
+    const project = await Project.findByIdAndUpdate(projectId, updatedData, { new: true });
 
     if (!project) {
       return res.status(404).json({ message: 'Project not found' });
@@ -148,12 +159,9 @@ router.put('/update-project/:id', async (req, res)  => {
   }
 });
 
-
-// Route to get students by campusID
 router.get('/get-projects-by-campus/:campusId', async (req, res) => {
   try {
       const { campusId } = req.params;
-      
       const campusSelected = await campus.findById(campusId);
 
       if (!campusSelected) {
@@ -173,12 +181,9 @@ router.get('/get-projects-by-campus/:campusId', async (req, res) => {
   }
 });
 
-
-// Route to get students by campusID
 router.get('/get-project-by-studentId/:studentId', async (req, res) => {
   try {
       const { studentId } = req.params;
-      
 
       if (!studentId) {
         return res.status(404).json({ message: 'Student not found.' });
@@ -196,4 +201,4 @@ router.get('/get-project-by-studentId/:studentId', async (req, res) => {
       res.status(500).json({ message: 'Server error' });
   }
 });
-  module.exports = router;
+module.exports = router;
