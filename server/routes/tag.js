@@ -2,8 +2,21 @@ const express = require('express');
 const Tag = require('../models/tag'); 
 const router = express.Router();
 
+const multer = require("multer");
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    },
+  });
+  
+  const upload = multer({ storage });
+
+  
 // Create a new tag
-router.post('/add-new-tag', async (req, res) => {
+router.post('/create-new-tag',  upload.single("image"), async (req, res) => {
     try {
         const { name, description, color } = req.body;
         const newTag = new Tag({ name, description, color });
@@ -17,8 +30,8 @@ router.post('/add-new-tag', async (req, res) => {
 // Get all tags
 router.get('/get-all-tags', async (req, res) => {
     try {
-        const tags = await Tag.find();
-        res.status(200).json({ success: true, tags });
+        const tags = await Tag.find().sort({ createdAt: -1 });;
+        res.status(200).json( tags );
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -36,7 +49,7 @@ router.get('/get-tag-by-id/:id', async (req, res) => {
 });
 
 // Update a tag by ID
-router.put('/update-tag/:id', async (req, res) => {
+router.put('/update-tag/:id', upload.single("image"), async (req, res) => {
     try {
         const { name, description, color } = req.body;
         const updatedTag = await Tag.findByIdAndUpdate(
