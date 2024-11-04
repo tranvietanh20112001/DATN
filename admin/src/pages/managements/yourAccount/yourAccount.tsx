@@ -1,6 +1,6 @@
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 import { useAccount } from "@providers/account.provider";
-import { API_ACCOUNT, API_IMAGE } from "@config/app.config";
+import { API_ACCOUNT } from "@config/app.config";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Icon from "@components/Icon/Icon";
@@ -11,11 +11,12 @@ import axios from "axios";
 import { notifySuccess, notifyError } from "@utils/notification.utils";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ChangePasswordModal from "./ChangePasswordModal/ChangePasswordModal";
-
+import uploadFileToFirebase from "../../../firebase/index";
+import { UUID } from "uuidjs";
 const YourAccount = () => {
   const { Account } = useAccount();
   const navigate = useNavigate();
-  const [, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const token = localStorage.getItem("token");
   if (!token) return null;
@@ -42,8 +43,18 @@ const YourAccount = () => {
     formData.append("full_name", values.full_name);
     formData.append("description", values.description);
     formData.append("phone_number", values.phone_number);
-    if (values.image) {
-      formData.append("image", values.image);
+    if (image) {
+      try {
+        const imgURL = await uploadFileToFirebase(
+          `Account_Images/${UUID.generate()}`,
+          image
+        );
+        formData.append("imgURL", imgURL);
+      } catch (error) {
+        notifyError("Upload ảnh thất bại");
+        console.error("Image upload error:", error);
+        return;
+      }
     }
 
     try {

@@ -7,14 +7,16 @@ import { Field, Form, Formik } from "formik";
 import { IAccount } from "@interfaces/account.interface";
 
 import { useState } from "react";
-import { API_ACCOUNT, API_IMAGE } from "@config/app.config";
+import { API_ACCOUNT } from "@config/app.config";
 import axios from "axios";
 import Icon from "@components/Icon/Icon";
-import { notifySuccess } from "@utils/notification.utils";
+import { notifyError, notifySuccess } from "@utils/notification.utils";
 import {
   style,
   VisuallyHiddenInput,
 } from "@components/ModalStyle/modal.styled";
+import uploadFileToFirebase from "../../../../firebase/index";
+import { UUID } from "uuidjs";
 
 export default function UpdateAccountModal({
   open,
@@ -51,10 +53,19 @@ export default function UpdateAccountModal({
     formData.append("email", values.email);
     formData.append("faculty", values.faculty);
     formData.append("description", values.description);
-    if (values.image) {
-      formData.append("image", values.image);
+    if (image) {
+      try {
+        const imgURL = await uploadFileToFirebase(
+          `Account_Images/${UUID.generate()}`,
+          image
+        );
+        formData.append("imgURL", imgURL);
+      } catch (error) {
+        notifyError("Upload ảnh thất bại");
+        console.error("Image upload error:", error);
+        return;
+      }
     }
-
     try {
       const response = await axios.put(
         `${API_ACCOUNT}/update-account/${AccountData._id}`,
@@ -71,6 +82,7 @@ export default function UpdateAccountModal({
       console.log(response);
     } catch (error) {
       setMessage("error");
+      notifyError("Cập nhật tài khoản thất bại");
     }
   };
 

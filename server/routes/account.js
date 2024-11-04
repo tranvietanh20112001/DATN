@@ -107,16 +107,13 @@ router.get('/get-all-accounts', async(req,res) =>{
 
 router.put("/update-account/:id", upload.single("image"), async (req, res) => {
   try {
-    const { full_name, description, phone_number,campus,faculty } = req.body;
-    const image = req.file ? req.file.filename : null;
+    const { full_name, description, phone_number,campus,faculty, imgURL } = req.body;
+    
 
     const updateFields = {
-      full_name, description, phone_number,campus,faculty
+      full_name, description, phone_number,campus,faculty, image:imgURL
     };
 
-    if (image) {
-      updateFields.image = image;
-    }
 
     const updatedaccount = await Account.findByIdAndUpdate(req.params.id, updateFields, { new: true });
 
@@ -146,9 +143,9 @@ router.delete("/delete-account/:id", async (req, res) => {
 
 router.put('/update-profile/:accountId', authenticateToken, upload.single('image'), async (req, res) => {
   try {
-    const accountId = req.account.accountId; // Lấy accountId từ token đã được xác thực
-    const { full_name, description, phone_number, campus, faculty } = req.body;
-    const image = req.file ? req.file.filename : null; // Kiểm tra nếu có ảnh upload
+    const accountId = req.account.accountId; 
+    const { full_name, description, phone_number, campus, faculty, imgURL } = req.body;
+   
 
     const updateFields = {
       full_name, 
@@ -156,20 +153,16 @@ router.put('/update-profile/:accountId', authenticateToken, upload.single('image
       phone_number, 
       campus, 
       faculty,
+      image: imgURL
     };
 
-    if (image) {
-      updateFields.image = image; // Nếu có ảnh, cập nhật image
-    }
 
-    // Tìm tài khoản và cập nhật
     const updatedAccount = await Account.findByIdAndUpdate(accountId, updateFields, { new: true });
 
     if (!updatedAccount) {
       return res.status(404).json({ success: false, message: 'Account not found' });
     }
 
-    // Trả về kết quả sau khi cập nhật thành công
     res.status(200).json({
       success: true,
       message: 'Profile updated successfully',

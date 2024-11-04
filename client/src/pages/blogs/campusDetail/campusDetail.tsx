@@ -1,4 +1,4 @@
-import { API_CAMPUS, API_IMAGE } from "@config/app.config";
+import { API_CAMPUS } from "@config/app.config";
 import { ICampus } from "@interfaces/campus.interface";
 import { Alert, Box, CircularProgress, Typography } from "@mui/material";
 import axios from "axios";

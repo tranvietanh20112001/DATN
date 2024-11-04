@@ -16,7 +16,7 @@ import MenuIcon from "@mui/icons-material/Menu"; // Import Menu icon
 
 import logo from "@assets/logo.jpg";
 import LogoutModal from "@components/LogoutModal/LogoutModal";
-import { API_IMAGE } from "@config/app.config";
+import {} from "@config/app.config";
 
 const TypoStyled = {
   cursor: "pointer",

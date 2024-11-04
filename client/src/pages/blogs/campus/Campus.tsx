@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { ICampus } from "@interfaces/campus.interface";
-import { API_CAMPUS, API_IMAGE } from "@config/app.config";
+import { API_CAMPUS } from "@config/app.config";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

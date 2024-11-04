@@ -101,9 +101,9 @@ router.delete("/delete-project/:id", async (req, res) => {
 router.delete('/delete-all-projects', async (req, res) => {
   try {
     await Project.deleteMany({});
-    res.status(200).send('All products have been deleted');
+    res.status(200).send('All projects have been deleted');
   } catch (error) {
-    res.status(500).send('Error deleting products');
+    res.status(500).send('Error deleting projects');
   }
 });
 

@@ -1,5 +1,5 @@
 import { getColorsForDepartment } from "@components/Color/Color";
-import { API_IMAGE } from "@config/app.config";
+import {} from "@config/app.config";
 import { IStudent } from "@interfaces/student.interface";
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";

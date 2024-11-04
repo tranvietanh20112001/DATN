@@ -1,6 +1,6 @@
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 import { useAccount } from "@providers/account.provider";
-import { API_ACCOUNT, API_IMAGE } from "@config/app.config";
+import { API_ACCOUNT } from "@config/app.config";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 // import Icon from "@components/Icon/Icon";
