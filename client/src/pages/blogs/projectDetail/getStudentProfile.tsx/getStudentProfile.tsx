@@ -1,6 +1,6 @@
 import { IStudent, IGetStudentById } from "@interfaces/student.interface";
 import { Typography, CircularProgress, Box } from "@mui/material";
-import { API_IMAGE, API_STUDENT } from "@config/app.config";
+import { API_STUDENT } from "@config/app.config";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -56,7 +56,7 @@ const GetStudentProfile = ({ _id }: IGetStudentById) => {
       >
         <Box display={"flex"} height={"64px"} gap={"12px"}>
           <img
-            src={`${API_IMAGE}/${student.image}`}
+            src={`${student.image}`}
             width={"64px"}
             height={"64px"}
             style={{ borderRadius: "50%" }}

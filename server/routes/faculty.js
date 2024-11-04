@@ -34,7 +34,6 @@ router.post("/create-new-faculty", upload.single("image"), async (req, res) => {
       name,
       campus,
       description,
-      image: req.file ? req.file.filename : null, // Save image if uploaded
     });
 
     await newFaculty.save();
@@ -60,20 +59,11 @@ router.put("/update-faculty/:id", upload.single("image"), async (req, res) => {
       return res.status(404).json({ message: "Faculty not found" });
     }
 
-    // Update fields
     facultyToUpdate.name = name || facultyToUpdate.name;
     facultyToUpdate.campus = campus || facultyToUpdate.campus;
     facultyToUpdate.description = description || facultyToUpdate.description;
 
-    // Handle image update
-    if (req.file) {
-      // Delete the old image file if it exists
-      if (facultyToUpdate.image) {
-        fs.unlinkSync(`uploads/${facultyToUpdate.image}`);
-      }
-      facultyToUpdate.image = req.file.filename;
-    }
-
+    
     await facultyToUpdate.save();
 
     res.status(200).json({
@@ -94,11 +84,6 @@ router.delete("/delete-faculty/:id", async (req, res) => {
 
     if (!facultyToDelete) {
       return res.status(404).json({ message: "Faculty not found" });
-    }
-
-    // Remove the associated image file if it exists
-    if (facultyToDelete.image) {
-      fs.unlinkSync(`uploads/${facultyToDelete.image}`);
     }
 
     await faculty.findByIdAndDelete(req.params.id);

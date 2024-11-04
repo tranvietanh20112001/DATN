@@ -1,4 +1,4 @@
-import { API_IMAGE, API_STUDENT } from "@config/app.config";
+import { API_STUDENT } from "@config/app.config";
 import { IStudent } from "@interfaces/student.interface";
 import { Box, Divider, Typography } from "@mui/material";
 import axios from "axios";
@@ -68,7 +68,7 @@ const StudentDetail: React.FC = () => {
         </Box>
 
         <img
-          src={`${API_IMAGE}/${student.image}`}
+          src={`${student.image}`}
           width={"400px"}
           height={"400px"}
           style={{

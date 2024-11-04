@@ -1,7 +1,7 @@
 import { Box, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { API_IMAGE, API_PROJECT } from "@config/app.config";
+import { API_PROJECT } from "@config/app.config";
 import { getColorsForDepartment } from "@components/Color/Color";
 import Color from "@components/Color/Color";
 
@@ -113,7 +113,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ studentId }) => {
       </Typography>
 
       <img
-        src={`${API_IMAGE}/${project.link_img_banner}`}
+        src={`${project.link_img_banner}`}
         alt="Project Banner"
         style={{ width: "100%", borderRadius: "6px" }}
       />

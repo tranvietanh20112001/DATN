@@ -16,11 +16,13 @@ import {
 import axios from "axios";
 import { MenuItem, Select } from "@mui/material";
 import Icon from "../../../../components/Icon/Icon";
-import { notifySuccess } from "@utils/notification.utils";
+import { notifyError, notifySuccess } from "@utils/notification.utils";
 import {
   style,
   VisuallyHiddenInput,
 } from "@components/ModalStyle/modal.styled";
+import uploadFileToFirebase from "../../../../firebase/index";
+import { UUID } from "uuidjs";
 
 export default function AddNewTeacherModal({
   open,
@@ -34,7 +36,7 @@ export default function AddNewTeacherModal({
   const [campuses, setCampuses] = useState<ICampus[]>([]);
   const [faculties, setFaculties] = useState<IFaculty[]>([]);
   const [selectedCampus, setSelectedCampus] = useState<string | null>(null);
-  const [, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -85,8 +87,19 @@ export default function AddNewTeacherModal({
     formData.append("email", values.email);
     formData.append("faculty", values.faculty);
     formData.append("description", values.description);
-    if (values.image) {
-      formData.append("image", values.image);
+
+    if (image) {
+      try {
+        const imgURL = await uploadFileToFirebase(
+          `TeacherImg/${UUID.generate()}`,
+          image
+        );
+        formData.append("imgURL", imgURL);
+      } catch (error) {
+        notifyError("Upload ảnh thất bại");
+        console.error("Image upload error:", error);
+        return;
+      }
     }
 
     console.log(formData.values);
@@ -104,8 +117,9 @@ export default function AddNewTeacherModal({
       handleClose();
       fetchTeachers();
       console.log(response);
-    } catch (error) {
-      setMessage("error");
+    } catch (error: any) {
+      setMessage(error);
+      notifyError("Tạo mới giáo viên thất bại");
     }
   };
 

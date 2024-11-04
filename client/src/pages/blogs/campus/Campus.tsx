@@ -99,7 +99,7 @@ const Campus = () => {
               onClick={() => navigate(`/co-so/${campus._id}`)}
             >
               <img
-                src={`${API_IMAGE}/${campus.image}`}
+                src={`${campus.image}`}
                 width={"100%"}
                 height={"100%"}
                 style={{ borderRadius: "12px", objectFit: "cover" }}

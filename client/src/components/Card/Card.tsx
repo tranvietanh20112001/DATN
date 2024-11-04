@@ -1,6 +1,6 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import { IProject } from "@interfaces/project.interface";
-import { API_IMAGE, API_STUDENT } from "@config/app.config";
+import { API_STUDENT } from "@config/app.config";
 import { useEffect, useState } from "react";
 import { IStudent } from "@interfaces/student.interface";
 import axios from "axios";
@@ -68,7 +68,7 @@ const Card: React.FC<CardProps> = ({ project }) => {
       onClick={() => navigate(`/project/${project._id}`)}
     >
       <img
-        src={`${API_IMAGE}/${project.link_img_banner}`}
+        src={`${project.link_img_banner}`}
         width="100%"
         height={isMobile ? "120px" : "240px"}
         style={{ borderRadius: "6px" }}
@@ -112,7 +112,7 @@ const Card: React.FC<CardProps> = ({ project }) => {
           alignItems={"center"}
         >
           <img
-            src={`${API_IMAGE}/${student.image}`}
+            src={`${student.image}`}
             height={36}
             width={36}
             style={{ borderRadius: "50%" }}

@@ -58,7 +58,7 @@ const CampusDetail = () => {
             {campus.location}
           </Typography>
           <img
-            src={`${API_IMAGE}/${campus.image}`}
+            src={`${campus.image}`}
             alt={`${campus.name}`}
             style={{ width: "100%", objectFit: "cover", borderRadius: "8px" }}
           />

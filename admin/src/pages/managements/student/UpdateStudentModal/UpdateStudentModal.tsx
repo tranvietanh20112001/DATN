@@ -8,21 +8,17 @@ import { IStudent } from "@interfaces/student.interface";
 import { ICampus } from "@interfaces/campus.interface";
 import { IFaculty } from "@interfaces/faculty.interface";
 import { useEffect, useState } from "react";
-import {
-  API_STUDENT,
-  API_CAMPUS,
-  API_FACULTY,
-  API_IMAGE,
-} from "@config/app.config";
+import { API_STUDENT, API_CAMPUS, API_FACULTY } from "@config/app.config";
 import axios from "axios";
 import { MenuItem, Select } from "@mui/material";
 import Icon from "@components/Icon/Icon";
-import { notifySuccess } from "@utils/notification.utils";
+import { notifyError, notifySuccess } from "@utils/notification.utils";
 import {
   style,
   VisuallyHiddenInput,
 } from "@components/ModalStyle/modal.styled";
-
+import uploadFileToFirebase from "../../../../firebase/index";
+import { UUID } from "uuidjs";
 export default function UpdateStudentModal({
   open,
   handleClose,
@@ -97,8 +93,19 @@ export default function UpdateStudentModal({
     formData.append("email", values.email);
     formData.append("faculty", values.faculty);
     formData.append("description", values.description);
-    if (values.image) {
-      formData.append("image", values.image);
+
+    if (image) {
+      try {
+        const imgURL = await uploadFileToFirebase(
+          `Student_Images/${UUID.generate()}`,
+          image
+        );
+        formData.append("imgURL", imgURL);
+      } catch (error) {
+        notifyError("Upload ảnh thất bại");
+        console.error("Image upload error:", error);
+        return;
+      }
     }
 
     try {
@@ -116,6 +123,7 @@ export default function UpdateStudentModal({
       fetchStudents();
       console.log(response);
     } catch (error) {
+      notifyError("Cập nhật thông tin sinh viên thất bại");
       setMessage("error");
     }
   };
@@ -212,7 +220,7 @@ export default function UpdateStudentModal({
 
                 {StudentData.image && !image && (
                   <img
-                    src={`${API_IMAGE}/${StudentData.image}`}
+                    src={`${StudentData.image}`}
                     alt="Student's Image"
                     width="50%"
                     height={"50%"}

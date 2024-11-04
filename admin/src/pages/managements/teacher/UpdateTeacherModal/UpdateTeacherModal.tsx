@@ -8,20 +8,17 @@ import { ITeacher } from "@interfaces/teacher.interface";
 import { ICampus } from "@interfaces/campus.interface";
 import { IFaculty } from "@interfaces/faculty.interface";
 import { useEffect, useState } from "react";
-import {
-  API_TEACHER,
-  API_CAMPUS,
-  API_FACULTY,
-  API_IMAGE,
-} from "@config/app.config";
+import { API_TEACHER, API_CAMPUS, API_FACULTY } from "@config/app.config";
 import axios from "axios";
 import { MenuItem, Select } from "@mui/material";
 import Icon from "@components/Icon/Icon";
-import { notifySuccess } from "@utils/notification.utils";
+import { notifyError, notifySuccess } from "@utils/notification.utils";
 import {
   style,
   VisuallyHiddenInput,
 } from "@components/ModalStyle/modal.styled";
+import uploadFileToFirebase from "../../../../firebase/index";
+import { UUID } from "uuidjs";
 
 export default function UpdateTeacherModal({
   open,
@@ -95,8 +92,19 @@ export default function UpdateTeacherModal({
     formData.append("email", values.email);
     formData.append("faculty", values.faculty);
     formData.append("description", values.description);
-    if (values.image) {
-      formData.append("image", values.image);
+
+    if (image) {
+      try {
+        const imgURL = await uploadFileToFirebase(
+          `TeacherImg/${UUID.generate()}`,
+          image
+        );
+        formData.append("imgURL", imgURL);
+      } catch (error) {
+        notifyError("Upload ảnh thất bại");
+        console.error("Image upload error:", error);
+        return;
+      }
     }
 
     try {
@@ -115,6 +123,7 @@ export default function UpdateTeacherModal({
       console.log(response);
     } catch (error) {
       setMessage("error");
+      notifyError("Cập nhật giáo viên thất bại");
     }
   };
 
@@ -210,7 +219,7 @@ export default function UpdateTeacherModal({
 
                 {teacherData.image && !image && (
                   <img
-                    src={`${API_IMAGE}/${teacherData.image}`}
+                    src={`${teacherData.image}`}
                     alt="Teacher's Image"
                     width="50%"
                     height={"50%"}

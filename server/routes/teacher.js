@@ -26,13 +26,12 @@ router.get("/get-all-teachers", async (req, res) => {
 
 router.post("/create-new-teacher",  upload.single("image"), async(req,res) =>{
     try{
-        const {full_name, description, email, campus, faculty} = req.body;
-        const image = req.file ? req.file.filename : null;
+        const {full_name, description, email, campus, faculty, imgURL} = req.body;
 
         const newTeacher = new teacher({
             full_name,
             description,
-            image,
+            image: imgURL,
             email,
             campus,faculty
         });
@@ -53,8 +52,7 @@ router.post("/create-new-teacher",  upload.single("image"), async(req,res) =>{
 
 router.put("/update-teacher/:id", upload.single("image"), async (req, res) => {
   try {
-    const { full_name, description, email, campus, faculty } = req.body;
-    const image = req.file ? req.file.filename : null;
+    const { full_name, description, email, campus, faculty, imgURL } = req.body;
 
     const updateFields = {
       full_name,
@@ -62,11 +60,8 @@ router.put("/update-teacher/:id", upload.single("image"), async (req, res) => {
       email,
       campus,
       faculty,
+      image: imgURL
     };
-
-    if (image) {
-      updateFields.image = image;
-    }
 
     const updatedTeacher = await teacher.findByIdAndUpdate(req.params.id, updateFields, { new: true });
 

@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import Color from "@components/Color/Color";
 import { ITeacher } from "@interfaces/teacher.interface";
 import axios from "axios";
-import { API_IMAGE, API_TEACHER } from "@config/app.config";
+import { API_TEACHER } from "@config/app.config";
 import DeleteTeacherModal from "./DeleteTeacherModal/DeleteTeacherModal";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import Icon from "@components/Icon/Icon";
@@ -211,9 +211,13 @@ const Teacher = () => {
                   <StyledTableCell>{teacher.faculty}</StyledTableCell>
                   <StyledTableCell>
                     <img
-                      src={`${API_IMAGE}/${teacher.image}`}
+                      src={`${teacher.image}`}
                       width={"80px"}
-                      style={{ borderRadius: "50%", aspectRatio: "2/2" }}
+                      style={{
+                        borderRadius: "50%",
+                        aspectRatio: "2/2",
+                        objectFit: "cover",
+                      }}
                     ></img>
                   </StyledTableCell>
                   <StyledTableCell align="right">

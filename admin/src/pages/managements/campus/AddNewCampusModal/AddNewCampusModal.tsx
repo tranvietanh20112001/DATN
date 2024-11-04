@@ -47,7 +47,7 @@ export default function AddNewCampusModal({
     if (image) {
       try {
         const imgURL = await uploadFileToFirebase(
-          `ProductThumbnails/${UUID.generate()}`,
+          `CampusImg/${UUID.generate()}`,
           image
         );
         formData.append("imgURL", imgURL);

@@ -33,7 +33,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student }) => {
         onClick={() => navigate(`/sinh-vien/${student._id}`)}
       >
         <img
-          src={`${API_IMAGE}/${student.image}`}
+          src={`${student.image}`}
           alt={`${student.full_name}`}
           style={{
             width: "100%",

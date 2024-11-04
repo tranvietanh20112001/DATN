@@ -21,7 +21,8 @@ import {
   VisuallyHiddenInput,
 } from "@components/ModalStyle/modal.styled";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
-
+import uploadFileToFirebase from "../../../../firebase/index";
+import { UUID } from "uuidjs";
 export default function AddNewStudentModal({
   open,
   handleClose,
@@ -34,7 +35,7 @@ export default function AddNewStudentModal({
   const [campuses, setCampuses] = useState<ICampus[]>([]);
   const [faculties, setFaculties] = useState<IFaculty[]>([]);
   const [selectedCampus, setSelectedCampus] = useState<string | null>(null);
-  const [, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -89,8 +90,19 @@ export default function AddNewStudentModal({
     formData.append("faculty", values.faculty);
     formData.append("description", values.description);
     formData.append("MSSV", values.MSSV);
-    if (values.image) {
-      formData.append("image", values.image);
+
+    if (image) {
+      try {
+        const imgURL = await uploadFileToFirebase(
+          `Student_Images/${UUID.generate()}`,
+          image
+        );
+        formData.append("imgURL", imgURL);
+      } catch (error) {
+        notifyError("Upload ảnh thất bại");
+        console.error("Image upload error:", error);
+        return;
+      }
     }
 
     try {

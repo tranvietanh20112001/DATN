@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 
 import { IAccount } from "@interfaces/account.interface";
 import axios from "axios";
-import { API_IMAGE, API_ACCOUNT } from "@config/app.config";
+import { API_ACCOUNT } from "@config/app.config";
 import Icon from "@components/Icon/Icon";
 import {
   StyledTableCell,
@@ -198,7 +198,7 @@ const Account = () => {
                   </StyledTableCell>
                   <StyledTableCell align="center">
                     <img
-                      src={`${API_IMAGE}/${Account.image}`}
+                      src={`${Account.image}`}
                       width={"80px"}
                       style={{
                         borderRadius: "50%",

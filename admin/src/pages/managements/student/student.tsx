@@ -17,7 +17,7 @@ import AddNewStudentModal from "./AddNewStudentModal/AddNewStudentModal";
 import { useEffect, useState } from "react";
 import { IStudent } from "@interfaces/student.interface";
 import axios from "axios";
-import { API_IMAGE, API_STUDENT } from "@config/app.config";
+import { API_STUDENT } from "@config/app.config";
 import {
   StyledTableCell,
   StyledTableRow,
@@ -214,7 +214,7 @@ const Student = () => {
                   <StyledTableCell>{Student.faculty}</StyledTableCell>
                   <StyledTableCell>
                     <img
-                      src={`${API_IMAGE}/${Student.image}`}
+                      src={`${Student.image}`}
                       width={"80px"}
                       style={{
                         borderRadius: "50%",

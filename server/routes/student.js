@@ -46,13 +46,13 @@ router.get("/get-all-students", async (req, res) => {
 
 router.post("/create-new-student",  upload.single("image"), async(req,res) =>{
     try{
-        const {full_name, description, email, campus, faculty, personal_email, MSSV} = req.body;
-        const image = req.file ? req.file.filename : null;
+        const {full_name, description, email, campus, faculty, personal_email, MSSV, imgURL} = req.body;
+        
 
         const newstudent = new student({
             full_name,
             description,
-            image,
+            image: imgURL,
             email,
             personal_email,
             MSSV,
@@ -86,8 +86,8 @@ router.delete("/delete-student/:id", async (req, res) => {
 
 router.put("/update-student/:id", upload.single("image"), async (req, res) => {
   try {
-    const { full_name, description, email, campus, faculty, MSSV, personal_email } = req.body;
-    const image = req.file ? req.file.filename : null;
+    const { full_name, description, email, campus, faculty, MSSV, personal_email, imgURL } = req.body;
+    
 
     const updateFields = {
       full_name,
@@ -95,12 +95,9 @@ router.put("/update-student/:id", upload.single("image"), async (req, res) => {
       email,
       campus,
       faculty,
-      MSSV, personal_email
+      MSSV, personal_email,
+      image:imgURL
     };
-
-    if (image) {
-      updateFields.image = image;
-    }
 
     const updatedStudent = await student.findByIdAndUpdate(req.params.id, updateFields, { new: true });
 

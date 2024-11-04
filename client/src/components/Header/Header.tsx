@@ -91,10 +91,7 @@ const Header = () => {
           <Box display="flex" alignItems="center">
             <IconButton onClick={handleMenuClick}>
               {account.image ? (
-                <Avatar
-                  alt={account.email}
-                  src={`${API_IMAGE}/${account.image}`}
-                />
+                <Avatar alt={account.email} src={`${account.image}`} />
               ) : (
                 <Avatar>
                   <AccountCircleIcon />

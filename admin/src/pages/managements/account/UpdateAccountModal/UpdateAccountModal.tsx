@@ -129,7 +129,7 @@ export default function UpdateAccountModal({
 
                 {AccountData.image && !image && (
                   <img
-                    src={`${API_IMAGE}/${AccountData.image}`}
+                    src={`${AccountData.image}`}
                     alt="Account's Image"
                     width="50%"
                     height={"50%"}

@@ -103,9 +103,7 @@ const YourAccount = () => {
                 >
                   <img
                     src={
-                      previewUrl ||
-                      `${API_IMAGE}/${Account.image}` ||
-                      "/default-avatar.png"
+                      previewUrl || `${Account.image}` || "/default-avatar.png"
                     }
                     alt="Account Avatar"
                     width={"50%"}
