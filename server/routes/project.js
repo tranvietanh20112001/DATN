@@ -2,47 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Project = require("../models/project");
 const campus = require("../models/campus");
-import { initializeApp } from "firebase/app";
-import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import multer from "multer";
-import config from "../config/firebase.config"
-
-const giveCurrentDateTime = () => {
-  const today = new Date();
-  const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-  const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  const dateTime = date + ' ' + time;
-  return dateTime;
-};
-
-initializeApp(config.firebaseConfig);
-const storage = getStorage();
-const upload = multer({ storage: multer.memoryStorage() });
-
-router.post("/test-upload", upload.single("filename"), async (req, res) => {
-    try {
-        const dateTime = giveCurrentDateTime();
-
-        const storageRef = ref(storage, `files/${req.file.originalname + "       " + dateTime}`);
-
-        const metadata = {
-            contentType: req.file.mimetype,
-        };
-
-        const downloadURL = await getDownloadURL(snapshot.ref);
-
-        console.log('File successfully uploaded.');
-        return res.send({
-            message: 'file uploaded to firebase storage',
-            name: req.file.originalname,
-            type: req.file.mimetype,
-            downloadURL: downloadURL
-        })
-    } catch (error) {
-        return res.status(400).send(error.message)
-    }
-});
-
+const multer = require("multer");
 
 router.get("/get-all-projects", async (req, res) => {
     try {
@@ -74,59 +34,59 @@ router.get("/get-project-by-id/:id", async (req, res) => {
     }
 });
 
-router.post("/create-new-project", upload.fields([
-    { name: 'report_pdf', maxCount: 1 },
-    { name: 'img_banner', maxCount: 1 }
-]), async (req, res) => {
-    try {
+router.post("/create-new-project", async (req, res) => {
+  try {
       const {
-        title,
-        link_Youtube_URL,
-        link_demo_project,
-        year,
-        grade,
-        faculty,
-        campus,
-        teacher_name,
-        teacher_id,
-        student_name,
-        student_id,
-        description
+          title,
+          link_Youtube_URL,
+          link_demo_project,
+          year,
+          grade,
+          faculty,
+          campus,
+          teacher_name,
+          teacher_id,
+          student_name,
+          student_id,
+          description,
+          file_report_URL,
+          link_img_banner,
+          list_images, 
       } = JSON.parse(req.body.data);
-  
-      const fileReportUrl = req.files['report_pdf'] ? req.files['report_pdf'][0].path : '';
-      const imgBannerUrl = req.files['img_banner'] ? req.files['img_banner'][0].filename : '';
-  
+
+     
       const newProject = new Project({
-        title,
-        link_Youtube_URL,
-        link_demo_project,
-        year,
-        grade,
-        faculty,
-        campus,
-        teacher_name,
-        teacher_id,
-        student_name,
-        student_id,
-        file_report_URL: fileReportUrl,
-        link_img_banner: imgBannerUrl, 
-        description
+          title,
+          link_Youtube_URL,
+          link_demo_project,
+          year,
+          grade,
+          faculty,
+          campus,
+          teacher_name,
+          teacher_id,
+          student_name,
+          student_id,
+          file_report_URL,
+          link_img_banner,
+          description,
+          list_images 
       });
-  
+
       await newProject.save();
-  
+
       console.log(newProject);
       res.status(200).json({
-        success: true,
-        message: "Project created successfully",
-        projects: newProject,
+          success: true,
+          message: "Project created successfully",
+          project: newProject,
       });
-    } catch (error) {
+  } catch (error) {
       console.log(error);
       res.status(500).json({ success: false, message: "Internal server error" });
-    }
+  }
 });
+
 
 router.delete("/delete-project/:id", async (req, res) => {
   try {

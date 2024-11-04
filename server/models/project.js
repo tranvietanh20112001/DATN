@@ -66,6 +66,12 @@ const ProjectSchema = new mongoose.Schema({
         default: 0,
     },
     number_of_views: { type: Number, default: 0 },
+    list_images: [
+        {
+            url: { type: String },
+            caption: { type: String }
+        }
+    ],
 });
 
 const Project = mongoose.model('projects', ProjectSchema);

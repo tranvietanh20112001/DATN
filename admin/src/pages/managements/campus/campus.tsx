@@ -10,11 +10,11 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import { ICampus } from "../../../interfaces/campus.interface";
+import { ICampus } from "@interfaces/campus.interface";
 import { useEffect, useState } from "react";
-import { API_CAMPUS } from "../../../config/app.config";
+import { API_CAMPUS } from "@config/app.config";
 import AddNewCampusModal from "./AddNewCampusModal/AddNewCampusModal";
-import Color from "../../../components/Color/Color";
+import Color from "@components/Color/Color";
 import Icon from "@components/Icon/Icon";
 import DeleteCampusModal from "./DeleteCampusModal/DeleteCampusModal";
 import { notifyError, notifySuccess } from "@utils/notification.utils";

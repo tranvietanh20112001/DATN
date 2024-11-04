@@ -7,13 +7,15 @@ import { Field, Form, Formik } from "formik";
 import Icon from "@components/Icon/Icon";
 import { ICampus } from "@interfaces/campus.interface";
 import { useState } from "react";
-import { API_CAMPUS, API_IMAGE } from "@config/app.config";
+import { API_CAMPUS } from "@config/app.config";
 import axios from "axios";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import {
   style,
   VisuallyHiddenInput,
 } from "@components/ModalStyle/modal.styled";
+import uploadFileToFirebase from "../../../../firebase";
+import { UUID } from "uuidjs";
 
 export default function UpdateCampusModal({
   open,
@@ -34,9 +36,9 @@ export default function UpdateCampusModal({
     location: campus.location,
   };
 
-  const [, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
-    `${API_IMAGE}/${campus.image}`
+    `${campus.image}`
   );
   const [message, setMessage] = useState<string>("");
 
@@ -45,8 +47,19 @@ export default function UpdateCampusModal({
     formData.append("name", values.name);
     formData.append("location", values.location);
     formData.append("description", values.description);
-    if (values.image) {
-      formData.append("image", values.image);
+
+    if (image) {
+      try {
+        const imgURL = await uploadFileToFirebase(
+          `ProductThumbnails/${UUID.generate()}`,
+          image
+        );
+        formData.append("imgURL", imgURL);
+      } catch (error) {
+        notifyError("Upload ảnh thất bại");
+        console.error("Image upload error:", error);
+        return;
+      }
     }
 
     try {

@@ -45,14 +45,12 @@ router.get("/get-campus-detail/:id", async (req, res) => {
 // Add new Campus
 router.post("/create-new-campus",  upload.single("image"), async(req,res) =>{
     try{
-        const {name, description, location} = req.body;
-        const image = req.file ? req.file.filename : null;
-
+        const {name, description, location, imgURL} = req.body;
         const newcampus = new campus({
             name,
             description,
             location,
-            image
+            image: imgURL
         });
 
         await newcampus.save();
@@ -82,8 +80,8 @@ router.delete("/delete-campus/:id", async (req, res) => {
 // Update campus
 router.put("/update-campus/:id", upload.single("image"), async (req, res) => {
   try {
-    const { name, description, location } = req.body;
-    const image = req.file ? req.file.filename : null;
+    const { name, description, location, imgURL } = req.body;
+   
 
     const updatedCampus = await campus.findByIdAndUpdate(
       req.params.id,
@@ -91,7 +89,7 @@ router.put("/update-campus/:id", upload.single("image"), async (req, res) => {
         name,
         description,
         location,
-        ...(image && { image }), 
+        image : imgURL, 
       },
       { new: true }
     );

@@ -10,7 +10,7 @@ export interface ICreateANewCampus {
     name: string,
     description: string,
     location: string,
-    image: File | null,
+    image: string | null,
 } 
 
 export interface IUpdateCampus {

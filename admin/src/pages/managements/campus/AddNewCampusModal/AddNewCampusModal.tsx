@@ -4,16 +4,18 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Field, Form, Formik } from "formik";
-import Icon from "../../../../components/Icon/Icon";
-import { ICreateANewCampus } from "../../../../interfaces/campus.interface";
+import Icon from "@components/Icon/Icon";
+import { ICreateANewCampus } from "@interfaces/campus.interface";
 import { useState } from "react";
-import { API_CAMPUS } from "../../../../config/app.config";
+import { API_CAMPUS } from "@config/app.config";
 import axios from "axios";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import {
   style,
   VisuallyHiddenInput,
 } from "@components/ModalStyle/modal.styled";
+import uploadFileToFirebase from "../../../../firebase/index";
+import { UUID } from "uuidjs";
 
 export default function AddNewCampusModal({
   open,
@@ -27,21 +29,33 @@ export default function AddNewCampusModal({
   const initialValues: ICreateANewCampus = {
     name: "",
     description: "",
-    image: null,
+    image: "",
     location: "",
   };
-  const [, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const [message, setMessage] = useState<string>("");
-
-  const onSubmit = async (values: ICreateANewCampus) => {
+  const onSubmit = async (
+    values: ICreateANewCampus,
+    { setFieldError, resetForm }: any
+  ) => {
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("location", values.location);
     formData.append("description", values.description);
-    if (values.image) {
-      formData.append("image", values.image);
+
+    if (image) {
+      try {
+        const imgURL = await uploadFileToFirebase(
+          `ProductThumbnails/${UUID.generate()}`,
+          image
+        );
+        formData.append("imgURL", imgURL);
+      } catch (error) {
+        notifyError("Upload ảnh thất bại");
+        console.error("Image upload error:", error);
+        return;
+      }
     }
 
     try {
@@ -56,18 +70,28 @@ export default function AddNewCampusModal({
       );
       notifySuccess("Tạo cơ sở mới thành công");
       console.log(response);
+      resetForm();
       handleClose();
       fetchCampuses();
-    } catch (error) {
-      notifyError("Tạo cơ sở mới thất bại");
-      setMessage("error");
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        setFieldError("name", "Tên cơ sở là bắt buộc");
+      } else {
+        notifyError("Tạo cơ sở mới thất bại");
+      }
     }
+  };
+
+  const handleModalClose = () => {
+    setImage(null);
+    setPreviewUrl(null);
+    handleClose();
   };
 
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={handleModalClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -76,7 +100,7 @@ export default function AddNewCampusModal({
           Thêm mới cơ sở
         </Typography>
         <Formik initialValues={initialValues} onSubmit={onSubmit}>
-          {({ setFieldValue }) => (
+          {({ setFieldValue, errors }) => (
             <Form>
               <Box
                 display={"flex"}
@@ -91,6 +115,8 @@ export default function AddNewCampusModal({
                   variant="outlined"
                   name="name"
                   id="name"
+                  helperText={errors.name}
+                  error={Boolean(errors.name)}
                 />
                 <Typography>Địa chỉ</Typography>
                 <Field
@@ -141,7 +167,6 @@ export default function AddNewCampusModal({
             </Form>
           )}
         </Formik>
-        {message && <p>{message}</p>}
       </Box>
     </Modal>
   );

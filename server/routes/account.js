@@ -25,7 +25,7 @@ router.post('/create-new-account', async (req, res) => {
     const accountExists = await Account.findOne({ email });
     if (accountExists) return res.status(400).json({ message: 'account already exists' });
 
-    const newaccount = new account({ email, password, role, full_name });
+    const newaccount = new Account({ email, password, role, full_name });
     await newaccount.save();
 
     res.status(201).json({ message: 'account registered successfully' });
@@ -45,7 +45,7 @@ router.post('/register-new-account', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newaccount = new account({
+    const newaccount = new Account({
       email,
       password: hashedPassword,  
       role,
