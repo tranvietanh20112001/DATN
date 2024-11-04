@@ -8,6 +8,8 @@ import Student from "../pages/managements/student/student";
 import AddNewProject from "../pages/managements/projects/AddNewProjectPage/AddNewProject";
 import YourAccount from "../pages/managements/yourAccount/yourAccount";
 import Account from "../pages/managements/account/account";
+import Tag from "@pages/managements/hastag/tag";
+import Comment from "@pages/managements/comment/comment";
 export const managementRoutes: IRoute[] = [
   {
     path: "/do-an",
@@ -44,5 +46,13 @@ export const managementRoutes: IRoute[] = [
   {
     path: "/tai-khoan-cua-ban",
     component: <YourAccount />,
+  },
+  {
+    path: "/tag",
+    component: <Tag />,
+  },
+  {
+    path: "/binh-luan",
+    component: <Comment />,
   },
 ];

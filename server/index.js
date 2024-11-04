@@ -11,6 +11,8 @@ const facultyRouter = require("./routes/faculty")
 const teacherRouter = require("./routes/teacher")
 const studentRouter = require("./routes/student")
 const accountRouter = require('./routes/account');
+const tagRouter = require('./routes/tag');
+const commentRouter = require('./routes/comment');
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.DB_URL);
@@ -52,6 +54,9 @@ app.use("/api/faculty", facultyRouter);
 app.use("/api/teacher", teacherRouter);
 app.use("/api/student", studentRouter)
 app.use('/api/account', accountRouter);
+app.use('/api/tag', tagRouter);
+app.use('/api/comment', tagRouter);
+
 app.use("/uploads", express.static("uploads"));
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

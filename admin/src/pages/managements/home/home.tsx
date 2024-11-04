@@ -1,59 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { useAccount } from "@providers/account.provider";
-import I from "@components/Icon/Icon";
 import { useNavigate } from "react-router-dom";
 import Color from "@components/Color/Color";
-interface Link {
-  name: string;
-  url: string;
-  icon: React.ReactNode;
-}
-
-const links: Link[] = [
-  {
-    name: "Trang chủ",
-    url: "/trang-chu",
-    icon: <I.HomeIcon />,
-  },
-  {
-    name: "Quản lý đồ án",
-    url: "/do-an",
-    icon: <I.FolderIcon />,
-  },
-  {
-    name: "Quản lý sinh viên",
-    url: "/sinh-vien",
-    icon: <I.SchoolIcon />,
-  },
-  {
-    name: "Quản lý cơ sở",
-    url: "/co-so",
-    icon: <I.LocationCityIcon />,
-  },
-  {
-    name: "Quản lý giáo viên",
-    url: "/giao-vien",
-    icon: <I.GroupsIcon />,
-  },
-  {
-    name: "Quản lý chuyên ngành",
-    url: "/chuyen-nganh",
-    icon: <I.SupervisedUserCircleIcon />,
-  },
-];
-
-const AccountLink: Link[] = [
-  {
-    name: "Quản lý danh sách tài khoản",
-    url: "/tai-khoan",
-    icon: <I.ManageAccountsIcon />,
-  },
-  {
-    name: "Quản lý tài khoản của bạn",
-    url: "/tai-khoan-cua-ban",
-    icon: <I.AccountCircleIcon />,
-  },
-];
+import L from "@components/Link/Link";
 
 const styledBox = {
   cursor: "pointer",
@@ -89,7 +38,7 @@ const home = () => {
         </Typography>
         <Typography variant="h5">Quản lý đồ án</Typography>
         <Box width={"100%"} display={"flex"} gap={"24px"}>
-          {links.map((link, index) => (
+          {L.links.map((link, index) => (
             <Box
               sx={styledBox}
               onClick={() => navigate(`${link.url}`)}
@@ -103,7 +52,7 @@ const home = () => {
         </Box>
         <Typography variant="h5">Quản lý tài khoản</Typography>
         <Box width={"100%"} display={"flex"} gap={"24px"}>
-          {AccountLink.map((link, index) => (
+          {L.AccountLink.map((link, index) => (
             <Box
               sx={styledBox}
               onClick={() => navigate(`${link.url}`)}

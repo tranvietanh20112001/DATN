@@ -1,4 +1,3 @@
-// models/Product.js
 const mongoose = require('mongoose');
 
 const ProjectSchema = new mongoose.Schema({
@@ -10,32 +9,28 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    link_img_banner:{
-        type:String,
-    },
-    link_demo_project:{
+    link_img_banner: {
         type: String,
     },
-    year:{
+    link_demo_project: {
+        type: String,
+    },
+    year: {
         type: Number,
         required: true,
     },
-    grade:{
+    grade: {
         type: Number,
         required: true,
     },
-    file_report_URL:{
+    file_report_URL: {
         type: String,
     },
-    image_project_URL:{
-            data: Buffer,
-            contentType: String
-    },
-    student_id:{
+    student_id: {
         type: String,
         required: true,
     },
-    student_name:{
+    student_name: {
         type: String,
         required: true,
     },
@@ -51,31 +46,33 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    campus:{
+    campus: {
         type: String,
         required: true,
     },
-    file_report_URL:{
+    description: {
         type: String,
     },
-    description:{
-        type: String,
-    },
-    number_of_likes:{
+    number_of_likes: {
         type: Number,
         default: 0,
     },
-    number_of_views: { type: Number, default: 0 },
-    list_images: [
+    number_of_views: { 
+        type: Number, 
+        default: 0 
+    },
+    images: [
         {
             url: { type: String },
-            caption: { type: String }
         }
     ],
+    tags: [
+        {
+            type: String,
+        }
+    ]
 });
 
 const Project = mongoose.model('projects', ProjectSchema);
-
-  
 
 module.exports = Project;

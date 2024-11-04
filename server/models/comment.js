@@ -1,23 +1,19 @@
 const mongoose = require('mongoose');
 
 const CommentSchema = new mongoose.Schema({
-  content: {
-    type: String,
-    required: [true, "Nội dung không được để trống"],
-  },
-  project_id: {
-    type: String,
-    required: [true, "Dự án không được để trống"],
-  },
-  account_id: {
-    type: String,
-    required: [true, "Người dùng không được để trống"],
-  },
-}, {
-  timestamps: true,
-});
+    projectId: {
+        type: String,
+        required: true,
+    },
+    userId: {
+        type: String,
+        required: true,
+    },
+    content: {
+        type: String,
+        required: true,
+    },
+}, { timestamps: true });
 
-
-const Comment = mongoose.model('comment', CommentSchema);
-
+const Comment = mongoose.model('Comment', CommentSchema);
 module.exports = Comment;

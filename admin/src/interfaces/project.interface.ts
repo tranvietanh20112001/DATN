@@ -14,17 +14,20 @@ export interface IProject{
     description: string,
 }
 
-export interface ICreateANewProject{
+export interface ICreateANewProject {
     title: string;
-    link_Youtube_URL: string,
-    link_demo_project: string,
-    year: number,
-    grade: number,
-    faculty: string,
-    campus: string,
-    teacher_name: string,
-    teacher_id: string,
-    student_name: string,
-    student_id: string,
-    description: string,
+    youtubeURL: string;
+    demoProjectURL: string;
+    year: number;
+    grade: number;
+    faculty: string;
+    campus: string;
+    teacherName: string;
+    teacherId: string;
+    studentName: string;
+    studentId: string;
+    description: string;
+    link_img_banner: string;
+    images?: string[]; 
+    tags?: string[];    
 }

@@ -11,6 +11,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import TagIcon from "@mui/icons-material/Tag";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 export default {
   HomeIcon,
   FolderIcon,
@@ -25,4 +27,6 @@ export default {
   ManageAccountsIcon,
   AccountCircleIcon,
   VpnKeyIcon,
+  TagIcon,
+  ChatBubbleIcon,
 };

@@ -31,4 +31,21 @@ const uploadFileToFirebase = async (folder: string, file: File): Promise<string>
   });
 };
 
+export const uploadManyFilesToFirebase = async (folder: string, files: File[]): Promise<string[]> => {
+  const uploadPromises = files.map((file) =>
+    new Promise<string>((resolve, reject) => {
+      const storageRef = ref(storage, `${folder}/${file.name}`);
+      uploadBytes(storageRef, file)
+        .then((snapshot) => {
+          getDownloadURL(snapshot.ref)
+            .then((url: string) => resolve(url))
+            .catch((err: string) => reject(err));
+        })
+        .catch((err: string) => reject(err));
+    })
+  );
+
+  return Promise.all(uploadPromises);
+};
+
 export default uploadFileToFirebase;

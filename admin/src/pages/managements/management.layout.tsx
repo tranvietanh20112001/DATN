@@ -20,57 +20,7 @@ import { Outlet } from "react-router-dom";
 import I from "@components/Icon/Icon";
 import { useNavigate } from "react-router-dom";
 import LogoutModal from "@pages/auth/logoutModal/logoutModal";
-interface Link {
-  name: string;
-  url: string;
-  icon: React.ReactNode;
-}
-
-const links: Link[] = [
-  {
-    name: "Trang chủ",
-    url: "/trang-chu",
-    icon: <I.HomeIcon />,
-  },
-  {
-    name: "Quản lý đồ án",
-    url: "/do-an",
-    icon: <I.FolderIcon />,
-  },
-  {
-    name: "Quản lý sinh viên",
-    url: "/sinh-vien",
-    icon: <I.SchoolIcon />,
-  },
-  {
-    name: "Quản lý cơ sở",
-    url: "/co-so",
-    icon: <I.LocationCityIcon />,
-  },
-  {
-    name: "Quản lý giáo viên",
-    url: "/giao-vien",
-    icon: <I.GroupsIcon />,
-  },
-  {
-    name: "Quản lý chuyên ngành",
-    url: "/chuyen-nganh",
-    icon: <I.SupervisedUserCircleIcon />,
-  },
-];
-
-const AccountLink: Link[] = [
-  {
-    name: "Quản lý danh sách tài khoản",
-    url: "/tai-khoan",
-    icon: <I.ManageAccountsIcon />,
-  },
-  {
-    name: "Quản lý tài khoản của bạn",
-    url: "/tai-khoan-cua-ban",
-    icon: <I.AccountCircleIcon />,
-  },
-];
+import L from "@components/Link/Link";
 const drawerWidth = 320;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -218,7 +168,7 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {links.map((link, index) => (
+          {L.links.map((link, index) => (
             <ListItem key={index} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={[
@@ -269,7 +219,7 @@ export default function MiniDrawer() {
             </ListItem>
           ))}
           <Divider />
-          {AccountLink.map((link, index) => (
+          {L.AccountLink.map((link, index) => (
             <ListItem key={index} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={[
