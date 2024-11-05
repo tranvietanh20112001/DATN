@@ -56,8 +56,10 @@ export default function UpdateTagModal({
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         setFieldError("name", "Tên Tag là bắt buộc");
+        notifyError("Tạo Tag mới thất bại");
       } else {
         notifyError("Tạo Tag mới thất bại");
+        setMessage(error);
       }
     }
   };

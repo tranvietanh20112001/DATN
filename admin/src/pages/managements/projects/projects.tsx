@@ -27,6 +27,7 @@ import {
   StyledTableCell,
   StyledTableRow,
 } from "@components/TableStyle/Table.styled";
+import { notifyError, notifySuccess } from "@utils/notification.utils";
 
 const ListOfProjects = () => {
   const [projects, setProjects] = useState<IProject[]>([]);
@@ -71,9 +72,9 @@ const ListOfProjects = () => {
         setProjects((prevProjects) =>
           prevProjects.filter((project) => project._id !== selectedProject._id)
         );
-        alert("Dự án đã được xóa thành công!");
+        notifySuccess("Xoá dự án thành công");
       } catch (error) {
-        setError("Lỗi khi xóa dự án.");
+        notifyError("Xóa dự án thất bại");
       }
     }
   };

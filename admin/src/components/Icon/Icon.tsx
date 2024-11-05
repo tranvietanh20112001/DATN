@@ -13,6 +13,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import TagIcon from "@mui/icons-material/Tag";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import CloseIcon from "@mui/icons-material/Close";
 export default {
   HomeIcon,
   FolderIcon,
@@ -29,4 +30,5 @@ export default {
   VpnKeyIcon,
   TagIcon,
   ChatBubbleIcon,
+  CloseIcon,
 };

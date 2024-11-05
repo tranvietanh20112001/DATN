@@ -3,7 +3,16 @@ const router = express.Router();
 const Project = require("../models/project");
 const campus = require("../models/campus");
 const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
 
+const upload = multer({ storage });
 router.get("/get-all-projects", async (req, res) => {
     try {
       const projects = await Project.find().sort({ createdAt: -1 });
@@ -34,12 +43,13 @@ router.get("/get-project-by-id/:id", async (req, res) => {
     }
 });
 
-router.post("/create-new-project", async (req, res) => {
+router.post("/create-new-project",  upload.single("image") ,async (req, res) => {
   try {
       const {
           title,
           link_Youtube_URL,
           link_demo_project,
+          link_img_banner,
           year,
           grade,
           faculty,
@@ -50,9 +60,10 @@ router.post("/create-new-project", async (req, res) => {
           student_id,
           description,
           file_report_URL,
-          link_img_banner,
-          list_images, 
-      } = JSON.parse(req.body.data);
+          
+          images, 
+          tags,
+      } = req.body;
 
      
       const newProject = new Project({
@@ -70,7 +81,8 @@ router.post("/create-new-project", async (req, res) => {
           file_report_URL,
           link_img_banner,
           description,
-          list_images 
+          images,
+          tags, 
       });
 
       await newProject.save();

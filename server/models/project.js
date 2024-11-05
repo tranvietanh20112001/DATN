@@ -62,9 +62,9 @@ const ProjectSchema = new mongoose.Schema({
         default: 0 
     },
     images: [
-        {
-            url: { type: String },
-        }
+        
+            
+        
     ],
     tags: [
         {
