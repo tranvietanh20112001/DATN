@@ -1,5 +1,4 @@
 
-
 export interface IProject{
     _id: string | null;
     title: string;
@@ -13,11 +12,9 @@ export interface IProject{
     student_name: string,
     student_id: string,
     link_demo_project: string,
-    link_img_banner: string,
     description: string,
-    number_of_likes: number,
-    number_of_views: number,
 }
+
 
 export interface ICreateANewProject{
     title: string;

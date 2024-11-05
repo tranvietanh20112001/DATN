@@ -105,6 +105,24 @@ router.get('/get-all-accounts', async(req,res) =>{
   }
 })
 
+
+router.get("/get-account-by-id/:id", async (req, res) => {
+  try {
+    const accountId = req.params.id;
+
+    const account = await Account.findById(accountId);
+
+    if (!account) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+
+    // Return the account data
+    res.json(account);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.put("/update-account/:id", upload.single("image"), async (req, res) => {
   try {
     const { full_name, description, phone_number,campus,faculty, imgURL } = req.body;

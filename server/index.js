@@ -55,7 +55,7 @@ app.use("/api/teacher", teacherRouter);
 app.use("/api/student", studentRouter)
 app.use('/api/account', accountRouter);
 app.use('/api/tag', tagRouter);
-app.use('/api/comment', tagRouter);
+app.use('/api/comment', commentRouter);
 
 app.use("/uploads", express.static("uploads"));
 app.listen(PORT, () => {

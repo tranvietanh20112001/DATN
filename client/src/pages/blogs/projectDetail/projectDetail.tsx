@@ -1,4 +1,4 @@
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -7,12 +7,17 @@ import { getColorsForDepartment } from "@components/Color/Color";
 import Color from "@components/Color/Color";
 import GetStudentProfile from "./getStudentProfile.tsx/getStudentProfile";
 import Icon from "@components/Icons/Icon";
+import ProjectComment from "./projectComment.tsx/projectComment";
+import { useNavigate } from "react-router-dom";
 const ProjectDetail = () => {
+  const token = localStorage.getItem("token");
   const { id } = useParams();
   const [project, setProject] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [views, setViews] = useState(Number);
+  const navigate = useNavigate();
+
   const getYoutubeEmbedUrl = (url: string) => {
     const videoIdMatch = url.match(
       /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
@@ -30,7 +35,6 @@ const ProjectDetail = () => {
         `${API_PROJECT}/get-project-by-id/${id}`
       );
       setProject(response.data);
-      console.log(response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setError(error.message);
@@ -63,13 +67,19 @@ const ProjectDetail = () => {
   if (error) return <Typography color="error">{error}</Typography>;
   if (!project) return <Typography>No project found.</Typography>;
 
+  let imges = project.images[0];
+
+  if (typeof imges === "string") {
+    imges = JSON.parse(imges);
+  }
+
   const { textColor, backgroundColor } = getColorsForDepartment(
     project.faculty
   );
 
   return (
     <Box display={"flex"} flexDirection={"column"} gap={"24px"}>
-      <Box display={"flex"} gap={"12px"}>
+      <Box display={"flex"} gap={"12px"} flexWrap={"wrap"}>
         <Box>
           <Typography
             bgcolor={backgroundColor}
@@ -162,6 +172,16 @@ const ProjectDetail = () => {
         {project.description}
       </Typography>
 
+      <Box display="flex" flexWrap="wrap" gap="12px" mt="16px">
+        {imges.map((image: string, index: number) => (
+          <img
+            src={image}
+            alt={`Project Image ${index + 1}`}
+            style={{ width: "100%", borderRadius: "6px" }}
+            key={index}
+          />
+        ))}
+      </Box>
       <iframe
         width="100%"
         height={800}
@@ -175,6 +195,29 @@ const ProjectDetail = () => {
       <Divider />
 
       <GetStudentProfile _id={project.student_id} />
+      <Divider />
+      {token && <ProjectComment projectId={project._id} />}
+      {!token && (
+        <Box
+          width={"80%"}
+          height={"auto"}
+          padding={"12px 0"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          gap="12px"
+          flexDirection={"column"}
+          textAlign={"center"}
+          margin={"0 auto"}
+        >
+          <Typography>
+            Bạn cần đăng nhập để có thể xem và bình luận về bài viết
+          </Typography>
+          <Button variant="outlined" onClick={() => navigate("/dang-nhap")}>
+            Đăng nhập ngay
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
