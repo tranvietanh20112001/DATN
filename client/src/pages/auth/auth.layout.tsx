@@ -1,17 +1,16 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import login from "@assets/login.jpg";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo from "@assets/logo.jpg";
 const AuthLayout = () => {
   const naviagate = useNavigate();
-
+  const isMobile = useMediaQuery("(min-width:600px)");
   return (
     <>
-      <Box width={"100%"} height={"100vh"} display={"flex"}>
+      <Box width={"100%"} display={"flex"}>
         <Box
           width={"50%"}
-          height={"100%"}
-          display={"flex"}
+          display={isMobile ? "flex" : "none"}
           justifyContent={"center"}
           alignItems={"center"}
         >
@@ -24,7 +23,7 @@ const AuthLayout = () => {
         </Box>
 
         <Box
-          width={"50%"}
+          width={isMobile ? "50%" : "100%"}
           height={"100%"}
           display={"flex"}
           justifyContent={"center"}

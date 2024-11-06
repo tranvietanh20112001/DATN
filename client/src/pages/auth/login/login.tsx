@@ -21,9 +21,9 @@ const Login = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent form default submission
+    e.preventDefault();
     setApiError(null);
-    setLoading(true); // Set loading to true
+    setLoading(true);
 
     try {
       const response = await axios.post(`${API_ACCOUNT}/login`, loginData);

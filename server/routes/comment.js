@@ -17,7 +17,7 @@ router.post('/add-new-comment', async (req, res) => {
 // Get all comments for a specific project
 router.get('/get-comments-by-project/:projectId', async (req, res) => {
     try {
-        const comments = await Comment.find({ projectId: req.params.projectId });
+        const comments = await Comment.find({ projectId: req.params.projectId }).sort({ createdAt: -1 });
         res.status(200).json( comments );
     } catch (error) {
         res.status(500).json({  message: error.message });

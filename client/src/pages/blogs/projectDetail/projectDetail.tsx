@@ -9,8 +9,10 @@ import GetStudentProfile from "./getStudentProfile.tsx/getStudentProfile";
 import Icon from "@components/Icons/Icon";
 import ProjectComment from "./projectComment.tsx/projectComment";
 import { useNavigate } from "react-router-dom";
+import { useAccount } from "@providers/account.provider";
 const ProjectDetail = () => {
-  const token = localStorage.getItem("token");
+  const getAccoount = useAccount();
+  const account = getAccoount.account;
   const { id } = useParams();
   const [project, setProject] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -196,8 +198,8 @@ const ProjectDetail = () => {
 
       <GetStudentProfile _id={project.student_id} />
       <Divider />
-      {token && <ProjectComment projectId={project._id} />}
-      {!token && (
+      {account && <ProjectComment projectId={project._id} />}
+      {!account && (
         <Box
           width={"80%"}
           height={"auto"}

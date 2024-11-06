@@ -22,9 +22,9 @@ const SignUp = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent form default submission
+    e.preventDefault();
     setApiError(null);
-    setLoading(true); // Set loading to true
+    setLoading(true);
 
     try {
       const response = await axios.post(
@@ -48,7 +48,15 @@ const SignUp = () => {
       <Typography variant="h3" fontWeight={"bold"} textAlign={"center"}>
         Đăng ký ngay
       </Typography>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+          width: "100%",
+        }}
+      >
         <Typography fontWeight={"bold"}>Tên đăng nhập</Typography>
         <TextField
           variant="outlined"
@@ -56,7 +64,7 @@ const SignUp = () => {
           onChange={handleInputChange}
           required
           name="email"
-        ></TextField>
+        />
         <Typography fontWeight={"bold"}>Mật khẩu</Typography>
         <TextField
           variant="outlined"
@@ -64,9 +72,7 @@ const SignUp = () => {
           type="password"
           required
           onChange={handleInputChange}
-        >
-          {" "}
-        </TextField>
+        />
 
         <Typography fontWeight={"bold"}>Họ và tên</Typography>
         <TextField
@@ -74,7 +80,7 @@ const SignUp = () => {
           value={registerData.full_name}
           onChange={handleInputChange}
           name="full_name"
-        ></TextField>
+        />
 
         <Button
           variant="contained"

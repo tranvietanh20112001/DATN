@@ -79,9 +79,6 @@ const Header = () => {
           <Typography sx={TypoStyled} onClick={() => navigate("/co-so")}>
             Cơ sở
           </Typography>
-          <Typography sx={TypoStyled} onClick={() => navigate("/chuyen-nganh")}>
-            Chuyên ngành
-          </Typography>
           <Typography sx={TypoStyled} onClick={() => navigate("/ve-chung-toi")}>
             Về chúng tôi
           </Typography>
@@ -140,9 +137,6 @@ const Header = () => {
             >
               <MenuItem onClick={() => navigate("/")}>Trang chủ</MenuItem>
               <MenuItem onClick={() => navigate("/co-so")}>Cơ sở</MenuItem>
-              <MenuItem onClick={() => navigate("/chuyen-nganh")}>
-                Chuyên ngành
-              </MenuItem>
               <MenuItem onClick={() => navigate("/ve-chung-toi")}>
                 Về chúng tôi
               </MenuItem>

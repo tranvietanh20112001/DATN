@@ -7,7 +7,7 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send"; // Import an icon for sending comments
+import SendIcon from "@mui/icons-material/Send";
 import { IComment } from "@interfaces/comment.interface";
 import axios from "axios";
 import { API_ACCOUNT, API_COMMENT } from "@config/app.config";
@@ -23,42 +23,43 @@ const ProjectComment: React.FC<ProjectCommentProps> = ({ projectId }) => {
   const { account } = useAccount();
   const [users, setUsers] = useState<{ [key: string]: any }>({});
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      const response = await axios.get(
-        `${API_COMMENT}/get-comments-by-project/${projectId}`
+  const fetchComments = async () => {
+    const response = await axios.get(
+      `${API_COMMENT}/get-comments-by-project/${projectId}`
+    );
+    const commentsData = response.data;
+    setComments(commentsData);
+
+    const userPromises = commentsData.map(async (comment: IComment) => {
+      const userResponse = await axios.get(
+        `${API_ACCOUNT}/get-account-by-id/${comment.userId}`
       );
-      const commentsData = response.data;
-      setComments(commentsData);
+      return { userId: comment.userId, userData: userResponse.data };
+    });
 
-      const userPromises = commentsData.map(async (comment: IComment) => {
-        const userResponse = await axios.get(
-          `${API_ACCOUNT}/get-account-by-id/${comment.userId}`
-        );
-        return { userId: comment.userId, userData: userResponse.data };
-      });
+    const usersData = await Promise.all(userPromises);
+    const usersMap = usersData.reduce((acc, { userId, userData }) => {
+      acc[userId] = userData;
+      return acc;
+    }, {});
+    setUsers(usersMap);
+  };
 
-      const usersData = await Promise.all(userPromises);
-      const usersMap = usersData.reduce((acc, { userId, userData }) => {
-        acc[userId] = userData;
-        return acc;
-      }, {});
-      setUsers(usersMap);
-    };
+  useEffect(() => {
     fetchComments();
   }, [projectId]);
 
   const handleCommentSubmit = async () => {
-    if (newComment.trim()) {
-      const response = await axios.post(`${API_COMMENT}/add-new-comment`, {
-        projectId: projectId,
-        content: newComment,
-        userId: account?._id,
-      });
+    if (!newComment.trim()) return;
 
-      setComments([...comments, response.data]);
-      setNewComment("");
-    }
+    await axios.post(`${API_COMMENT}/add-new-comment`, {
+      projectId: projectId,
+      content: newComment,
+      userId: account?._id,
+    });
+
+    setNewComment("");
+    fetchComments();
   };
 
   return (
@@ -74,16 +75,19 @@ const ProjectComment: React.FC<ProjectCommentProps> = ({ projectId }) => {
           label="Viết bình luận ở đây..."
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleCommentSubmit();
+            }
+          }}
           fullWidth
           size="small"
           slotProps={{
             input: {
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleCommentSubmit}
-                    disabled={!newComment.trim()}
-                  >
+                  <IconButton onClick={handleCommentSubmit}>
                     <SendIcon color="primary" />
                   </IconButton>
                 </InputAdornment>

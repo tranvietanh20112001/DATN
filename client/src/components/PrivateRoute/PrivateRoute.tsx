@@ -24,7 +24,7 @@ const PrivateRoute: React.FC = () => {
 
           const userData = response.data;
           setAccount(userData);
-          localStorage.setItem("user", JSON.stringify(userData));
+          sessionStorage.setItem("user", JSON.stringify(userData));
           setLoading(false);
         } catch (error) {
           console.error("Failed to fetch user data:", error);
