@@ -8,3 +8,4 @@ export const API_TEACHER= `${API}/teacher`
 export const API_STUDENT= `${API}/student`
 export const API_ACCOUNT = `${API}/account`
 export const API_TAG = `${API}/tag`
+export const API_COMMENT = `${API}/comment`

@@ -14,6 +14,15 @@ router.post('/add-new-comment', async (req, res) => {
     }
 });
 
+router.get('/get-all-comments', async (req, res) => {
+    try {
+        const comments = await Comment.find().sort({ createdAt: -1 });
+        res.status(200).json( comments );
+    } catch (error) {
+        res.status(500).json({  message: error.message });
+    }
+});
+
 // Get all comments for a specific project
 router.get('/get-comments-by-project/:projectId', async (req, res) => {
     try {
@@ -30,8 +39,7 @@ router.put('/update-comment/:id', async (req, res) => {
         const { content } = req.body;
         const updatedComment = await Comment.findByIdAndUpdate(
             req.params.id,
-            { content },
-            { new: true, runValidators: true }
+            { content }
         );
         if (!updatedComment) return res.status(404).json({ success: false, message: 'Comment not found' });
         res.status(200).json({ success: true, message: 'Comment updated successfully', comment: updatedComment });
