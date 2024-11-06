@@ -39,7 +39,7 @@ router.put('/update-comment/:id', async (req, res) => {
         const { content } = req.body;
         const updatedComment = await Comment.findByIdAndUpdate(
             req.params.id,
-            { content }
+            { content }, { new: true }
         );
         if (!updatedComment) return res.status(404).json({ success: false, message: 'Comment not found' });
         res.status(200).json({ success: true, message: 'Comment updated successfully', comment: updatedComment });

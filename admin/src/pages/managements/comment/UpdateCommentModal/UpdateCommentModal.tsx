@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Field, Form, Formik } from "formik";
-import { IUpdateComment, IComment } from "@interfaces/comment.interface";
+import { IComment } from "@interfaces/comment.interface";
 import { useState } from "react";
 import { API_COMMENT } from "@config/app.config";
 import axios from "axios";
@@ -22,23 +22,24 @@ export default function UpdateCommentModal({
   fetchComments: () => void;
   Comment: IComment;
 }) {
-  const initialValues: IUpdateComment = {
+  const initialValues: IComment = {
     content: Comment.content,
+    _id: Comment._id,
+    projectId: Comment.projectId,
+    userId: Comment.userId,
+    createdAt: Comment.createdAt,
   };
 
   const [message, setMessage] = useState<string>("");
 
-  const onSubmit = async (values: IUpdateComment) => {
-    const formData = new FormData();
-    formData.append("content", values.content);
-
+  const onSubmit = async (values: IComment) => {
     try {
       const response = await axios.put(
         `${API_COMMENT}/update-comment/${Comment._id}`,
-        formData,
+        { content: values.content },
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
       );
