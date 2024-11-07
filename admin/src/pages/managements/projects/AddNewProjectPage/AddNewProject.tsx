@@ -22,7 +22,7 @@ import { notifyError, notifySuccess } from "@utils/notification.utils";
 import uploadFileToFirebase from "../../../../firebase/index";
 import { UUID } from "uuidjs";
 import SearchTag from "./SearchTag";
-
+import { ProjectValidationSchema } from "@validations/project.validation";
 const AddNewProject = () => {
   const [student, setStudent] = useState<IStudent | null>(null);
   const [teacher, setTeacher] = useState<ITeacher | null>(null);
@@ -182,8 +182,12 @@ const AddNewProject = () => {
   };
 
   return (
-    <Formik initialValues={ProjectInitialValues} onSubmit={onSubmitProject}>
-      {({ handleSubmit, values }) => (
+    <Formik
+      initialValues={ProjectInitialValues}
+      onSubmit={onSubmitProject}
+      validationSchema={ProjectValidationSchema}
+    >
+      {({ handleSubmit, values, errors, touched }) => (
         <Box display="flex" flexDirection="column" gap="40px">
           <Box display="flex" justifyContent="space-between">
             <Typography variant="h4" fontWeight={700}>
@@ -200,6 +204,8 @@ const AddNewProject = () => {
                 name="title"
                 label="Tiêu đề dự án"
                 size="small"
+                error={touched.title && !!errors.title}
+                helperText={touched.title && errors.title}
               />
               <Field
                 as={TextField}
@@ -212,6 +218,16 @@ const AddNewProject = () => {
                 name="link_demo_project"
                 label="Link demo dự án"
                 size="small"
+              />
+
+              <Field
+                as={TextField}
+                name="grade"
+                label="Số điểm"
+                size="small"
+                type="number"
+                error={touched.grade && !!errors.grade}
+                helperText={touched.grade && errors.grade}
               />
 
               <Button

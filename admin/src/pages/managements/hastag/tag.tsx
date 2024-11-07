@@ -19,7 +19,6 @@ import Icon from "@components/Icon/Icon";
 import DeleteTagModal from "./DeleteTagModal/DeleteTagModal";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import UpdateTagModal from "./UpdateTagModal/UpdateTagModal";
-
 import {
   StyledTableCell,
   StyledTableRow,

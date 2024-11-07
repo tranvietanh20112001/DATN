@@ -17,7 +17,13 @@ const ProjectsInCampus: React.FC = () => {
       const response = await axios.get<IProject[]>(
         `${API_PROJECT}/get-projects-by-campus/${id}`
       );
-      setProjects(response.data);
+
+      if (Array.isArray(response.data)) {
+        setProjects(response.data);
+      } else {
+        setError("Data format error: Expected an array of projects.");
+        setProjects([]);
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setError(error.message);
@@ -61,4 +67,5 @@ const ProjectsInCampus: React.FC = () => {
     </Box>
   );
 };
+
 export default ProjectsInCampus;

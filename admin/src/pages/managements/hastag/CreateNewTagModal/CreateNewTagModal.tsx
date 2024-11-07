@@ -10,6 +10,7 @@ import axios from "axios";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import { style } from "@components/ModalStyle/modal.styled";
 import { HexColorPicker } from "react-colorful";
+import { TagValidationSchema } from "@validations/tag.validation";
 
 export default function AddNewTagModal({
   open,
@@ -71,8 +72,12 @@ export default function AddNewTagModal({
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Thêm mới Tag
         </Typography>
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
-          {({ errors, values, setFieldValue }) => (
+        <Formik
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          validationSchema={TagValidationSchema}
+        >
+          {({ touched, errors, values, setFieldValue }) => (
             <Form>
               <Box
                 display={"flex"}
@@ -87,8 +92,8 @@ export default function AddNewTagModal({
                   variant="outlined"
                   name="name"
                   id="name"
-                  helperText={errors.name}
-                  error={Boolean(errors.name)}
+                  error={touched.name && !!errors.name}
+                  helperText={touched.name && errors.name}
                 />
 
                 <Typography>Mã màu tag</Typography>

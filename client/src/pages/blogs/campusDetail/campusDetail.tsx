@@ -5,7 +5,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProjectInCampus from "./ProjectInCampus/ProjectInCampus";
-import StudentsInCampus from "./StudentsInCampus/StudentsInCampus";
 
 const CampusDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -70,10 +69,6 @@ const CampusDetail = () => {
         Các đồ án xuất sắc tại cơ sở {campus?.name}
       </Typography>
       <ProjectInCampus />
-      <Typography variant="h4" mt={4}>
-        Các sinh viên xuất sắc của cơ sở {campus?.name}
-      </Typography>
-      <StudentsInCampus />
     </>
   );
 };

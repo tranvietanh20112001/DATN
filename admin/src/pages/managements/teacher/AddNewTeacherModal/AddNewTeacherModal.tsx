@@ -23,7 +23,7 @@ import {
 } from "@components/ModalStyle/modal.styled";
 import uploadFileToFirebase from "../../../../firebase/index";
 import { UUID } from "uuidjs";
-
+import { TeacherValidationSchema } from "@validations/teacher.validation";
 export default function AddNewTeacherModal({
   open,
   handleClose,
@@ -139,8 +139,12 @@ export default function AddNewTeacherModal({
         >
           Thêm mới giáo viên
         </Typography>
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
-          {({ setFieldValue }) => (
+        <Formik
+          initialValues={initialValues}
+          onSubmit={onSubmit}
+          validationSchema={TeacherValidationSchema}
+        >
+          {({ setFieldValue, errors, touched }) => (
             <Form>
               <Box
                 display={"flex"}
@@ -155,6 +159,8 @@ export default function AddNewTeacherModal({
                   variant="outlined"
                   name="full_name"
                   id="full_name"
+                  error={touched.full_name && !!errors.full_name}
+                  helperText={touched.full_name && errors.full_name}
                 />
                 <Typography>Email</Typography>
                 <Field
@@ -169,6 +175,8 @@ export default function AddNewTeacherModal({
                   variant="outlined"
                   name="campus"
                   id="campus"
+                  error={touched.campus && !!errors.campus}
+                  helperText={touched.campus && errors.campus}
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                     const campus = e.target.value;
                     setFieldValue("campus", campus);
@@ -188,6 +196,8 @@ export default function AddNewTeacherModal({
                   name="faculty"
                   id="faculty"
                   disabled={!selectedCampus}
+                  error={touched.faculty && !!errors.faculty}
+                  helperText={touched.faculty && errors.faculty}
                 >
                   {faculties.map((faculty) => (
                     <MenuItem key={faculty._id} value={faculty.name}>

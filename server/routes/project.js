@@ -151,7 +151,7 @@ router.get('/get-projects-by-campus/:campusId', async (req, res) => {
       const projects = await Project.find({campus: campusSelected.name});
       
       if (projects.length === 0) {
-          return res.status(404).json({ message: 'No projects found for this class.' });
+          return res.status(201).json({ message: 'No projects found for this class.' });
       }
       
       res.json(projects);

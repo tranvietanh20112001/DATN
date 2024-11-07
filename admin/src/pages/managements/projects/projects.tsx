@@ -7,19 +7,19 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { API_PROJECT } from "../../../config/app.config";
+import { API_PROJECT } from "@config/app.config";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { IProject } from "../../../interfaces/project.interface";
+import { IProject } from "@interfaces/project.interface";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Color from "../../../components/Color/Color";
+import Color from "@components/Color/Color";
 import { useNavigate } from "react-router-dom";
-import Icon from "../../../components/Icon/Icon";
+import Icon from "@components/Icon/Icon";
 import DeleteProjectModal from "./DeleteProjectModal/DeleteProjectModal";
 import UpdateProjectModal from "./UpdateProjectModal/UpdateProjectModal";
 
