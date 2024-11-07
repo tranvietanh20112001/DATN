@@ -75,4 +75,19 @@ router.delete('/delete-tag/:id', async (req, res) => {
     }
 });
 
+// Search tags by name
+router.get("/search-tags", async (req, res) => {
+    const { search } = req.query;
+  
+    try {
+      const tags = await Tag.find({
+        name: { $regex: search, $options: "i" },  
+      }).limit(10);
+  
+      res.status(200).json(tags);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching tags", error: error.message });
+    }
+  });
+
 module.exports = router;

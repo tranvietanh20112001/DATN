@@ -21,6 +21,7 @@ import { VisuallyHiddenInput } from "@components/ModalStyle/modal.styled";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import uploadFileToFirebase from "../../../../firebase/index";
 import { UUID } from "uuidjs";
+import SearchTag from "./SearchTag";
 
 const AddNewProject = () => {
   const [student, setStudent] = useState<IStudent | null>(null);
@@ -32,6 +33,7 @@ const AddNewProject = () => {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const navigate = useNavigate();
 
+  // Initial form values for the project
   const ProjectInitialValues: ICreateANewProject = {
     title: "",
     link_Youtube_URL: "",
@@ -51,6 +53,7 @@ const AddNewProject = () => {
     images: [],
   };
 
+  // Helper to extract YouTube embed URL
   const getYoutubeEmbedUrl = (url: string) => {
     const videoIdMatch = url.match(
       /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
@@ -60,6 +63,7 @@ const AddNewProject = () => {
       : null;
   };
 
+  // Handle banner image upload
   const handleBannerUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (file) {
@@ -68,6 +72,7 @@ const AddNewProject = () => {
     }
   };
 
+  // Handle multiple image uploads
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files ? Array.from(event.target.files) : [];
     const newFiles = files.slice(0, 5 - images.length);
@@ -78,11 +83,13 @@ const AddNewProject = () => {
     ]);
   };
 
+  // Remove the banner image
   const handleDeleteBanner = () => {
     setImageBanner(null);
     setBannerPreview(null);
   };
 
+  // Remove a specific image from the preview and images array
   const handleDeleteImage = (index: number) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
     setImagePreviews((prevPreviews) =>
@@ -90,6 +97,7 @@ const AddNewProject = () => {
     );
   };
 
+  // Form submission handler
   const onSubmitProject = async (values: ICreateANewProject) => {
     if (student && teacher) {
       const formData = new FormData();
@@ -108,12 +116,12 @@ const AddNewProject = () => {
       formData.append("student_id", student._id);
       formData.append("description", values.description);
 
-      // Append tags as a JSON string if there are any
+      // Append tags if there are any
       if (values.tags.length > 0) {
         formData.append("tags", JSON.stringify(values.tags));
       }
 
-      // Handle file uploads for images and PDFs
+      // Handle image and PDF uploads
       if (imageBanner) {
         try {
           const imgURL = await uploadFileToFirebase(
@@ -123,7 +131,6 @@ const AddNewProject = () => {
           formData.append("link_img_banner", imgURL);
         } catch (error) {
           notifyError("Failed to upload banner image.");
-          console.error("Image upload error:", error);
           return;
         }
       }
@@ -137,12 +144,10 @@ const AddNewProject = () => {
           formData.append("file_report_URL", pdfURL);
         } catch (error) {
           notifyError("Failed to upload PDF file.");
-          console.error("PDF upload error:", error);
           return;
         }
       }
 
-      // Upload each image individually and append URLs
       const imageUrls = [];
       for (const image of images) {
         try {
@@ -153,7 +158,6 @@ const AddNewProject = () => {
           imageUrls.push(imgURL);
         } catch (error) {
           notifyError("Failed to upload one of the images.");
-          console.error("Image upload error:", error);
           return;
         }
       }
@@ -161,22 +165,15 @@ const AddNewProject = () => {
         formData.append("images", JSON.stringify(imageUrls));
       }
 
-      // Submit the form data
       try {
-        const response = await axios.post(
-          `${API_PROJECT}/create-new-project`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-        console.log("Project created successfully", response.data);
+        await axios.post(`${API_PROJECT}/create-new-project`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
         notifySuccess("Project created successfully.");
         navigate("/do-an");
       } catch (error) {
-        console.error("Error creating project", error);
         notifyError("Failed to create the project.");
       }
     } else {
@@ -196,13 +193,8 @@ const AddNewProject = () => {
               Lưu
             </Button>
           </Box>
-          <Box display={"flex"} width={"100%"} justifyContent={"space-between"}>
-            <Box
-              width={"45%"}
-              display={"flex"}
-              flexDirection={"column"}
-              gap={"16px"}
-            >
+          <Box display="flex" width="100%" justifyContent="space-between">
+            <Box width="45%" display="flex" flexDirection="column" gap="16px">
               <Field
                 as={TextField}
                 name="title"
@@ -292,24 +284,19 @@ const AddNewProject = () => {
 
               <Box display="flex" gap="8px" flexWrap="wrap" mt={2}>
                 {imagePreviews.map((preview, index) => (
-                  <Box
-                    position="relative"
-                    key={index}
-                    width="80px"
-                    height="80px"
-                  >
+                  <Box key={index} position="relative">
                     <img
                       src={preview}
-                      alt={`Image ${index + 1}`}
-                      width="100%"
-                      height="100%"
+                      alt={`Preview ${index}`}
+                      width={100}
+                      height={100}
                     />
                     <IconButton
                       onClick={() => handleDeleteImage(index)}
                       sx={{
                         position: "absolute",
-                        top: 4,
-                        right: 4,
+                        top: 8,
+                        right: 8,
                         color: "white",
                       }}
                     >
@@ -319,47 +306,34 @@ const AddNewProject = () => {
                 ))}
               </Box>
 
-              <Field
-                as={TextField}
-                name="description"
-                label="Mô tả dự án"
-                size="small"
-              />
-              <Field
-                as={TextField}
-                name="grade"
-                label="Số điểm"
-                size="small"
-                type="number"
-              />
-              <Typography>Ngày hoàn thành</Typography>
-              <Field
-                as={TextField}
-                name="completion_date"
-                id="completion_date"
-                size="small"
-                type="date"
+              <SearchTag
+                onTagsChange={(newTags) =>
+                  (values.tags = newTags.map((tag) => tag.name))
+                }
               />
             </Box>
-            <Box width={"45%"}>
-              <iframe
-                width="100%"
-                height="100%"
-                src={getYoutubeEmbedUrl(values.link_Youtube_URL) || ""}
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title="YouTube Video"
-              />
+
+            <Box width="45%">
+              {values.link_Youtube_URL && (
+                <iframe
+                  title="YouTube Video"
+                  width="100%"
+                  height="300"
+                  src={getYoutubeEmbedUrl(values.link_Youtube_URL) || ""}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              )}
             </Box>
           </Box>
 
           <Divider />
-          <Box display={"flex"} width={"100%"} justifyContent={"space-between"}>
-            <Box width={"45%"}>
+
+          <Box display="flex" width="100%" justifyContent="space-between">
+            <Box width="45%">
               <SearchStudent onStudentFound={setStudent} />
             </Box>
-            <Box width={"45%"}>
+            <Box width="45%">
               <SearchTeacher onTeacherFound={setTeacher} />
             </Box>
           </Box>

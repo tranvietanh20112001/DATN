@@ -29,6 +29,6 @@ export interface ICreateANewProject {
     student_id: string,
     file_report_URL: string,
     description: string, 
-    tags: [],
+    tags: string[];
     images: [],
 }
