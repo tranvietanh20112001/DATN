@@ -13,6 +13,7 @@ const studentRouter = require("./routes/student")
 const accountRouter = require('./routes/account');
 const tagRouter = require('./routes/tag');
 const commentRouter = require('./routes/comment');
+const chatRouter = require("./routes/chat")
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.DB_URL);
@@ -56,7 +57,7 @@ app.use("/api/student", studentRouter)
 app.use('/api/account', accountRouter);
 app.use('/api/tag', tagRouter);
 app.use('/api/comment', commentRouter);
-
+app.use('/api/chat', chatRouter);
 app.use("/uploads", express.static("uploads"));
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

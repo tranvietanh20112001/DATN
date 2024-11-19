@@ -82,6 +82,9 @@ const Header = () => {
           <Typography sx={TypoStyled} onClick={() => navigate("/ve-chung-toi")}>
             Về chúng tôi
           </Typography>
+          <Typography sx={TypoStyled} onClick={() => navigate("/chat-with-ai")}>
+            Chat với AI
+          </Typography>
         </Box>
 
         {account ? (
@@ -137,6 +140,9 @@ const Header = () => {
             >
               <MenuItem onClick={() => navigate("/")}>Trang chủ</MenuItem>
               <MenuItem onClick={() => navigate("/co-so")}>Cơ sở</MenuItem>
+              <MenuItem onClick={() => navigate("/chat-with-ai")}>
+                Chat với AI
+              </MenuItem>
               <MenuItem onClick={() => navigate("/ve-chung-toi")}>
                 Về chúng tôi
               </MenuItem>

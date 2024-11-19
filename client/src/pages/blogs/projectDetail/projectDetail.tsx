@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { API_PROJECT } from "@config/app.config";
 import { getColorsForDepartment } from "@components/Color/Color";
@@ -18,6 +18,7 @@ const ProjectDetail = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [views, setViews] = useState(Number);
+
   const navigate = useNavigate();
 
   const getYoutubeEmbedUrl = (url: string) => {
@@ -78,6 +79,8 @@ const ProjectDetail = () => {
   const { textColor, backgroundColor } = getColorsForDepartment(
     project.faculty
   );
+
+  const parsedTags = project.tags.map((tag: string) => JSON.parse(tag));
 
   return (
     <Box display={"flex"} flexDirection={"column"} gap={"24px"}>
@@ -174,6 +177,33 @@ const ProjectDetail = () => {
         {project.description}
       </Typography>
 
+      {project.link_demo_project && (
+        <Typography>
+          Xem thêm tại:{" "}
+          <Typography
+            component="a"
+            sx={{
+              ":hover": { cursor: "pointer", textDecoration: "underline" },
+              color: "black",
+            }}
+            href={project.link_demo_project}
+            target="_blank"
+          >
+            {project.link_demo_project}
+          </Typography>
+        </Typography>
+      )}
+
+      {project.file_report_URL && (
+        <Button
+          variant="outlined"
+          onClick={() => window.open(project.file_report_URL, "_blank")}
+          sx={{ width: "200px" }}
+        >
+          Xem báo cáo
+        </Button>
+      )}
+
       <Box display="flex" flexWrap="wrap" gap="12px" mt="16px">
         {imges.map((image: string, index: number) => (
           <img
@@ -193,7 +223,23 @@ const ProjectDetail = () => {
         allowFullScreen
         title="YouTube video"
       ></iframe>
-
+      <Typography>
+        Hashtag:
+        {parsedTags.flat().map((tag: string, index: number) => (
+          <Link
+            key={index}
+            color="red"
+            style={{
+              textDecoration: "none",
+              color: "red",
+            }}
+            to={`/projects/${tag}`}
+          >
+            {"#"}
+            {tag} {""}
+          </Link>
+        ))}
+      </Typography>
       <Divider />
 
       <GetStudentProfile _id={project.student_id} />

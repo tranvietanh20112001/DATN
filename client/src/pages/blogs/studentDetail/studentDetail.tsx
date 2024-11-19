@@ -1,17 +1,16 @@
 import { API_STUDENT } from "@config/app.config";
 import { IStudent } from "@interfaces/student.interface";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ProjectDetail from "./projectDetail/projectDetail";
 
 const StudentDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [student, setStudent] = useState<IStudent | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const isMobile = useMediaQuery("(min-width:800px)");
   useEffect(() => {
     if (id) {
       fetchStudentById();
@@ -47,9 +46,29 @@ const StudentDetail: React.FC = () => {
         display={"flex"}
         justifyContent={"space-between"}
         mt={2}
+        flexDirection={isMobile ? "row" : "column"}
       >
         <Box
-          width={"50%"}
+          width={isMobile ? "50%" : "100%"}
+          justifyContent={"center"}
+          display={"flex"}
+        >
+          <img
+            src={`${student.image}`}
+            width={"100%"}
+            height={isMobile ? "auto" : "400px"}
+            style={{
+              borderRadius: "50%",
+              objectFit: "cover",
+              border: "2px solid gray",
+              boxShadow: "3",
+              maxWidth: "400px",
+            }}
+            alt="Student"
+          />
+        </Box>
+        <Box
+          width={isMobile ? "50%" : "100%"}
           display={"flex"}
           flexDirection={"column"}
           gap={"12px"}
@@ -66,23 +85,7 @@ const StudentDetail: React.FC = () => {
           <Typography variant="h5">Mô tả</Typography>
           <Typography variant="body1">{student.description}</Typography>
         </Box>
-
-        <img
-          src={`${student.image}`}
-          width={"400px"}
-          height={"400px"}
-          style={{
-            borderRadius: "50%",
-            objectFit: "cover",
-            border: "2px solid gray",
-            boxShadow: "3",
-          }}
-          alt="Student"
-        />
       </Box>
-
-      <Divider />
-      <ProjectDetail studentId={student._id} />
     </>
   );
 };

@@ -13,6 +13,10 @@ export interface IProject{
     student_id: string,
     link_demo_project: string,
     description: string,
+    file_report_URL: string,
+    tags:string[],
+    number_of_views: number,
+    number_of_likes:number,
 }
 
 

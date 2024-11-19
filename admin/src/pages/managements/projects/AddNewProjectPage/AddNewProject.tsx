@@ -222,6 +222,14 @@ const AddNewProject = () => {
 
               <Field
                 as={TextField}
+                name="description"
+                label="Mô tả về đồ án"
+                multiline
+                row={3}
+              />
+
+              <Field
+                as={TextField}
                 name="grade"
                 label="Số điểm"
                 size="small"

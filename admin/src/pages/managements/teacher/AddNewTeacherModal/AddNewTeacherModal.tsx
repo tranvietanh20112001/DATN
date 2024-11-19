@@ -4,18 +4,14 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { Field, Form, Formik } from "formik";
-import { ICreateANewTeacher } from "../../../../interfaces/teacher.interface";
-import { ICampus } from "../../../../interfaces/campus.interface";
-import { IFaculty } from "../../../../interfaces/faculty.interface";
+import { ICreateANewTeacher } from "@interfaces/teacher.interface";
+import { ICampus } from "@interfaces/campus.interface";
+import { IFaculty } from "@interfaces/faculty.interface";
 import { useEffect, useState } from "react";
-import {
-  API_TEACHER,
-  API_CAMPUS,
-  API_FACULTY,
-} from "../../../../config/app.config";
+import { API_TEACHER, API_CAMPUS, API_FACULTY } from "@config/app.config";
 import axios from "axios";
 import { MenuItem, Select } from "@mui/material";
-import Icon from "../../../../components/Icon/Icon";
+import Icon from "@components/Icon/Icon";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import {
   style,
