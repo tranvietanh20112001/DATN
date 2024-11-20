@@ -19,12 +19,12 @@ router.post("/chat-with-bot", async (req, res) => {
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini", 
-      messages: [{ role: "user", content: message }],
+      model: "gpt-3.5-turbo",
+      messages: [
+        {"role": "user", "content": message}
+    ],
       max_tokens: 150,
     });
-
-    const reply = completion.data.choices[0].message.content.trim();
 
     res.status(200).json({ success: true, reply });
   } catch (error) {
@@ -36,6 +36,7 @@ router.post("/chat-with-bot", async (req, res) => {
         message: error.response.data.error.message,
       });
     } else {
+      console.log('rrvrrvrfrdedgd')
       res.status(500).json({ success: false, message: "Internal server error" });
     }
   }
@@ -50,19 +51,45 @@ router.post("/upload-pdf", upload.single("file"), async (req, res) => {
   }
 
   try {
+    // Parse the PDF file to extract text
     const pdfBuffer = req.file.buffer;
     const pdfData = await pdfParse(pdfBuffer);
+    const pdfText = pdfData.text;
 
-    const pdfText = pdfData.text; 
+    // Optional: Limit the text to a specific length to avoid token limit issues
+    const maxTextLength = 3000; // Adjust this limit based on your needs
+    const truncatedText = pdfText.length > maxTextLength 
+      ? pdfText.substring(0, maxTextLength) 
+      : pdfText;
+
+    // Use OpenAI to summarize the text
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: "You are an assistant that summarizes text to Vietnamese." },
+        { role: "user", content: `Summarize the following text: ${truncatedText}` },
+      ],
+      max_tokens: 500, // Limit tokens for the summary
+    });
+
+    const summary = completion.choices[0].message.content.trim();
 
     res.status(200).json({
       success: true,
-      message: "PDF file processed successfully",
-      pdfContent: pdfText.substring(0, 1000), 
+      message: "PDF summarized successfully",
+      summary: summary,
     });
   } catch (error) {
-    console.error("Error processing PDF:", error);
-    res.status(500).json({ success: false, message: "Error processing PDF file" });
+    console.error("Error processing PDF or generating summary:", error);
+
+    if (error.response) {
+      res.status(error.response.status).json({
+        success: false,
+        message: error.response.data.error.message,
+      });
+    } else {
+      res.status(500).json({ success: false, message: "Error processing PDF or generating summary" });
+    }
   }
 });
 

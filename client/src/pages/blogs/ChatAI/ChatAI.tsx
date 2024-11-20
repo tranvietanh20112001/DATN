@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { API_CHAT } from "@config/app.config";
+import axios from "axios";
 
 interface ChatMessage {
   sender: "user" | "bot";
@@ -31,15 +32,15 @@ const ChatWithBot: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`${API_CHAT}/chat-with-bot`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
+      const response = await axios.post(`${API_CHAT}/chat-with-bot`, {
+        message: input,
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        const botMessage: ChatMessage = { sender: "bot", text: data.reply };
+      if (response.status === 200) {
+        const botMessage: ChatMessage = {
+          sender: "bot",
+          text: response.data.reply,
+        };
         setMessages((prev) => [...prev, botMessage]);
       } else {
         setMessages((prev) => [
@@ -47,7 +48,7 @@ const ChatWithBot: React.FC = () => {
           { sender: "bot", text: "Bot không thể trả lời lúc này." },
         ]);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error:", error);
       setMessages((prev) => [
         ...prev,
@@ -61,11 +62,13 @@ const ChatWithBot: React.FC = () => {
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files?.[0]; // Lấy file đầu tiên từ input
     if (!file) return;
 
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", file); // Đưa file vào FormData để gửi tới API
+
+    setLoading(true); // Hiển thị trạng thái "Đang xử lý"
 
     try {
       const response = await fetch(`${API_CHAT}/upload-pdf`, {
@@ -75,25 +78,29 @@ const ChatWithBot: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
+        // Thêm tin nhắn tóm tắt vào danh sách
         setMessages((prev) => [
           ...prev,
-          { sender: "bot", text: `PDF đã được xử lý: ${data.pdfContent}` },
+          { sender: "bot", text: `Tóm tắt PDF: ${data.summary}` },
         ]);
       } else {
+        // Thêm tin nhắn thông báo lỗi nếu API trả về trạng thái không thành công
         setMessages((prev) => [
           ...prev,
-          { sender: "bot", text: "Không thể tải file PDF lúc này." },
+          { sender: "bot", text: "Không thể xử lý file PDF lúc này." },
         ]);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Lỗi khi tải file PDF:", error);
+      // Thêm tin nhắn thông báo lỗi
       setMessages((prev) => [
         ...prev,
         { sender: "bot", text: "Đã xảy ra lỗi khi tải file PDF." },
       ]);
+    } finally {
+      setLoading(false); // Ẩn trạng thái "Đang xử lý"
     }
   };
-
   return (
     <Box sx={{ width: "100%", height: "80vh" }}>
       <Typography variant="h4" gutterBottom>
