@@ -5,6 +5,7 @@ require("dotenv").config();
 const cors = require("cors");
 const bodyParser = require('body-parser');
 
+
 const projectRouter = require("./routes/project")
 const campusRouter = require("./routes/campus")
 const facultyRouter = require("./routes/faculty")
@@ -62,3 +63,5 @@ app.use("/uploads", express.static("uploads"));
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+ 
