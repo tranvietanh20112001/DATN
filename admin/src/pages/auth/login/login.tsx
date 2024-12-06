@@ -18,8 +18,6 @@ export default function Login() {
     setApiError(null);
     try {
       const response = await axios.post(`${API_ACCOUNT}/login`, values);
-      console.log("Login successful:", response.data);
-
       const { token } = response.data;
       localStorage.setItem("token", token);
       navigate("/trang-chu");

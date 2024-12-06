@@ -17,7 +17,7 @@ const ProjectDetail = () => {
   const [project, setProject] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [views, setViews] = useState(Number);
+  const [, setViews] = useState(Number);
 
   const navigate = useNavigate();
 

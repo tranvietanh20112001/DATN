@@ -9,6 +9,7 @@ const PrivateRoute: React.FC = () => {
   const { account, setAccount } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
 
+  console.log(account);
   useEffect(() => {
     if (token) {
       const fetchUserData = async () => {

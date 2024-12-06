@@ -17,7 +17,7 @@ const Card: React.FC<CardProps> = ({ project }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const isMobile = useMediaQuery("(max-width:700px)");
+  const isMobile = useMediaQuery("(max-width:780px)");
   useEffect(() => {
     const fetchStudent = async () => {
       const _id = project.student_id;
@@ -48,8 +48,8 @@ const Card: React.FC<CardProps> = ({ project }) => {
 
   return (
     <Box
-      width={"30%"}
-      height={isMobile ? "240px" : "560px"}
+      width={isMobile ? "40%" : "30%"}
+      height="auto"
       borderRadius={"12px"}
       border={"1px solid lightGray"}
       marginBottom={"12px"}
@@ -89,6 +89,7 @@ const Card: React.FC<CardProps> = ({ project }) => {
 
       <Typography
         variant={isMobile ? "h6" : "h4"}
+        fontSize={isMobile ? "12px" : "24px"}
         fontWeight="bold"
         sx={{
           overflow: "hidden",

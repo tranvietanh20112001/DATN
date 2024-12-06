@@ -17,6 +17,7 @@ export interface IProject{
     tags:string[],
     number_of_views: number,
     number_of_likes:number,
+    link_img_banner: string,
 }
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Banner from "@components/Banner/Banner";
 import {
   Box,
@@ -11,6 +11,7 @@ import {
   Select,
   InputLabel,
   FormControl,
+  useMediaQuery,
 } from "@mui/material";
 import Card from "@components/Card/Card";
 import { IProject } from "@interfaces/project.interface";
@@ -24,6 +25,7 @@ const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("");
   const [sortOption, setSortOption] = useState<string>("");
+  const isMobile = useMediaQuery("(max-width:780px)");
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -90,7 +92,11 @@ const Homepage = () => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          <Typography variant="h4" fontWeight={"bold"} textAlign={"center"}>
+          <Typography
+            variant={isMobile ? "h5" : "h4"}
+            fontWeight={"bold"}
+            textAlign={"center"}
+          >
             Đồ án tốt nghiệp xuất sắc Greenwich Việt Nam
           </Typography>
         </Box>
@@ -98,6 +104,8 @@ const Homepage = () => {
         <Box
           width={"100%"}
           display={"flex"}
+          flexDirection={isMobile ? "column" : "row"}
+          gap={isMobile ? "12px" : 0}
           justifyContent={"space-between"}
           mb="24px"
         >
@@ -107,10 +115,19 @@ const Homepage = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             size="small"
-            sx={{ minWidth: "250px", width: "50%" }}
+            fullWidth={false}
+            sx={{
+              width: isMobile ? "100%" : "50%",
+            }}
           />
-          <Box>
-            <FormControl size="small" sx={{ minWidth: "150px", mr: 4 }}>
+          <Box
+            sx={{
+              width: isMobile ? "100%" : "40%",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <FormControl size="small" sx={{ minWidth: "150px" }}>
               <InputLabel>Year</InputLabel>
               <Select
                 value={selectedYear}

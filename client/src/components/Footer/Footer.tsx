@@ -4,7 +4,7 @@ import logo from "@assets/logo.jpg";
 
 const Footer = () => {
   const navigate = useNavigate();
-  const isMobile = useMediaQuery("(max-width:700px)");
+  const isMobile = useMediaQuery("(max-width:780px)");
   const QuickLinks = [
     {
       title: "Trang chủ",
@@ -27,7 +27,7 @@ const Footer = () => {
     <>
       <Box
         width={"100%"}
-        height={200}
+        height={isMobile ? "auto" : 200}
         padding={"25px 0"}
         display={isMobile ? "block" : "flex"}
         justifyContent={isMobile ? "center" : "space-between"}

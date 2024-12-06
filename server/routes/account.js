@@ -74,7 +74,6 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, account.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid email or password' });
 
-    // Tạo JWT
     const token = jwt.sign({ accountId: account._id }, 'your_jwt_secret', { expiresIn: '1h' });
 
     res.status(200).json({ token });

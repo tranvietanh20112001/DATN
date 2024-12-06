@@ -31,7 +31,6 @@ const Header = () => {
   const isMobile = useMediaQuery("(max-width:700px)");
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
 
   const [openLogoutModal, setOpenLogoutModal] = useState<boolean>(false);
   const closeModal = () => {
