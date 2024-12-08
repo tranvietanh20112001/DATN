@@ -108,7 +108,7 @@ export default function UpdateTeacherModal({
     }
 
     try {
-      const response = await axios.put(
+      await axios.put(
         `${API_TEACHER}/update-teacher/${teacherData._id}`,
         formData,
         {
@@ -120,7 +120,6 @@ export default function UpdateTeacherModal({
       notifySuccess("Cập nhật giáo viên thành công");
       handleClose();
       fetchTeachers();
-      console.log(response);
     } catch (error) {
       setMessage("error");
       notifyError("Cập nhật giáo viên thất bại");

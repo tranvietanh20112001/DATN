@@ -3203,6 +3203,11 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
+uuidjs@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/uuidjs/-/uuidjs-5.1.0.tgz#cddd1ffec21e3e6bdee707566ee954d99b051573"
+  integrity sha512-HAQPtUkr7t5Ud3uCwRcqtBRNagu/2aerrrBQE6PzgSluGijvFF75UaOq22Xw545GGviRjSLhc4c8CaSMI5h4Ng==
+
 vite-plugin-checker@^0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/vite-plugin-checker/-/vite-plugin-checker-0.8.0.tgz#33419857a623b35c9483e4f603d4ca8b6984acde"

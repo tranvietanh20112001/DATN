@@ -1,6 +1,6 @@
 export const APP_TITLE = "Greenwich Blog"
-// const API = "http://localhost:8000/api"
-const API = "https://datn-595329362226.asia-east1.run.app/api"
+const API = "http://localhost:8000/api"
+// const API = "https://datn-595329362226.asia-east1.run.app/api"
 export const API_PROJECT = `${API}/project`
 export const API_CAMPUS = `${API}/campus`
 export const API_UPLOAD = `${API}/uploads`

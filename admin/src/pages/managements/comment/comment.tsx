@@ -35,7 +35,6 @@ const Comment = () => {
       const response = await axios.get<IComment[]>(
         `${API_COMMENT}/get-all-comments`
       );
-      console.log(response.data);
       setComment(response.data);
       setLoading(false);
     } catch (error) {

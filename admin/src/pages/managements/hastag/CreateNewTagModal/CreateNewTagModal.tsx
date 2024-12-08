@@ -38,13 +38,12 @@ export default function AddNewTagModal({
     formData.append("color", values.color);
 
     try {
-      const response = await axios.post(`${API_TAG}/create-new-tag`, formData, {
+      await axios.post(`${API_TAG}/create-new-tag`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
       notifySuccess("Tạo Tag mới thành công");
-      console.log(response);
       resetForm();
       handleClose();
       fetchTags();

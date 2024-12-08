@@ -109,7 +109,7 @@ export default function UpdateStudentModal({
     }
 
     try {
-      const response = await axios.put(
+      await axios.put(
         `${API_STUDENT}/update-Student/${StudentData._id}`,
         formData,
         {
@@ -121,7 +121,6 @@ export default function UpdateStudentModal({
       notifySuccess("Cập nhật học sinh thành công");
       handleClose();
       fetchStudents();
-      console.log(response);
     } catch (error) {
       notifyError("Cập nhật thông tin sinh viên thất bại");
       setMessage("error");

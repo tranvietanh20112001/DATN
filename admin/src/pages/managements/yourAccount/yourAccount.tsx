@@ -58,7 +58,7 @@ const YourAccount = () => {
     }
 
     try {
-      const response = await axios.put(
+      await axios.put(
         `${API_ACCOUNT}/update-profile/${Account._id}`,
         formData,
         {
@@ -69,9 +69,7 @@ const YourAccount = () => {
         }
       );
       notifySuccess("Cập nhật tài khoản thành công");
-      console.log(response);
     } catch (error) {
-      console.log(error);
       notifyError("Cập nhật tài khoản thất bại");
     }
   };

@@ -31,7 +31,6 @@ const SignUp = () => {
         `${API_ACCOUNT}/register-new-account`,
         registerData
       );
-      console.log("Register successful:", registerData);
 
       const { token } = response.data;
       localStorage.setItem("token", token);

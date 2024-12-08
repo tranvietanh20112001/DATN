@@ -40,17 +40,12 @@ export default function UpdateTagModal({
 
     resetForm();
     try {
-      const response = await axios.put(
-        `${API_TAG}/update-tag/${Tag._id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await axios.put(`${API_TAG}/update-tag/${Tag._id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       notifySuccess("Cập nhật Tag thành công");
-      console.log(response);
       onClose();
       fetchTags();
     } catch (error: any) {

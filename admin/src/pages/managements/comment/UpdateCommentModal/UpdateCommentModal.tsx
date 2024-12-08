@@ -34,7 +34,7 @@ export default function UpdateCommentModal({
 
   const onSubmit = async (values: IComment) => {
     try {
-      const response = await axios.put(
+      await axios.put(
         `${API_COMMENT}/update-comment/${Comment._id}`,
         { content: values.content },
         {
@@ -44,7 +44,6 @@ export default function UpdateCommentModal({
         }
       );
       notifySuccess("Cập nhật Bình luận thành công");
-      console.log(response);
       onClose();
       fetchComments();
     } catch (error) {

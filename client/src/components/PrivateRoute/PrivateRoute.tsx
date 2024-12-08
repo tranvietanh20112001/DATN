@@ -6,10 +6,9 @@ import { useAccount } from "@providers/account.provider";
 import Spinner from "@components/Spinner/Spinner";
 const PrivateRoute: React.FC = () => {
   const token = localStorage.getItem("token");
-  const { account, setAccount } = useAccount();
+  const { setAccount } = useAccount();
   const [loading, setLoading] = useState<boolean>(true);
 
-  console.log(account);
   useEffect(() => {
     if (token) {
       const fetchUserData = async () => {

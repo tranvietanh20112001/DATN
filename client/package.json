@@ -33,6 +33,7 @@
     "react-slick": "^0.30.2",
     "react-toastify": "^10.0.5",
     "slick-carousel": "^1.8.1",
+    "uuidjs": "^5.1.0",
     "vite-plugin-checker": "^0.8.0",
     "vite-tsconfig-paths": "^5.0.1",
     "yup": "^1.4.0"

@@ -67,7 +67,7 @@ export default function UpdateAccountModal({
       }
     }
     try {
-      const response = await axios.put(
+      await axios.put(
         `${API_ACCOUNT}/update-account/${AccountData._id}`,
         formData,
         {
@@ -79,7 +79,6 @@ export default function UpdateAccountModal({
       notifySuccess("Cập nhật tài khoản thành công");
       handleClose();
       fetchAccounts();
-      console.log(response);
     } catch (error) {
       setMessage("error");
       notifyError("Cập nhật tài khoản thất bại");

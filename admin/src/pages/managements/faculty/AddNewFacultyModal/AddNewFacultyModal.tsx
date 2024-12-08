@@ -49,19 +49,13 @@ export default function AddNewFacultyModal({
     formData.append("name", values.name);
     formData.append("campus", values.campus);
     formData.append("description", values.description);
-    console.log(formData.values);
     try {
-      const response = await axios.post(
-        `${API_FACULTY}/create-new-faculty`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await axios.post(`${API_FACULTY}/create-new-faculty`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       notifySuccess("Tạo mới chuyên ngành thành công");
-      console.log(response);
       fetchFaculties();
       handleClose();
     } catch (error) {

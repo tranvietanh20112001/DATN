@@ -56,7 +56,7 @@ export default function UpdateFacultyModal({
     formData.append("description", values.description);
 
     try {
-      const response = await axios.put(
+      await axios.put(
         `${API_FACULTY}/update-faculty/${faculty._id}`,
         formData,
         {
@@ -66,7 +66,6 @@ export default function UpdateFacultyModal({
         }
       );
       notifySuccess("Cập nhật chuyên ngành thành công");
-      console.log(response);
       handleClose();
       fetchFaculties();
     } catch (error) {

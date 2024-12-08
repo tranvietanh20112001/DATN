@@ -34,7 +34,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
     }),
     onSubmit: async (values) => {
       try {
-        const response = await axios.put(
+        await axios.put(
           `${API_ACCOUNT}/change-password/`,
           {
             newPassword: values.newPassword,
@@ -47,7 +47,6 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
             },
           }
         );
-        console.log("Password changed successfully:", response.data);
         notifySuccess("Thay đổi mật khẩu thành công");
         formik.resetForm();
         onClose();

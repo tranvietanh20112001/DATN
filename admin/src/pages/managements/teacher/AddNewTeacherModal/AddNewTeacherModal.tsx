@@ -98,21 +98,15 @@ export default function AddNewTeacherModal({
       }
     }
 
-    console.log(formData.values);
     try {
-      const response = await axios.post(
-        `${API_TEACHER}/create-new-teacher`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await axios.post(`${API_TEACHER}/create-new-teacher`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       notifySuccess("Tạo mới giáo viên thành công");
       handleClose();
       fetchTeachers();
-      console.log(response);
     } catch (error: any) {
       setMessage(error);
       notifyError("Tạo mới giáo viên thất bại");

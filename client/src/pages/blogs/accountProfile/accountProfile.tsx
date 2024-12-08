@@ -3,20 +3,20 @@ import { useAccount } from "@providers/account.provider";
 import { API_ACCOUNT } from "@config/app.config";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-// import Icon from "@components/Icon/Icon";
 import { VisuallyHiddenInput } from "@components/ModalStyle/modal.styled";
 import { Formik, Form, Field } from "formik";
 import { IUpdateAccountProfile } from "@interfaces/account.interface";
 import axios from "axios";
-
 import useMediaQuery from "@mui/material/useMediaQuery";
 import ChangePasswordModal from "./ChangePasswordModal/ChangePasswordModal";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
+import { UUID } from "uuidjs";
+import uploadFileToFirebase from "../../../firebase/index";
 
 const AccountProfile = () => {
   const { account } = useAccount();
   const navigate = useNavigate();
-  const [, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const token = localStorage.getItem("token");
   if (!token) return null;
@@ -43,12 +43,23 @@ const AccountProfile = () => {
     formData.append("full_name", values.full_name);
     formData.append("description", values.description);
     formData.append("phone_number", values.phone_number);
-    if (values.image) {
-      formData.append("image", values.image);
+
+    if (image) {
+      try {
+        const imgURL = await uploadFileToFirebase(
+          `Account/${UUID.generate()}`,
+          image
+        );
+        formData.append("imgURL", imgURL);
+      } catch (error) {
+        notifyError("Upload ảnh thất bại");
+        console.error("Image upload error:", error);
+        return;
+      }
     }
 
     try {
-      const response = await axios.put(
+      await axios.put(
         `${API_ACCOUNT}/update-profile/${account._id}`,
         formData,
         {
@@ -58,12 +69,10 @@ const AccountProfile = () => {
           },
         }
       );
-
-      console.log(response);
+      console.log(formData.values.toString);
       notifySuccess("Cập nhật thông tin thành công");
     } catch (error) {
       notifyError("Cập nhật thông tin thất bại");
-      console.log(error);
     }
   };
 
@@ -105,7 +114,7 @@ const AccountProfile = () => {
                 >
                   <img
                     src={
-                      previewUrl || `${account.image}` || "/default-avatar.png"
+                      previewUrl || `${account.image}` || "@assets/spinner.png"
                     }
                     alt="account Avatar"
                     width={"50%"}
@@ -121,7 +130,7 @@ const AccountProfile = () => {
                     variant="outlined"
                     sx={{ width: "80%" }}
                   >
-                    Upload files
+                    Cập nhật ảnh đại diện
                     <VisuallyHiddenInput
                       type="file"
                       accept="image/*"

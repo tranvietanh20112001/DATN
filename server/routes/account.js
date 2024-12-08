@@ -158,7 +158,7 @@ router.delete("/delete-account/:id", async (req, res) => {
   }
 });
 
-router.put('/update-profile/:accountId', authenticateToken, upload.single('image'), async (req, res) => {
+router.put('/update-profile/:accountId', authenticateToken, async (req, res) => {
   try {
     const accountId = req.account.accountId; 
     const { full_name, description, phone_number, campus, faculty, imgURL } = req.body;

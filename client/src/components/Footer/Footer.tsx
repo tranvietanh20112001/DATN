@@ -35,7 +35,12 @@ const Footer = () => {
         alignItems={isMobile ? "center" : "normal"}
         gap={isMobile ? "24px" : 0}
       >
-        <Box display={"flex"} flexDirection={"column"} gap={"12px"}>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          gap={"12px"}
+          mr={isMobile ? "0" : "80px"}
+        >
           <Typography variant="h5" fontWeight={"bold"}>
             Về chúng tôi
           </Typography>

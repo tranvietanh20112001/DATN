@@ -38,7 +38,6 @@ const Tag = () => {
   const fetchTags = async () => {
     try {
       const response = await axios.get<ITag[]>(`${API_TAG}/get-all-tags`);
-      console.log(response.data);
       setTag(response.data);
       setLoading(false);
     } catch (error) {

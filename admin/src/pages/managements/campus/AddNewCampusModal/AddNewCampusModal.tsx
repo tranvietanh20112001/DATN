@@ -59,17 +59,12 @@ export default function AddNewCampusModal({
     }
 
     try {
-      const response = await axios.post(
-        `${API_CAMPUS}/create-new-campus`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await axios.post(`${API_CAMPUS}/create-new-campus`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       notifySuccess("Tạo cơ sở mới thành công");
-      console.log(response);
       resetForm();
       handleClose();
       fetchCampuses();

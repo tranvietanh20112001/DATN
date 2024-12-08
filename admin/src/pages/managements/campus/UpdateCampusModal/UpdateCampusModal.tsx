@@ -63,17 +63,12 @@ export default function UpdateCampusModal({
     }
 
     try {
-      const response = await axios.put(
-        `${API_CAMPUS}/update-campus/${campus._id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      await axios.put(`${API_CAMPUS}/update-campus/${campus._id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       notifySuccess("Cập nhật cơ sở thành công");
-      console.log(response);
       onClose();
       fetchCampuses();
     } catch (error) {
