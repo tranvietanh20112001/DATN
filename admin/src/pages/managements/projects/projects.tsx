@@ -28,6 +28,7 @@ import {
   StyledTableRow,
 } from "@components/TableStyle/Table.styled";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
+import Spinner from "@components/Spinner/Spinner";
 
 const ListOfProjects = () => {
   const [projects, setProjects] = useState<IProject[]>([]);
@@ -135,7 +136,7 @@ const ListOfProjects = () => {
     .map((project) => project.faculty)
     .filter((faculty, index, self) => self.indexOf(faculty) === index);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
   return (

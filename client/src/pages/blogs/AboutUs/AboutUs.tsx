@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  useMediaQuery,
 } from "@mui/material";
 
 const team = [
@@ -31,11 +32,16 @@ const team = [
 ];
 
 const AboutUs: React.FC = () => {
+  const isMobile = useMediaQuery("(max-width:780px)");
+
   return (
     <Container maxWidth="lg">
-      {/* Phần giới thiệu */}
-      <Box py={5}>
-        <Typography variant="h3" align="center" gutterBottom>
+      <Box flexDirection={"column"} gap={"12px"} display={"flex"}>
+        <Typography
+          variant={isMobile ? "h5" : "h4"}
+          fontWeight={"bold"}
+          textAlign={"center"}
+        >
           Giới Thiệu Greenwich Việt Nam
         </Typography>
         <Typography variant="body1" align="center" color="textSecondary">
@@ -50,75 +56,74 @@ const AboutUs: React.FC = () => {
           width={"100%"}
           style={{ borderRadius: "8px" }}
         ></img>
-      </Box>
 
-      {/* Phần Sứ mệnh và Tầm nhìn */}
-      <Grid container spacing={4} py={5}>
-        <Grid item xs={12} md={6}>
-          <Typography variant="h4" gutterBottom>
-            Sứ Mệnh Của Chúng Tôi
-          </Typography>
-          <Typography variant="body1" color="textSecondary">
-            Sứ mệnh của chúng tôi là cung cấp một môi trường học tập năng động,
-            nuôi dưỡng sự sáng tạo, tư duy phản biện và đổi mới. Chúng tôi hướng
-            tới việc trang bị cho sinh viên kiến thức và kỹ năng cần thiết để
-            thành công trên thị trường lao động toàn cầu.
-          </Typography>
-          <img
-            src="https://images.pexels.com/photos/3184416/pexels-photo-3184416.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            width={"100%"}
-            style={{ borderRadius: 8 }}
-          ></img>
+        <Grid container spacing={4} py={5}>
+          <Grid item xs={12} md={6}>
+            <Typography variant="h4" gutterBottom>
+              Sứ Mệnh Của Chúng Tôi
+            </Typography>
+            <Typography variant="body1" color="textSecondary">
+              Sứ mệnh của chúng tôi là cung cấp một môi trường học tập năng
+              động, nuôi dưỡng sự sáng tạo, tư duy phản biện và đổi mới. Chúng
+              tôi hướng tới việc trang bị cho sinh viên kiến thức và kỹ năng cần
+              thiết để thành công trên thị trường lao động toàn cầu.
+            </Typography>
+            <img
+              src="https://images.pexels.com/photos/3184416/pexels-photo-3184416.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              width={"100%"}
+              style={{ borderRadius: 8 }}
+            ></img>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant="h4" gutterBottom>
+              Tầm Nhìn Của Chúng Tôi
+            </Typography>
+            <Typography variant="body1" color="textSecondary">
+              Tầm nhìn của chúng tôi là trở thành một cơ sở giáo dục quốc tế
+              hàng đầu, nơi thay đổi cuộc sống thông qua việc đào tạo chất lượng
+              cao, nuôi dưỡng tư duy toàn cầu và đam mê học tập trong mỗi sinh
+              viên và phát triển năng lực toàn diện.
+            </Typography>
+            <img
+              src="https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              width={"100%"}
+              style={{ borderRadius: 8 }}
+            ></img>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography variant="h4" gutterBottom>
-            Tầm Nhìn Của Chúng Tôi
-          </Typography>
-          <Typography variant="body1" color="textSecondary">
-            Tầm nhìn của chúng tôi là trở thành một cơ sở giáo dục quốc tế hàng
-            đầu, nơi thay đổi cuộc sống thông qua việc đào tạo chất lượng cao,
-            nuôi dưỡng tư duy toàn cầu và đam mê học tập trong mỗi sinh viên và
-            phát triển năng lực toàn diện.
-          </Typography>
-          <img
-            src="https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            width={"100%"}
-            style={{ borderRadius: 8 }}
-          ></img>
-        </Grid>
-      </Grid>
 
-      {/* Phần Đội ngũ */}
-      <Box py={5}>
-        <Typography variant="h4" align="center" gutterBottom>
-          Đội Ngũ Của Chúng Tôi
-        </Typography>
-        <Grid container spacing={4}>
-          {team.map((member, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  height="300"
-                  image={member.image}
-                  alt={member.name}
-                />
-                <CardContent>
-                  <Typography variant="h6" align="center">
-                    {member.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    align="center"
-                    color="textSecondary"
-                  >
-                    {member.position}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        {/* Phần Đội ngũ */}
+        <Box py={5}>
+          <Typography variant="h4" align="center" gutterBottom>
+            Đội Ngũ Của Chúng Tôi
+          </Typography>
+          <Grid container spacing={4}>
+            {team.map((member, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Card>
+                  <CardMedia
+                    component="img"
+                    height="300"
+                    image={member.image}
+                    alt={member.name}
+                  />
+                  <CardContent>
+                    <Typography variant="h6" align="center">
+                      {member.name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      align="center"
+                      color="textSecondary"
+                    >
+                      {member.position}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Box>
     </Container>
   );

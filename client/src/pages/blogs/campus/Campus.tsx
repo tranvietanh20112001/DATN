@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Divider,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { ICampus } from "@interfaces/campus.interface";
 import { API_CAMPUS } from "@config/app.config";
@@ -15,6 +16,7 @@ const Campus = () => {
   const [campuses, setCampuses] = useState<ICampus[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const isMobile = useMediaQuery("(max-width:780px)");
   const navigate = useNavigate();
   useEffect(() => {
     const fetchProjects = async () => {
@@ -41,6 +43,7 @@ const Campus = () => {
     <>
       <Banner />
       <Divider />
+
       <Box display={"flex"} flexDirection={"column"} gap="24px">
         <Typography variant="h4" textAlign={"center"} fontWeight={"bold"}>
           Giới thiệu về Greenwich Việt Nam
@@ -75,12 +78,13 @@ const Campus = () => {
           justifyContent={"space-between"}
           flexWrap={"wrap"}
           width={"100%"}
+          gap={isMobile ? "12px" : 0}
         >
           {campuses.map((campus) => (
             <Box
               key={campus._id}
-              width={"45%"}
-              height={"400px"}
+              width={isMobile ? "100%" : "45%"}
+              height={isMobile ? "200px" : "400px"}
               display={"flex"}
               justifyContent={"center"}
               alignItems={"center"}

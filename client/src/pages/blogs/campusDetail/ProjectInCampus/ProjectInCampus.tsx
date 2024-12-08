@@ -5,7 +5,7 @@ import { Box, Typography } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import Spinner from "@components/Spinner/Spinner";
 const ProjectsInCampus: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [projects, setProjects] = useState<IProject[]>([]);
@@ -39,7 +39,7 @@ const ProjectsInCampus: React.FC = () => {
     fetchProjectsByCampusId();
   }, [id]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Spinner />;
   if (error) return <div>Error: {error}</div>;
 
   return projects.length === 0 ? (

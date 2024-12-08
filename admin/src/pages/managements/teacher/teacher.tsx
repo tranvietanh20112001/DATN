@@ -27,6 +27,7 @@ import {
   StyledTableCell,
   StyledTableRow,
 } from "@components/TableStyle/Table.styled";
+import Spinner from "@components/Spinner/Spinner";
 
 const Teacher = () => {
   const [teachers, setTeachers] = useState<ITeacher[]>([]);
@@ -120,7 +121,7 @@ const Teacher = () => {
     .map((teacher) => teacher.faculty)
     .filter((faculty, index, self) => self.indexOf(faculty) === index);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
   return (

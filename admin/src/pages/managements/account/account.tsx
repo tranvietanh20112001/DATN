@@ -29,6 +29,7 @@ import Color from "@components/Color/Color";
 import DeleteAccountModal from "./DeleteAccountModal/DeleteAccountModal";
 import UpdateAccountModal from "./UpdateAccountModal/UpdateAccountModal";
 import ChangePasswordModal from "./ChangePasswordModal/ChangePasswordModal";
+import Spinner from "@components/Spinner/Spinner";
 
 const Account = () => {
   const [Accounts, setAccounts] = useState<IAccount[]>([]);
@@ -123,7 +124,7 @@ const Account = () => {
     fetchAccounts();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
   return (

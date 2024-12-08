@@ -22,6 +22,7 @@ import {
   StyledTableCell,
   StyledTableRow,
 } from "@components/TableStyle/Table.styled";
+import Spinner from "@components/Spinner/Spinner";
 
 const Comment = () => {
   const [Comments, setComment] = useState<IComment[]>([]);
@@ -91,7 +92,7 @@ const Comment = () => {
     setSelectedComment(null);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
   return (

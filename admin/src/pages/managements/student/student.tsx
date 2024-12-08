@@ -27,6 +27,7 @@ import DeleteStudentModal from "./DeleteStudentModal/DeleteStudentModal";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import Icon from "@components/Icon/Icon";
 import Color from "@components/Color/Color";
+import Spinner from "@components/Spinner/Spinner";
 
 const Student = () => {
   const [selectedStudent, setSelectedStudent] = useState<IStudent | null>(null);
@@ -124,7 +125,7 @@ const Student = () => {
     .map((student) => student.faculty)
     .filter((faculty, index, self) => self.indexOf(faculty) === index);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
   return (

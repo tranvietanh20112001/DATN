@@ -29,7 +29,8 @@ const Footer = () => {
         width={"100%"}
         height={isMobile ? "auto" : 200}
         padding={"25px 0"}
-        display={isMobile ? "block" : "flex"}
+        display="flex"
+        flexDirection={isMobile ? "column" : "row"}
         justifyContent={isMobile ? "center" : "space-between"}
         alignItems={isMobile ? "center" : "normal"}
         gap={isMobile ? "24px" : 0}
@@ -38,7 +39,7 @@ const Footer = () => {
           <Typography variant="h5" fontWeight={"bold"}>
             Về chúng tôi
           </Typography>
-          <Typography variant="body2" width={280}>
+          <Typography variant="body2" width={isMobile ? "100%" : 280}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam
@@ -56,7 +57,12 @@ const Footer = () => {
             880 123 456 789
           </Typography>
         </Box>
-        <Box display={"flex"} flexDirection={"column"} gap={"12px"}>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          gap={"12px"}
+          width={"100%"}
+        >
           <Typography variant="h5" fontWeight={"bold"}>
             Truy cập nhanh
           </Typography>
@@ -73,9 +79,7 @@ const Footer = () => {
             </Typography>
           ))}
         </Box>
-        <Box>
-          <img src={logo} width={200}></img>
-        </Box>
+        <img src={logo} width={200}></img>
       </Box>
     </>
   );

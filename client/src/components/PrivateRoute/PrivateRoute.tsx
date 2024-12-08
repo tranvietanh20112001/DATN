@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { API_ACCOUNT } from "@config/app.config";
 import { useAccount } from "@providers/account.provider";
-
+import Spinner from "@components/Spinner/Spinner";
 const PrivateRoute: React.FC = () => {
   const token = localStorage.getItem("token");
   const { account, setAccount } = useAccount();
@@ -40,7 +40,7 @@ const PrivateRoute: React.FC = () => {
   }, [token, setAccount]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   return <Outlet />;

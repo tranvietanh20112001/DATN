@@ -119,7 +119,11 @@ const Card: React.FC<CardProps> = ({ project }) => {
             style={{ borderRadius: "50%" }}
             alt="Student"
           />
-          <Typography variant="body2" color="gray" fontSize={"16px"}>
+          <Typography
+            variant="body2"
+            color="gray"
+            fontSize={isMobile ? "8px" : "16px"}
+          >
             {student.full_name}
           </Typography>
           <Typography

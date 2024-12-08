@@ -12,19 +12,19 @@ import {
   TableRow,
   Typography,
   Select,
-  MenuItem, // Import MenuItem để tạo các item cho dropdown
+  MenuItem,
 } from "@mui/material";
 import AddNewFacultyModal from "./AddNewFacultyModal/AddNewFacultyModal";
 import { useEffect, useState } from "react";
-import Color from "../../../components/Color/Color";
-import { IFaculty } from "../../../interfaces/faculty.interface";
+import Color from "@components/Color/Color";
+import { IFaculty } from "@interfaces/faculty.interface";
 import axios from "axios";
-import { API_FACULTY, API_CAMPUS } from "../../../config/app.config";
+import { API_FACULTY, API_CAMPUS } from "@config/app.config";
 import DeleteFacultyModal from "./DeleteFacultyModal/DaleteFacultyModal";
 import { notifyError, notifySuccess } from "@utils/notification.utils";
 import Icon from "@components/Icon/Icon";
 import UpdateFacultyModal from "./UpdateFacultyModal/UpdateFacultyModal";
-import { ICampus } from "../../../interfaces/campus.interface"; // Import ICampus interface
+import { ICampus } from "@interfaces/campus.interface";
 import { SelectChangeEvent } from "@mui/material";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -146,7 +146,7 @@ const FacultyTable = () => {
     setSelectedFaculty(null);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>Error: {error}</p>;
 
   return (
