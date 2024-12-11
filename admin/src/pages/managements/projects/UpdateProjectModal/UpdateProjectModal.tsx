@@ -8,12 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import { Formik, Field, Form } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import * as Yup from "yup";
-import SearchStudent from "./SearchStudent";
-import SearchTeacher from "./SearchTeacher";
-import { IStudent } from "../../../../interfaces/student.interface";
-import { ITeacher } from "../../../../interfaces/teacher.interface";
 
 interface EditModalProps {
   open: boolean;
@@ -38,9 +34,6 @@ const UpdateProjectModal: React.FC<EditModalProps> = ({
   onSubmit,
   project,
 }) => {
-  const [student, setStudent] = useState<IStudent | null>(null);
-  const [teacher, setTeacher] = useState<ITeacher | null>(null);
-
   if (!project) return null;
 
   const initialValues = {
@@ -187,18 +180,7 @@ const UpdateProjectModal: React.FC<EditModalProps> = ({
               </Box>
               <Box display="flex" flexDirection="column" gap="16px">
                 <Divider />
-                <Box
-                  width={"100%"}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                >
-                  <Box width={"45%"}>
-                    <SearchStudent onStudentFound={setStudent} />
-                  </Box>
-                  <Box width={"45%"}>
-                    <SearchTeacher onTeacherFound={setTeacher} />
-                  </Box>
-                </Box>
+
                 <Box display="flex" justifyContent="flex-end" gap={2}>
                   <Button onClick={onClose} variant="outlined">
                     Hủy

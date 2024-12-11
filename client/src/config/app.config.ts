@@ -10,3 +10,4 @@ export const API_STUDENT= `${API}/student`
 export const API_ACCOUNT = `${API}/account`
 export const API_COMMENT = `${API}/comment`
 export const API_CHAT = `${API}/chat`
+export const OPENAI_API_KEY = `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`

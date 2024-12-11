@@ -11,12 +11,14 @@ import {
   Select,
   InputLabel,
   FormControl,
+  Button,
   useMediaQuery,
 } from "@mui/material";
 import Card from "@components/Card/Card";
 import { IProject } from "@interfaces/project.interface";
 import axios from "axios";
 import { API_PROJECT } from "@config/app.config";
+import MiniChat from "@components/MiniChat/MiniChat";
 
 const Homepage = () => {
   const [projects, setProjects] = useState<IProject[]>([]);
@@ -25,6 +27,7 @@ const Homepage = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("");
   const [sortOption, setSortOption] = useState<string>("");
+  const [visibleProjects, setVisibleProjects] = useState<number>(6);
   const isMobile = useMediaQuery("(max-width:780px)");
 
   useEffect(() => {
@@ -48,7 +51,6 @@ const Homepage = () => {
     fetchProjects();
   }, []);
 
-  // Filter projects based on the search query and selected year
   const filteredProjects = projects
     .filter(
       (project) =>
@@ -62,7 +64,6 @@ const Homepage = () => {
       return true;
     });
 
-  // Sort projects based on the selected sort option
   const sortedProjects = [...filteredProjects];
   if (sortOption === "viewsAsc") {
     sortedProjects.sort((a, b) => a.number_of_views - b.number_of_views);
@@ -73,6 +74,8 @@ const Homepage = () => {
   } else if (sortOption === "likesDesc") {
     sortedProjects.sort((a, b) => b.number_of_likes - a.number_of_likes);
   }
+
+  const displayedProjects = sortedProjects.slice(0, visibleProjects);
 
   return (
     <>
@@ -171,7 +174,6 @@ const Homepage = () => {
           </Box>
         )}
 
-        {/* Display projects in card format */}
         {!loading && !error && (
           <Box
             width={"100%"}
@@ -179,12 +181,25 @@ const Homepage = () => {
             flexWrap={"wrap"}
             justifyContent={"space-between"}
           >
-            {sortedProjects.map((project) => (
+            {displayedProjects.map((project) => (
               <Card key={project._id} project={project} />
             ))}
           </Box>
         )}
+
+        {!loading && !error && visibleProjects < sortedProjects.length && (
+          <Box display="flex" justifyContent="center" mt="16px">
+            <Button
+              variant="contained"
+              onClick={() => setVisibleProjects(visibleProjects + 6)}
+            >
+              Xem thêm
+            </Button>
+          </Box>
+        )}
       </Box>
+
+      <MiniChat />
     </>
   );
 };

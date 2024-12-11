@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const pdfParse = require("pdf-parse");
 require("dotenv").config();
-
+const Project = require("../models/project");
 const OpenAI = require("openai");
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -18,30 +18,70 @@ router.post("/chat-with-bot", async (req, res) => {
   }
 
   try {
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {"role": "user", "content": message}
-    ],
-      max_tokens: 150,
-    });
+    const lowerCaseMessage = message.toLowerCase();
 
-    res.status(200).json({ success: true, reply });
+    if (["hi", "hello", "chào", "xin chào"].includes(lowerCaseMessage)) {
+      return res.status(200).json({
+        success: true,
+        reply: "Chào bạn! Tôi có thể giúp gì cho bạn hôm nay?",
+      });
+    }
+
+    const searchQuery = message.toLowerCase().trim();
+
+    const projects = await Project.find({
+      $or: [
+        { title: { $regex: searchQuery, $options: "i" } },
+        { tags: { $regex: searchQuery, $options: "i" } },
+        { faculty: { $regex: searchQuery, $options: "i" } },
+        { teacher_name: { $regex: searchQuery, $options: "i" } },
+        { student_name: { $regex: searchQuery, $options: "i" } },
+      ]
+    }).limit(5);
+
+    let replyMessage = "";
+
+    if (projects.length > 0) {
+      replyMessage = `Dưới đây là các dự án liên quan đến "${searchQuery}":\n\n`;
+      projects.forEach((project, index) => {
+        replyMessage += `${index + 1}. ${project.title} (Năm: ${project.year}, Chuyên ngành: ${project.faculty})\n`;
+        replyMessage += `   Tags: ${project.tags.join(", ")}\n`;
+        replyMessage += `   [Link Demo](${project.link_demo_project})\n\n`;
+      });
+    } else {
+      replyMessage = `Không tìm thấy dự án nào liên quan đến "${searchQuery}". Để bổ sung thêm, tôi sẽ hỏi ChatGPT về chủ đề này.`;
+
+      try {
+        const gptResponse = await openai.chat.completions.create({
+          model: "gpt-3.5-turbo",
+          messages: [
+            { role: "user", content: `Tôi đang tìm dự án liên quan đến "${searchQuery}", bạn có thể cung cấp thông tin chung về các loại dự án này không?` },
+          ],
+          max_tokens: 1000,
+        });
+
+        replyMessage += "\n\nThông tin từ ChatGPT: " + gptResponse.choices[0].message.content;
+      } catch (gptError) {
+        console.error("Error fetching from ChatGPT:", gptError);
+        replyMessage += "\nKhông thể lấy thêm thông tin từ ChatGPT lúc này.";
+      }
+    }
+
+    res.status(200).json({ success: true, reply: replyMessage });
+
   } catch (error) {
     console.error("Error generating reply:", error);
 
     if (error.response) {
-      res.status(error.response.status).json({
+      return res.status(error.response.status).json({
         success: false,
         message: error.response.data.error.message,
       });
     } else {
-      console.log('rrvrrvrfrdedgd')
-      res.status(500).json({ success: false, message: "Internal server error" });
+      return res.status(500).json({ success: false, message: "Internal server error" });
     }
   }
 });
-
 const storage = multer.memoryStorage(); 
 const upload = multer({ storage: storage });
 

@@ -26,6 +26,7 @@ import Icon from "@components/Icon/Icon";
 import UpdateFacultyModal from "./UpdateFacultyModal/UpdateFacultyModal";
 import { ICampus } from "@interfaces/campus.interface";
 import { SelectChangeEvent } from "@mui/material";
+import Spinner from "@components/Spinner/Spinner";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: Color.PrimaryBlue,
